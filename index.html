@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>When Does Freemium Make Sense? — A Pricing Analysis of Mobile Gaming Monetization</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --bg:#F4F6F6; --bg-raised:#FFFFFF;
+  --navy:#1C2833; --slate:#2E4053; --silver:#AAB7B8; --lightgray:#D5DBDB; --offwhite:#F4F6F6;
+  --text:#1C2833; --text-muted:#5A6872; --border:#D5DBDB;
+  --badge-solid-bg:#1C2833; --badge-solid-text:#F4F6F6;
+  --badge-outline-text:#5A6872; --badge-outline-border:#AAB7B8; --badge-outline-bg:transparent;
+  --shadow: 0 1px 2px rgba(28,40,51,.05), 0 10px 26px rgba(28,40,51,.07);
+  --serif:'EB Garamond', Garamond, Georgia, serif;
+  --sans:'EB Garamond', Garamond, Georgia, serif;
+  --mono:'IBM Plex Mono', 'SF Mono', monospace;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-sizing: border-box;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg:#12161B; --bg-raised:#1C2833;
+    --text:#F0F2F2; --text-muted:#AAB7B8; --border:#2E4053;
+    --badge-solid-bg:#AAB7B8; --badge-solid-text:#12161B;
+    --badge-outline-text:#AAB7B8; --badge-outline-border:#2E4053; --badge-outline-bg:transparent;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg:#12161B; --bg-raised:#1C2833;
+  --text:#F0F2F2; --text-muted:#AAB7B8; --border:#2E4053;
+  --badge-solid-bg:#AAB7B8; --badge-solid-text:#12161B;
+  --badge-outline-text:#AAB7B8; --badge-outline-border:#2E4053; --badge-outline-bg:transparent;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top: calc(76px + env(safe-area-inset-top,0px)); }
+body { margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); font-size:17.5px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+img,svg { max-width:100%; }
+.wrap { max-width:980px; margin:0 auto; padding:0 28px; }
+.wrap-wide { max-width:1160px; margin:0 auto; padding:0 28px; }
+a { color:inherit; }
+::selection { background:var(--lightgray); color:var(--navy); }
+a:focus-visible, button:focus-visible { outline:2px solid var(--slate); outline-offset:2px; }
+
+/* ---- Nav ---- */
+header.nav { position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding-top:env(safe-area-inset-top,0px); }
+.nav-inner { max-width:1160px; margin:0 auto; padding:16px 28px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.brand { font-family:var(--serif); font-weight:600; font-size:17px; letter-spacing:.2px; white-space:nowrap; }
+.brand span { color:var(--text-muted); font-weight:400; }
+nav.links { display:flex; gap:26px; overflow-x:auto; scrollbar-width:none; }
+nav.links::-webkit-scrollbar{display:none;}
+nav.links a { font-size:13.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--text-muted); text-decoration:none; white-space:nowrap; padding:6px 0; border-bottom:2px solid transparent; transition:color .15s, border-color .15s; font-weight:500; }
+nav.links a:hover { color:var(--text); }
+nav.links a.active { color:var(--navy); border-color:var(--navy); font-weight:600; }
+:root:not([data-theme="light"]) nav.links a.active { color:var(--text); border-color:var(--text-muted); }
+
+/* ---- Page hero (non-home) ---- */
+.page-hero { padding:64px 0 48px; border-bottom:1px solid var(--border); }
+.kicker { font-family:var(--mono); font-size:12px; color:var(--text-muted); margin:0 0 10px; letter-spacing:.04em; }
+.kicker b { color:var(--text); font-weight:600; }
+h1.page-title { font-family:var(--serif); font-weight:600; font-size:clamp(32px,4.6vw,50px); line-height:1.08; margin:0 0 16px; max-width:17ch; }
+p.page-lede { font-size:17px; color:var(--text-muted); max-width:66ch; margin:0; line-height:1.6; }
+
+section.block { padding:68px 0; border-top:1px solid var(--border); }
+section.block:first-of-type { border-top:none; }
+h2.sec-title { font-family:var(--serif); font-weight:600; font-size:clamp(24px,3.1vw,32px); line-height:1.16; margin:0 0 16px; max-width:20ch; }
+p.sec-lede { font-size:16px; color:var(--text-muted); max-width:70ch; margin:0 0 32px; }
+.prose { max-width:70ch; font-size:15.5px; }
+.prose p { margin:0 0 16px; }
+
+/* ---- badges ---- */
+.badge { font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; padding:4px 10px; border-radius:20px; display:inline-block; }
+.badge.solid { background:var(--badge-solid-bg); color:var(--badge-solid-text); }
+.badge.outline { background:var(--badge-outline-bg); color:var(--badge-outline-text); border:1px solid var(--badge-outline-border); }
+
+/* ---- stat row ---- */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:8px; }
+.stats .stat { background:var(--bg-raised); padding:22px 18px; }
+.stats .stat .num { font-family:var(--mono); font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1; }
+.stats .stat .lbl { font-size:12.2px; color:var(--text-muted); margin-top:8px; line-height:1.4; }
+.stats .stat .src { font-size:10px; color:var(--text-muted); margin-top:6px; opacity:.75; }
+@media (max-width:760px){ .stats{grid-template-columns:repeat(2,1fr);} }
+
+/* ---- taxonomy grid ---- */
+.tax-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media (max-width:860px){ .tax-grid{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .tax-grid{grid-template-columns:1fr;} }
+.tax-card { border:1px solid var(--border); background:var(--bg-raised); padding:18px 18px 16px; border-radius:4px; }
+.tax-card h4 { font-family:var(--serif); font-weight:600; font-size:16.5px; margin:10px 0 6px; }
+.tax-card p { font-size:13.3px; color:var(--text-muted); margin:0 0 10px; line-height:1.5; }
+.tax-card .ex { font-family:var(--mono); font-size:10.5px; color:var(--text-muted); border-top:1px solid var(--border); padding-top:8px; }
+
+/* ---- formula ---- */
+.formula-block { border:1px solid var(--border); background:var(--bg-raised); border-radius:6px; padding:28px 30px; margin-bottom:26px; }
+.formula-block .label { font-family:var(--mono); font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:14px; display:flex; align-items:center; gap:10px; justify-content:space-between; flex-wrap:wrap; }
+.formula { font-family:var(--serif); font-style:italic; font-size:clamp(19px,2.4vw,26px); }
+.formula .term-hl { font-style:normal; font-family:var(--mono); font-weight:600; color:var(--navy); }
+:root:not([data-theme="light"]) .formula .term-hl { color:var(--text); }
+.formula-note { font-size:13.3px; color:var(--text-muted); margin-top:14px; max-width:62ch; }
+.term-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+@media (max-width:640px){ .term-grid{grid-template-columns:1fr;} }
+.term { font-size:13.3px; padding:10px 12px; background:var(--bg); border:1px solid var(--border); border-radius:4px; }
+.term b { font-family:var(--mono); }
+
+/* ---- case study ---- */
+.case-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+@media (max-width:760px){ .case-grid{grid-template-columns:1fr;} }
+.case-col { padding:26px 24px; background:var(--bg-raised); }
+.case-col.solid { border-top:4px solid var(--navy); }
+.case-col.outline { border-top:4px solid var(--silver); }
+.case-col + .case-col { border-left:1px solid var(--border); }
+@media (max-width:760px){ .case-col + .case-col{border-left:none; border-top:1px solid var(--border);} }
+.case-col h3 { font-family:var(--serif); font-weight:600; font-size:23px; margin:10px 0 4px; }
+.case-col .sub { font-size:12.5px; color:var(--text-muted); margin-bottom:16px; }
+.fact { display:flex; justify-content:space-between; gap:14px; padding:10px 0; border-top:1px solid var(--border); font-size:13.3px; }
+.fact:first-of-type{ border-top:none; }
+.fact .k { color:var(--text-muted); }
+.fact .v { font-family:var(--mono); text-align:right; font-weight:500; }
+.case-note { margin-top:20px; padding:16px 18px; background:var(--bg); border:1px solid var(--border); border-radius:4px; font-size:13.3px; }
+
+/* ---- matrix ---- */
+.mx-cols { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:6px; }
+@media (max-width:700px){ .mx-cols{grid-template-columns:1fr;} }
+.col-head { font-family:var(--mono); font-size:10.5px; color:var(--text-muted); letter-spacing:.04em; }
+.row-label { display:flex; align-items:center; gap:10px; margin:22px 0 10px; }
+.row-label .line { flex:1; height:1px; background:var(--border); }
+.row-label span { font-family:var(--mono); font-size:10.5px; color:var(--text-muted); white-space:nowrap; }
+.mx-cell { border:1px solid var(--border); border-radius:6px; padding:18px 18px 16px; background:var(--bg-raised); min-height:130px; }
+.mx-cell h4 { font-family:var(--serif); font-weight:600; font-size:15.5px; margin:10px 0 6px; }
+.mx-cell p { font-size:12.6px; color:var(--text-muted); margin:0; line-height:1.5; }
+
+/* ---- table ---- */
+table.data-table { width:100%; border-collapse:collapse; font-size:13.6px; }
+table.data-table th { text-align:left; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); padding:10px 14px; border-bottom:1px solid var(--border); }
+table.data-table td { padding:12px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+table.data-table tr:last-child td { border-bottom:none; }
+
+.callout { border-left:3px solid var(--navy); background:var(--bg-raised); border:1px solid var(--border); border-left:3px solid var(--navy); padding:16px 18px; border-radius:0 4px 4px 0; font-size:13.8px; margin-top:26px; max-width:70ch; }
+:root:not([data-theme="light"]) .callout { border-left-color: var(--text-muted); }
+
+/* ---- footer ---- */
+footer { padding:50px 0 calc(50px + env(safe-area-inset-bottom,0px)); border-top:1px solid var(--border); margin-top:20px; }
+footer .foot-grid { display:grid; grid-template-columns:1.3fr 1fr; gap:48px; }
+@media (max-width:760px){ footer .foot-grid{grid-template-columns:1fr;} }
+footer h5 { font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); margin:0 0 14px; }
+.refs { font-size:12.3px; color:var(--text-muted); line-height:1.8; }
+.refs div { margin-bottom:4px; }
+footer .meta { font-size:12.8px; color:var(--text-muted); line-height:1.7; }
+footer .meta b { color:var(--text); }
+
+/* ---- buttons ---- */
+.btn { display:inline-block; background:var(--navy); color:var(--offwhite); font-family:var(--sans); font-weight:600; font-size:13px; letter-spacing:.03em; text-decoration:none; padding:12px 22px; border-radius:3px; border:1px solid var(--navy); }
+:root:not([data-theme="light"]) .btn { background:var(--text); color:var(--bg); border-color:var(--text); }
+.btn:hover { opacity:.9; }
+
+
+/* --- page: home --- */
+
+  .hero { padding:90px 0 64px; }
+  .hero h1 { font-family:var(--serif); font-weight:600; font-size:clamp(34px,5.4vw,58px); line-height:1.07; letter-spacing:-.01em; margin:0 0 24px; max-width:16ch; }
+  .hero h1 em { font-style:italic; font-weight:500; color:var(--slate); }
+  .hero .lede { font-size:18px; color:var(--text-muted); max-width:62ch; margin:0 0 38px; line-height:1.6; }
+  .hero .lede b { color:var(--text); font-weight:600; }
+  .duality { display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:720px; }
+  .duality .card { border:1px solid var(--border); border-radius:4px; padding:20px 20px 18px; background:var(--bg-raised); }
+  .duality .card.solid { border-top:3px solid var(--navy); }
+  .duality .card.outline { border-top:3px solid var(--silver); }
+  .duality .card h3 { font-family:var(--serif); font-weight:600; font-size:20px; margin:10px 0 6px; }
+  .duality .card p { margin:0; font-size:13.5px; color:var(--text-muted); line-height:1.5; }
+  .hero .byline { margin-top:40px; font-family:var(--mono); font-size:12px; color:var(--text-muted); border-top:1px solid var(--border); padding-top:16px; max-width:620px; }
+
+  .nav-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:860px){ .nav-cards{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .nav-cards{grid-template-columns:1fr;} }
+  .nav-card { display:block; text-decoration:none; border:1px solid var(--border); background:var(--bg-raised); padding:22px 20px; border-radius:5px; transition:border-color .15s, box-shadow .15s; }
+  .nav-card:hover { border-color:var(--navy); box-shadow:var(--shadow); }
+  :root:not([data-theme="light"]) .nav-card:hover { border-color:var(--text-muted); }
+  .nav-card .n { font-family:var(--mono); font-size:11px; color:var(--text-muted); margin-bottom:8px; }
+  .nav-card h4 { font-family:var(--serif); font-weight:600; font-size:18px; margin:0 0 8px; color:var(--text); }
+  .nav-card p { font-size:13px; color:var(--text-muted); margin:0; line-height:1.5; }
+
+
+/* --- page: about --- */
+
+  .about-grid { display:grid; grid-template-columns: 300px 1fr; gap:48px; align-items:start; }
+  @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; } }
+  .photo-frame { aspect-ratio: 4/5; border-radius:6px; overflow:hidden; border:1px solid var(--border); background:var(--navy); display:flex; align-items:center; justify-content:center; position:relative; }
+  :root:not([data-theme="light"]) .photo-frame { background:var(--slate); }
+  .photo-frame .mono { font-family:var(--serif); font-size:64px; color:var(--offwhite); font-weight:600; }
+  .photo-frame .swap-note { position:absolute; bottom:0; left:0; right:0; background:rgba(28,40,51,.82); color:#F4F6F6; font-family:var(--mono); font-size:10.5px; text-align:center; padding:8px; }
+  .about-copy p { font-size:15.5px; margin:0 0 16px; max-width:62ch; }
+  .about-copy em { font-style:italic; }
+  .about-copy h2 { font-family:var(--serif); font-weight:600; font-size:clamp(28px,3.8vw,38px); margin:0 0 20px; }
+  .placeholder { background:var(--bg); border:1px dashed var(--border); padding:1px 6px; border-radius:3px; color:var(--text-muted); font-style:normal; }
+
+
+/* --- page: industry --- */
+
+  .stance { font-family:var(--mono); font-size:10.5px; padding:2px 9px; border-radius:20px; display:inline-block; white-space:nowrap; border:1px solid var(--border); }
+  .stance.ban { background:var(--navy); color:var(--offwhite); border-color:var(--navy); }
+  :root:not([data-theme="light"]) .stance.ban { background:var(--text); color:var(--bg); border-color:var(--text); }
+  .stance.disc { background:transparent; color:var(--text-muted); border-color:var(--silver); }
+  .stance.none { background:transparent; color:var(--text-muted); border-color:var(--border); }
+
+
+/* --- page: framework --- */
+
+  .pending { font-family:var(--mono); font-size:10px; border:1px solid var(--border); color:var(--text-muted); padding:3px 8px; border-radius:20px; text-transform:none; letter-spacing:0; }
+
+
+/* --- page: diagnostic --- */
+
+  .mx-cell.low { border-left:3px solid var(--navy); }
+  .mx-cell.mod { border-left:3px solid var(--silver); }
+  .mx-cell.high { border-left:3px solid var(--slate); }
+  .mx-cell.vhigh { border-left:3px solid var(--text); background:var(--bg); }
+  .risk { font-family:var(--mono); font-size:10px; letter-spacing:.05em; color:var(--text-muted); text-transform:uppercase; }
+
+
+/* ---- SPA page router ---- */
+.page { display:none; }
+.page.active { display:block; }
+
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">pay<span> or pray</span></div>
+    <nav class="links">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#industry" data-nav="industry">Industry</a>
+      <a href="#framework" data-nav="framework">Framework</a>
+      <a href="#case-study" data-nav="case-study">Case Study</a>
+      <a href="#diagnostic" data-nav="diagnostic">Diagnostic</a>
+      <a href="#about" data-nav="about">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page" id="page-home" data-page="home">
+<main>
+<div class="wrap">
+    <section class="hero">
+      <h1>When does <em>freemium</em> make sense?</h1>
+      <p class="lede">A pricing analysis of mobile gaming monetization, built around one question from Class 2: the answer isn't about the free-to-play label — it's about whether <b>the purchased good's value is certain or left to chance</b> at the moment of sale.</p>
+
+      <div class="duality">
+        <div class="card solid">
+          <span class="badge solid">Deterministic</span>
+          <h3>Fixed Price</h3>
+          <p>You know exactly what you're getting before you pay. Compromise effects, anchors, and decoys do the work.</p>
+        </div>
+        <div class="card outline">
+          <span class="badge outline">Probabilistic</span>
+          <h3>Random Draw</h3>
+          <p>You're paying for a chance at something. Pity timers, near-misses, and sunk cost do the work instead.</p>
+        </div>
+      </div>
+
+      <div class="byline">OPM 6600 — Pricing &amp; Revenue Optimization · Final Project · Trúc Trinh</div>
+    </section>
+
+    <section class="block" style="padding-top:0;">
+      <h2 class="sec-title">Read it in order, or jump to what you need</h2>
+      <p class="sec-lede">Five pages beyond this one: the market it sits in, the pricing theory behind it, the two-case comparison, the framework that ties it together, and who built this.</p>
+      <div class="nav-cards">
+        <a class="nav-card" href="about.html"><div class="n">01</div><h4>About</h4><p>Who built this project and why.</p></a>
+        <a class="nav-card" href="industry.html"><div class="n">02</div><h4>Industry</h4><p>Market size, major players, monetization taxonomy, and where regulation is heading.</p></a>
+        <a class="nav-card" href="framework.html"><div class="n">03</div><h4>Framework</h4><p>EVC, willingness-to-pay, and Choice Architecture — the course tools this project applies.</p></a>
+        <a class="nav-card" href="case-study.html"><div class="n">04</div><h4>Case Study</h4><p>Honor of Kings vs. Where Winds Meet — deterministic vs. probabilistic, same storefront logic.</p></a>
+        <a class="nav-card" href="diagnostic.html"><div class="n">05</div><h4>Diagnostic</h4><p>A two-dimensional framework for placing any freemium good before pricing it.</p></a>
+      </div>
+    </section>
+  </div>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>About this project</h5>
+        <div class="refs">
+          <div>OPM 6600 — Pricing and Revenue Optimization</div>
+          <div>Final project companion site · Trúc Trinh</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-industry" data-page="industry">
+<main>
+<div class="page-hero wrap-wide">
+    <p class="kicker">Industry</p>
+    <h1 class="page-title">The market, its models, and where the rules are headed</h1>
+    <p class="page-lede">Three things worth knowing before the case study: how large and concentrated this market is, the full menu of ways a free game makes money, and the regulatory patchwork that happens to be the reason exact gacha odds are even public.</p>
+  </div>
+
+  <!-- LANDSCAPE -->
+  <section class="block">
+    <div class="wrap-wide">
+      <h2 class="sec-title">The market this argument sits inside</h2>
+      <p class="sec-lede">Mobile gaming is the largest single platform in the games industry, and freemium is why — nearly every top-grossing mobile title today is free to download. But the market is also showing its first signs of maturing.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="num">$188.8B</div><div class="lbl">Global games market, all platforms, 2025</div><div class="src">Newzoo</div></div>
+        <div class="stat"><div class="num">$126B</div><div class="lbl">Mobile gaming revenue, 2025 — over half of all gaming revenue</div><div class="src">Statista / Sensor Tower</div></div>
+        <div class="stat"><div class="num">~77%</div><div class="lbl">Share of mobile game revenue from in-app purchases</div><div class="src">Sensor Tower, State of Mobile 2026</div></div>
+        <div class="stat"><div class="num">↓2%</div><div class="lbl">Mobile game IAP revenue, YoY, H1 2026 — first dip in years</div><div class="src">Sensor Tower, cited via Naavik</div></div>
+      </div>
+
+      <div class="prose" style="margin-top:32px;">
+        <p>Three publishers anchor almost every example in this project. <b>Tencent</b> — the world's largest games company by revenue — publishes Honor of Kings and PUBG Mobile. <b>NetEase</b>, China's second-largest publisher, backs Everstone Studio's Where Winds Meet. <b>HoYoverse</b> (miHoYo) publishes Genshin Impact — not a case study here, for reasons the diagnostic page explains.</p>
+        <p>2025 was also the first year non-gaming apps out-earned games in in-app purchase revenue globally — a quiet signal that the mobile games market, after a decade of growth, is starting to plateau just as the companies in this study are testing the limits of what freemium pricing can still extract.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAXONOMY -->
+  <section class="block">
+    <div class="wrap-wide">
+      <h2 class="sec-title">Seven ways to monetize a free game</h2>
+      <p class="sec-lede">Freemium is an umbrella over genuinely different pricing mechanisms. The badge marks which side of the deterministic / probabilistic line each one sits on by default — the line this project's argument runs along.</p>
+
+      <div class="tax-grid">
+        <div class="tax-card"><span class="badge solid">Deterministic</span><h4>Direct Purchase</h4><p>A known item at a known price — the oldest, simplest freemium mechanic, and Honor of Kings' entire shop.</p><div class="ex">e.g. Honor of Kings skins</div></div>
+        <div class="tax-card"><span class="badge outline" style="border-style:solid;">Either</span><h4>Virtual Currency</h4><p>Real money converts to an in-game currency, adding psychological distance between payment and spend.</p><div class="ex">Guo, Hao, Mukhopadhyay &amp; Sun, ISR 2019</div></div>
+        <div class="tax-card"><span class="badge solid">Deterministic</span><h4>Subscription / Battle Pass</h4><p>A fixed recurring price for a defined, known set of benefits over a season.</p><div class="ex">Mai &amp; Hu, Mgmt. Sci. 2023</div></div>
+        <div class="tax-card"><span class="badge outline">Probabilistic</span><h4>Loot Box / Gacha</h4><p>Pay for a chance, not a thing. Value is resolved by probability after the transaction completes.</p><div class="ex">Chen, Elmachtoub, Hamilton &amp; Lei, Mgmt. Sci. 2021</div></div>
+        <div class="tax-card"><span class="badge solid">Deterministic</span><h4>Pay-to-Win Add-ons</h4><p>Direct purchase of competitive power — deterministic like direct purchase, but carries its own fairness risk.</p><div class="ex">Harutyunyan &amp; Koca, Marketing Science 2025</div></div>
+        <div class="tax-card"><span class="badge outline" style="border-style:solid;">Either</span><h4>Advertising</h4><p>Monetizes attention rather than purchase intent — often paired with other models, not a substitute for them.</p><div class="ex">Common in casual / hyper-casual genres</div></div>
+        <div class="tax-card"><span class="badge outline" style="border-style:solid;">Either</span><h4>Play-to-Earn</h4><p>Inverts the flow — the game pays the player, usually in tradeable tokens or assets, rather than the reverse.</p><div class="ex">Distinct from reward-marketplace models like Mistplay</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTLOOK -->
+  <section class="block">
+    <div class="wrap-wide">
+      <h2 class="sec-title">The rules are catching up to the mechanic</h2>
+      <p class="sec-lede">No two jurisdictions regulate gacha the same way — and that patchwork is precisely why this project can cite exact drop rates for Honor of Kings and Where Winds Meet in the first place.</p>
+
+      <table class="data-table">
+        <thead><tr><th>Jurisdiction</th><th>Approach</th><th>Status, 2026</th></tr></thead>
+        <tbody>
+          <tr><td>China</td><td><span class="stance disc">Disclosure</span></td><td>Mandatory drop-rate disclosure since 2017 — the reason this project has exact odds data</td></tr>
+          <tr><td>Belgium</td><td><span class="stance ban">Ban</span></td><td>Paid loot boxes = gambling since 2018; criminal fines up to €800,000</td></tr>
+          <tr><td>Netherlands</td><td><span class="stance disc">Disclosure</span></td><td>2022 ruling reversed an earlier gambling classification; game-integration test now applies</td></tr>
+          <tr><td>South Korea</td><td><span class="stance disc">Disclosure</span></td><td>Statutory odds disclosure since 2024, with 3x damages for violations</td></tr>
+          <tr><td>United States</td><td><span class="stance none">No federal law</span></td><td>No state or federal statute as of late 2026; active FTC and state-level litigation</td></tr>
+          <tr><td>European Union</td><td><span class="stance none">Pending</span></td><td>No bloc-wide rule yet; Digital Fairness Act proposal expected late 2026</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout"><b>Why this matters for the case study:</b> China's 2017 disclosure law is not incidental to this project — it's the reason Honor of Kings' and Where Winds Meet's exact probabilities are public at all. A regulatory requirement built for consumer protection turned out to be the dataset this entire pricing analysis depends on.</div>
+    </div>
+  </section>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>Select references</h5>
+        <div class="refs">
+          <div>Sensor Tower, State of Mobile 2026; Newzoo Global Games Market Report 2025.</div>
+          <div>Chen, N., Elmachtoub, A., Hamilton, M., &amp; Lei, X. (2021). Loot Box Pricing and Design. <i>Management Science.</i></div>
+          <div>Harutyunyan, M., &amp; Koca, E. (2025). Pricing and Design of Pay-to-Win Add-Ons. <i>Marketing Science.</i></div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-framework" data-page="framework">
+<main>
+<div class="page-hero wrap">
+    <p class="kicker">Framework</p>
+    <h1 class="page-title">Two formulas, one variable</h1>
+    <p class="page-lede">The course's own EVC formula is the pricing ceiling for any good. Whether it applies directly, or has to be re-derived in expectation, depends entirely on whether the good itself is certain or left to chance.</p>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="formula-block">
+        <div class="label"><span>Deterministic goods</span><span class="badge solid" style="font-size:10px;">Applies directly</span></div>
+        <div class="formula">EVC&nbsp;=&nbsp;<span class="term-hl">RefP</span>&nbsp;+&nbsp;<span class="term-hl">DiffV</span></div>
+        <div class="formula-note">The maximum defensible price: the price of the next-best alternative, plus the differentiated value this item adds over it. Both terms are known quantities when the good itself is certain — as with every Honor of Kings skin.</div>
+        <div class="term-grid">
+          <div class="term"><b>RefP</b> — reference price of the next-best alternative</div>
+          <div class="term"><b>DiffV</b> — differentiated value over that alternative</div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="label"><span>Probabilistic goods</span><span class="pending">Pending full validation</span></div>
+        <div class="formula">EVC(gacha)&nbsp;=&nbsp;<span class="term-hl">P(success)</span>&nbsp;×&nbsp;Value&nbsp;−&nbsp;<span class="term-hl">P(failure)</span>&nbsp;×&nbsp;Cost</div>
+        <div class="formula-note">A reframing of the same course formula for a good whose delivery is uncertain: expected gain from success, minus the expected sunk cost of failing. Guest speaker Dr. Tim Smith confirmed this direction is workable but flagged it as trickier than a standard EVC case — he pointed to the 5-Hour ENERGY pricing case as a useful reference before this is finalized.</div>
+      </div>
+
+      <h2 class="sec-title" style="margin-top:44px;">The rest of the toolkit</h2>
+      <div class="prose">
+        <p><b>Willingness-to-pay (WTP).</b> The course's price-response function, d(p) = D·(1 − W(p)), defines Paying Rate as P(wtp ≥ p) — the share of players whose willingness-to-pay for an item exceeds its price. Most freemium titles set prices low relative to the bulk of this distribution, which is why Paying Rate is typically in the single digits while ARPPU (average spend among payers) can be very high.</p>
+        <p><b>Choice Architecture.</b> Compromise and anchor effects require a small set of known-value alternatives to compare — exactly the setting a fixed-price shop creates. A gacha purchase has no such comparison set; the relevant psychology shifts to near-miss effects, sunk-cost escalation, and pity-timer anchoring instead. This is the mechanism this project's case study is built to isolate.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>Select references</h5>
+        <div class="refs">
+          <div>Course materials: OPM 6600, Week 3–4, EVC Pricing &amp; Choice Architecture slides.</div>
+          <div>Guest speaker: Dr. Tim Smith, Wiglaf Pricing — EVC validation discussion, Sept. 2026.</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-case-study" data-page="case-study">
+<main>
+<div class="page-hero wrap-wide">
+    <p class="kicker">Case Study</p>
+    <h1 class="page-title">Same storefront logic, two Chinese publishers</h1>
+    <p class="page-lede">Honor of Kings sells nothing but certainty. Where Winds Meet sells both certainty and chance, in the same shop, to the same players — which is what makes it possible to isolate determinism as a variable rather than just describe two different games.</p>
+  </div>
+
+  <section class="block">
+    <div class="wrap-wide">
+      <div class="case-grid">
+        <div class="case-col solid">
+          <span class="badge solid">Deterministic</span>
+          <h3>Honor of Kings</h3>
+          <div class="sub">Tencent · MOBA · cosmetic skins only</div>
+          <div class="fact"><span class="k">Skin price ladder</span><span class="v">288 – 1,788 pts</span></div>
+          <div class="fact"><span class="k">Recharge ladder</span><span class="v">¥6 / 30 / 68 / 128 / 328 / 648</span></div>
+          <div class="fact"><span class="k">2016 revenue</span><span class="v">¥6.8B</span></div>
+          <div class="fact"><span class="k">2024 daily revenue</span><span class="v">~¥100M/day</span></div>
+          <div class="fact"><span class="k">Pay-to-win content</span><span class="v">None</span></div>
+        </div>
+        <div class="case-col outline">
+          <span class="badge outline">Dual channel</span>
+          <h3>Where Winds Meet</h3>
+          <div class="sub">Everstone Studio / NetEase · Wuxia RPG · launched late 2025</div>
+          <div class="fact"><span class="k">Direct purchase</span><span class="v">Fixed-price Echo Beads</span></div>
+          <div class="fact"><span class="k">Gacha odds</span><span class="v">0.0415% / 0.747%</span></div>
+          <div class="fact"><span class="k">Hard pity</span><span class="v">150 pulls</span></div>
+          <div class="fact"><span class="k">14-mo. revenue</span><span class="v">~$115M (~$8M/mo)</span></div>
+          <div class="fact"><span class="k">Pay-to-win content</span><span class="v">None, either channel</span></div>
+        </div>
+      </div>
+
+      <div class="case-note">A cosmetic-only "fair gacha" has a real revenue cost: Wuthering Waves, which gates power-affecting characters behind its gacha, earned roughly <b>$320M over 21 months</b> — nearly double Where Winds Meet's pace on a broadly comparable download base. Removing pay-to-win content removes a meaningful share of a gacha system's revenue-extraction power. <span style="color:var(--text-muted)">— Naavik, 2026</span></div>
+
+      <h2 class="sec-title" style="margin-top:48px;">Why this pairing, specifically</h2>
+      <div class="prose">
+        <p>The original probabilistic case for this project was Genshin Impact — rejected because its gacha grants gameplay power (characters, weapons), not just cosmetics. That confounds two variables at once: any difference observed could be attributed to either the probabilistic mechanic or the power stakes, not cleanly to determinism alone.</p>
+        <p>Where Winds Meet solves this by running both a deterministic (direct purchase) and a probabilistic (gacha) channel, side by side, in the same cosmetic-only storefront. That holds "non-power-affecting" constant and isolates determinism as the only variable that changes — the cleanest natural experiment available for this comparison.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>Select references</h5>
+        <div class="refs">
+          <div>Naavik (2026). Evaluating the "Fair" Gacha Games Experiment.</div>
+          <div>BitTopup (2025). Where Winds Meet Gacha Rates &amp; Spending Guide.</div>
+          <div>ProGameGuides (2025). Is Where Winds Meet P2W? Monetization &amp; Gacha Explained.</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-diagnostic" data-page="diagnostic">
+<main>
+<div class="page-hero wrap">
+    <p class="kicker">Diagnostic Framework</p>
+    <h1 class="page-title">Where any freemium good lands</h1>
+    <p class="page-lede">Two questions place any purchasable good in one of four risk positions — before a single price is set.</p>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="mx-cols">
+        <div class="col-head">DETERMINISTIC VALUE</div>
+        <div class="col-head">PROBABILISTIC VALUE</div>
+      </div>
+
+      <div class="row-label"><span>COSMETIC / NON-POWER</span><div class="line"></div></div>
+      <div class="mx-cols">
+        <div class="mx-cell low">
+          <span class="risk">Lowest risk</span>
+          <h4>Honor of Kings archetype</h4>
+          <p>Compromise/anchor Choice Architecture. The recommended default for most titles.</p>
+        </div>
+        <div class="mx-cell mod">
+          <span class="risk">Moderate risk</span>
+          <h4>Where Winds Meet gacha channel</h4>
+          <p>Pity/near-miss Choice Architecture. Pay-to-win-free, but the probability mechanic alone still draws regulatory attention.</p>
+        </div>
+      </div>
+
+      <div class="row-label"><span>POWER-AFFECTING</span><div class="line"></div></div>
+      <div class="mx-cols">
+        <div class="mx-cell high">
+          <span class="risk">High risk</span>
+          <h4>Fixed pay-to-win shop</h4>
+          <p>Fairness backlash well documented in player-perception research. Generally advised against.</p>
+        </div>
+        <div class="mx-cell vhigh">
+          <span class="risk">Highest risk</span>
+          <h4>Power-affecting loot boxes</h4>
+          <p>Combines gambling-adjacent mechanics with competitive unfairness — the primary target of current loot-box regulation.</p>
+        </div>
+      </div>
+
+      <h2 class="sec-title" style="margin-top:48px;">Reading the matrix</h2>
+      <div class="prose">
+        <p>The diagonal from top-left to bottom-right is the one that matters most: it runs from the safest commercial position (known goods, no power) to the position regulators are actively targeting (chance-based goods that also confer competitive advantage). Honor of Kings sits entirely in the top-left cell. Where Winds Meet's direct-purchase channel sits there too — its gacha channel sits one cell over, in moderate risk, precisely because removing power from a probabilistic mechanic reduces but does not eliminate its regulatory exposure.</p>
+        <p>Freemium "makes sense," in the terms this project set out to answer, when a design deliberately stays in the top row — and when, if it does use a probabilistic mechanic, the Choice Architecture and EVC model applied to it are the ones built for chance, not the ones built for certainty.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>Select references</h5>
+        <div class="refs">
+          <div>Petrovskaya, E., &amp; Zendle, D. (2022). Predatory Monetisation? <i>Journal of Business Ethics</i>, 181(4).</div>
+          <div>Zendle, D., Meyer, R., &amp; Ballou, N. (2020). The changing face of desktop video game monetisation. <i>PLOS ONE</i>, 15(5).</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-about" data-page="about">
+<main>
+<div class="wrap">
+    <section class="block" style="border-top:none; padding-top:64px;">
+      <p class="kicker">About</p>
+      <h2 class="sec-title" style="max-width:none; margin-bottom:40px;">Who built this</h2>
+
+      <div class="about-grid">
+        <div>
+          <div class="photo-frame">
+            <span class="mono">TT</span>
+            <div class="swap-note">Replace with headshot</div>
+          </div>
+        </div>
+        <div class="about-copy">
+          <p><em>Trúc Trinh</em> is a graduate student at the <em>Richard A. Chaifetz School of Business</em>, <em>Saint Louis University</em>, where this project was completed for <em>OPM 6600 — Pricing and Revenue Optimization</em>. <span class="placeholder">[one or two sentences on your program, year, and prior background — e.g. your undergraduate field, work experience before grad school]</span></p>
+          <p><span class="placeholder">[a sentence on why this topic — the freemium gaming industry — was the one you chose, and what you hope a reader takes away from it]</span></p>
+          <p><span class="placeholder">[optional: any relevant interests, prior projects, or acknowledgments — e.g. thanks to your industry contacts who contributed insight to this project]</span></p>
+          <a class="btn" href="#" target="_blank" rel="noopener">LinkedIn Profile</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>About this project</h5>
+        <div class="refs">
+          <div>OPM 6600 — Pricing and Revenue Optimization</div>
+          <div>Final project companion site · Trúc Trinh</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<script>
+(function(){
+  var pages = document.querySelectorAll('.page');
+  var navLinks = document.querySelectorAll('nav.links a');
+  var baseTitle = 'When Does Freemium Make Sense?';
+  var titles = {
+    about: 'About', industry: 'Industry', framework: 'Framework',
+    'case-study': 'Case Study', diagnostic: 'Diagnostic'
+  };
+  var valid = [];
+  for (var i = 0; i < pages.length; i++) { valid.push(pages[i].getAttribute('data-page')); }
+
+  function show(pageId, skipScroll){
+    if (valid.indexOf(pageId) === -1) pageId = 'home';
+    for (var i = 0; i < pages.length; i++) {
+      var p = pages[i];
+      if (p.getAttribute('data-page') === pageId) { p.className = 'page active'; }
+      else { p.className = 'page'; }
+    }
+    for (var j = 0; j < navLinks.length; j++) {
+      var a = navLinks[j];
+      if (a.getAttribute('data-nav') === pageId) { a.className = 'active'; }
+      else { a.className = ''; }
+    }
+    if (!skipScroll) { window.scrollTo(0,0); }
+    document.title = (pageId === 'home') ? baseTitle : (titles[pageId] || baseTitle) + ' — ' + baseTitle;
+  }
+
+  window.addEventListener('hashchange', function(){
+    show(location.hash.replace('#',''), false);
+  });
+
+  var startPage = location.hash ? location.hash.replace('#','') : 'home';
+  show(startPage, true);
+})();
+</script>
+
+</body>
+</html>
