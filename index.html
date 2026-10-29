@@ -1813,5 +1813,27 @@ details.profiles .src-note { font-size:12px; color:var(--text-muted); margin-top
   }
 })();
 </script>
+<!-- Mobile layout fix -->
+<style>
+  .page-hero { padding-left:28px; padding-right:28px; }
+  .formula { overflow-wrap:anywhere; }
+  @media (max-width:640px){
+    .wrap, .wrap-wide, .page-hero { padding-left:20px; padding-right:20px; }
+    .page-hero { padding-top:40px; padding-bottom:32px; }
+    h1.page-title { font-size:30px; }
+    section.block { padding:48px 0; }
+    .formula-block { padding:20px 18px; }
+    .formula { font-size:17px; line-height:1.6; }
+    table.data-table { display:block; width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .case-col { padding:22px 18px; }
+    .fact { flex-direction:column; gap:2px; }
+    .fact .v { text-align:left; }
+  }
+</style>
+<script>
+  document.querySelectorAll('.formula').forEach(function(f){
+    f.innerHTML = f.innerHTML.replace(/&nbsp;|\u00a0/g, ' ');
+  });
+</script>
 </body>
 </html>
