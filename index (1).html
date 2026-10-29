@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>When Does Freemium Make Sense? — A Pricing Analysis of Mobile Gaming Monetization</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quattrocento:ital,wght@0,400;0,700;1,400&family=Quattrocento+Sans:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --bg:#F4F6F6; --bg-raised:#FFFFFF;
+  --navy:#1C2833; --slate:#2E4053; --silver:#AAB7B8; --lightgray:#D5DBDB; --offwhite:#F4F6F6;
+  --text:#1C2833; --text-muted:#5A6872; --border:#D5DBDB;
+  --badge-solid-bg:#1C2833; --badge-solid-text:#F4F6F6;
+  --badge-outline-text:#5A6872; --badge-outline-border:#AAB7B8; --badge-outline-bg:transparent;
+  --shadow: 0 1px 2px rgba(28,40,51,.05), 0 10px 26px rgba(28,40,51,.07);
+  --serif:'Quattrocento', Georgia, serif;
+  --sans:'Quattrocento Sans', -apple-system, sans-serif;
+  --mono:'IBM Plex Mono', 'SF Mono', monospace;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-sizing: border-box;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg:#12161B; --bg-raised:#1C2833;
+    --text:#F0F2F2; --text-muted:#AAB7B8; --border:#2E4053;
+    --badge-solid-bg:#AAB7B8; --badge-solid-text:#12161B;
+    --badge-outline-text:#AAB7B8; --badge-outline-border:#2E4053; --badge-outline-bg:transparent;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg:#12161B; --bg-raised:#1C2833;
+  --text:#F0F2F2; --text-muted:#AAB7B8; --border:#2E4053;
+  --badge-solid-bg:#AAB7B8; --badge-solid-text:#12161B;
+  --badge-outline-text:#AAB7B8; --badge-outline-border:#2E4053; --badge-outline-bg:transparent;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top: calc(76px + env(safe-area-inset-top,0px)); }
+body { margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); font-size:17.5px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+img,svg { max-width:100%; }
+.wrap { max-width:980px; margin:0 auto; padding:0 28px; }
+.wrap-wide { max-width:1160px; margin:0 auto; padding:0 28px; }
+a { color:inherit; }
+::selection { background:var(--lightgray); color:var(--navy); }
+a:focus-visible, button:focus-visible { outline:2px solid var(--slate); outline-offset:2px; }
+
+/* ---- Nav ---- */
+header.nav { position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding-top:env(safe-area-inset-top,0px); }
+.nav-inner { max-width:1160px; margin:0 auto; padding:16px 28px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.brand { font-family:var(--serif); font-weight:600; font-size:17px; letter-spacing:.2px; white-space:nowrap; }
+.brand span { color:var(--text-muted); font-weight:400; }
+nav.links { display:flex; gap:26px; overflow-x:auto; scrollbar-width:none; }
+nav.links::-webkit-scrollbar{display:none;}
+nav.links a { font-size:13.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--text-muted); text-decoration:none; white-space:nowrap; padding:6px 0; border-bottom:2px solid transparent; transition:color .15s, border-color .15s; font-weight:500; }
+nav.links a:hover { color:var(--text); }
+nav.links a.active { color:var(--navy); border-color:var(--navy); font-weight:600; }
+:root:not([data-theme="light"]) nav.links a.active { color:var(--text); border-color:var(--text-muted); }
+
+/* ---- Page hero (non-home) ---- */
+.page-hero { padding:64px 0 48px; border-bottom:1px solid var(--border); }
+.kicker { font-family:var(--mono); font-size:12px; color:var(--text-muted); margin:0 0 10px; letter-spacing:.04em; }
+.kicker b { color:var(--text); font-weight:600; }
+h1.page-title { font-family:var(--serif); font-weight:600; font-size:clamp(32px,4.6vw,50px); line-height:1.08; margin:0 0 16px; max-width:17ch; }
+p.page-lede { font-size:17px; color:var(--text-muted); max-width:66ch; margin:0; line-height:1.6; }
+
+section.block { padding:68px 0; border-top:1px solid var(--border); }
+section.block:first-of-type { border-top:none; }
+h2.sec-title { font-family:var(--serif); font-weight:600; font-size:clamp(24px,3.1vw,32px); line-height:1.16; margin:0 0 16px; max-width:20ch; }
+p.sec-lede { font-size:16px; color:var(--text-muted); max-width:70ch; margin:0 0 32px; }
+.prose { max-width:70ch; font-size:15.5px; }
+.prose p { margin:0 0 16px; }
+
+/* ---- badges ---- */
+.badge { font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; padding:4px 10px; border-radius:20px; display:inline-block; }
+.badge.solid { background:var(--badge-solid-bg); color:var(--badge-solid-text); }
+.badge.outline { background:var(--badge-outline-bg); color:var(--badge-outline-text); border:1px solid var(--badge-outline-border); }
+
+/* ---- stat row ---- */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:8px; }
+.stats .stat { background:var(--bg-raised); padding:22px 18px; }
+.stats .stat .num { font-family:var(--mono); font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1; }
+.stats .stat .lbl { font-size:12.2px; color:var(--text-muted); margin-top:8px; line-height:1.4; }
+.stats .stat .src { font-size:10px; color:var(--text-muted); margin-top:6px; opacity:.75; }
+@media (max-width:760px){ .stats{grid-template-columns:repeat(2,1fr);} }
+
+/* ---- taxonomy grid ---- */
+.tax-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media (max-width:860px){ .tax-grid{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .tax-grid{grid-template-columns:1fr;} }
+.tax-card { border:1px solid var(--border); background:var(--bg-raised); padding:18px 18px 16px; border-radius:4px; }
+.tax-card h4 { font-family:var(--serif); font-weight:600; font-size:16.5px; margin:10px 0 6px; }
+.tax-card p { font-size:13.3px; color:var(--text-muted); margin:0 0 10px; line-height:1.5; }
+.tax-card .ex { font-family:var(--mono); font-size:10.5px; color:var(--text-muted); border-top:1px solid var(--border); padding-top:8px; }
+
+/* ---- formula ---- */
+.formula-block { border:1px solid var(--border); background:var(--bg-raised); border-radius:6px; padding:28px 30px; margin-bottom:26px; }
+.formula-block .label { font-family:var(--mono); font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:14px; display:flex; align-items:center; gap:10px; justify-content:space-between; flex-wrap:wrap; }
+.formula { font-family:var(--serif); font-style:italic; font-size:clamp(19px,2.4vw,26px); }
+.formula .term-hl { font-style:normal; font-family:var(--mono); font-weight:600; color:var(--navy); }
+:root:not([data-theme="light"]) .formula .term-hl { color:var(--text); }
+.formula-note { font-size:13.3px; color:var(--text-muted); margin-top:14px; max-width:62ch; }
+.term-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+@media (max-width:640px){ .term-grid{grid-template-columns:1fr;} }
+.term { font-size:13.3px; padding:10px 12px; background:var(--bg); border:1px solid var(--border); border-radius:4px; }
+.term b { font-family:var(--mono); }
+
+/* ---- case study ---- */
+.case-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+@media (max-width:760px){ .case-grid{grid-template-columns:1fr;} }
+.case-col { padding:26px 24px; background:var(--bg-raised); }
+.case-col.solid { border-top:4px solid var(--navy); }
+.case-col.outline { border-top:4px solid var(--silver); }
+.case-col + .case-col { border-left:1px solid var(--border); }
+@media (max-width:760px){ .case-col + .case-col{border-left:none; border-top:1px solid var(--border);} }
+.case-col h3 { font-family:var(--serif); font-weight:600; font-size:23px; margin:10px 0 4px; }
+.case-col .sub { font-size:12.5px; color:var(--text-muted); margin-bottom:16px; }
+.fact { display:flex; justify-content:space-between; gap:14px; padding:10px 0; border-top:1px solid var(--border); font-size:13.3px; }
+.fact:first-of-type{ border-top:none; }
+.fact .k { color:var(--text-muted); }
+.fact .v { font-family:var(--mono); text-align:right; font-weight:500; }
+.case-note { margin-top:20px; padding:16px 18px; background:var(--bg); border:1px solid var(--border); border-radius:4px; font-size:13.3px; }
+
+/* ---- matrix ---- */
+.mx-cols { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:6px; }
+@media (max-width:700px){ .mx-cols{grid-template-columns:1fr;} }
+.col-head { font-family:var(--mono); font-size:10.5px; color:var(--text-muted); letter-spacing:.04em; }
+.row-label { display:flex; align-items:center; gap:10px; margin:22px 0 10px; }
+.row-label .line { flex:1; height:1px; background:var(--border); }
+.row-label span { font-family:var(--mono); font-size:10.5px; color:var(--text-muted); white-space:nowrap; }
+.mx-cell { border:1px solid var(--border); border-radius:6px; padding:18px 18px 16px; background:var(--bg-raised); min-height:130px; }
+.mx-cell h4 { font-family:var(--serif); font-weight:600; font-size:15.5px; margin:10px 0 6px; }
+.mx-cell p { font-size:12.6px; color:var(--text-muted); margin:0; line-height:1.5; }
+
+/* ---- table ---- */
+table.data-table { width:100%; border-collapse:collapse; font-size:13.6px; }
+table.data-table th { text-align:left; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); padding:10px 14px; border-bottom:1px solid var(--border); }
+table.data-table td { padding:12px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+table.data-table tr:last-child td { border-bottom:none; }
+
+.callout { border-left:3px solid var(--navy); background:var(--bg-raised); border:1px solid var(--border); border-left:3px solid var(--navy); padding:16px 18px; border-radius:0 4px 4px 0; font-size:13.8px; margin-top:26px; max-width:70ch; }
+:root:not([data-theme="light"]) .callout { border-left-color: var(--text-muted); }
+
+/* ---- footer ---- */
+footer { padding:50px 0 calc(50px + env(safe-area-inset-bottom,0px)); border-top:1px solid var(--border); margin-top:20px; }
+footer .foot-grid { display:grid; grid-template-columns:1.3fr 1fr; gap:48px; }
+@media (max-width:760px){ footer .foot-grid{grid-template-columns:1fr;} }
+footer h5 { font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); margin:0 0 14px; }
+.refs { font-size:12.3px; color:var(--text-muted); line-height:1.8; }
+.refs div { margin-bottom:4px; }
+footer .meta { font-size:12.8px; color:var(--text-muted); line-height:1.7; }
+footer .meta b { color:var(--text); }
+
+/* ---- buttons ---- */
+.btn { display:inline-block; background:var(--navy); color:var(--offwhite); font-family:var(--sans); font-weight:600; font-size:13px; letter-spacing:.03em; text-decoration:none; padding:12px 22px; border-radius:3px; border:1px solid var(--navy); }
+:root:not([data-theme="light"]) .btn { background:var(--text); color:var(--bg); border-color:var(--text); }
+.btn:hover { opacity:.9; }
+
+
+/* --- page: home --- */
+
+  .hero { padding:90px 0 64px; }
+  .hero h1 { font-family:var(--serif); font-weight:600; font-size:clamp(34px,5.4vw,58px); line-height:1.07; letter-spacing:-.01em; margin:0 0 24px; max-width:16ch; }
+  .hero h1 em { font-style:italic; font-weight:500; color:var(--slate); }
+  .hero .lede { font-size:18px; color:var(--text-muted); max-width:62ch; margin:0 0 38px; line-height:1.6; }
+  .hero .lede b { color:var(--text); font-weight:600; }
+  .duality { display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:720px; }
+  .duality .card { border:1px solid var(--border); border-radius:4px; padding:20px 20px 18px; background:var(--bg-raised); }
+  .duality .card.solid { border-top:3px solid var(--navy); }
+  .duality .card.outline { border-top:3px solid var(--silver); }
+  .duality .card h3 { font-family:var(--serif); font-weight:600; font-size:20px; margin:10px 0 6px; }
+  .duality .card p { margin:0; font-size:13.5px; color:var(--text-muted); line-height:1.5; }
+  .hero .byline { margin-top:40px; font-family:var(--mono); font-size:12px; color:var(--text-muted); border-top:1px solid var(--border); padding-top:16px; max-width:620px; }
+
+  .nav-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:860px){ .nav-cards{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .nav-cards{grid-template-columns:1fr;} }
+  .nav-card { display:block; text-decoration:none; border:1px solid var(--border); background:var(--bg-raised); padding:22px 20px; border-radius:5px; transition:border-color .15s, box-shadow .15s; }
+  .nav-card:hover { border-color:var(--navy); box-shadow:var(--shadow); }
+  :root:not([data-theme="light"]) .nav-card:hover { border-color:var(--text-muted); }
+  .nav-card .n { font-family:var(--mono); font-size:11px; color:var(--text-muted); margin-bottom:8px; }
+  .nav-card h4 { font-family:var(--serif); font-weight:600; font-size:18px; margin:0 0 8px; color:var(--text); }
+  .nav-card p { font-size:13px; color:var(--text-muted); margin:0; line-height:1.5; }
+
+
+/* --- page: about --- */
+
+  .about-grid { display:grid; grid-template-columns: 300px 1fr; gap:48px; align-items:start; }
+  @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; } }
+  .photo-frame { aspect-ratio: 4/5; border-radius:6px; overflow:hidden; border:1px solid var(--border); background:var(--navy); display:flex; align-items:center; justify-content:center; position:relative; }
+  :root:not([data-theme="light"]) .photo-frame { background:var(--slate); }
+  .photo-frame .mono { font-family:var(--serif); font-size:64px; color:var(--offwhite); font-weight:600; }
+  .photo-frame .headshot { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .about-meta { margin-top:16px; font-size:12.8px; line-height:1.5; }
+  .about-meta div { padding:8px 0; border-top:1px solid var(--border); }
+  .am-k { display:block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); }
+  .about-h3 { font-family:var(--serif); font-weight:600; font-size:18px; margin:30px 0 12px; }
+  .link-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  @media (max-width:860px){ .link-grid{ grid-template-columns:1fr; } }
+  .link-card { display:block; text-decoration:none; border:1px solid var(--border); background:var(--bg-raised); border-radius:5px; padding:14px; transition:border-color .15s; }
+  .link-card:hover { border-color:var(--navy); }
+  .link-card b { display:block; font-size:13.5px; color:var(--text); margin-bottom:4px; }
+  .link-card span { font-size:12.3px; color:var(--text-muted); line-height:1.45; }
+  .timeline { list-style:none; padding:0; margin:0; border-left:2px solid var(--border); }
+  .timeline li { position:relative; padding:0 0 14px 20px; font-size:14px; }
+  .timeline li::before { content:""; position:absolute; left:-6px; top:6px; width:10px; height:10px; border-radius:50%; background:var(--navy); }
+  :root:not([data-theme="light"]) .timeline li::before { background:var(--text-muted); }
+  .tl-y { display:block; font-family:var(--mono); font-size:11px; color:var(--text-muted); }
+  .about-copy p { font-size:15.5px; margin:0 0 16px; max-width:62ch; }
+  .about-copy em { font-style:italic; }
+  .about-copy h2 { font-family:var(--serif); font-weight:600; font-size:clamp(28px,3.8vw,38px); margin:0 0 20px; }
+  .placeholder { background:var(--bg); border:1px dashed var(--border); padding:1px 6px; border-radius:3px; color:var(--text-muted); font-style:normal; }
+
+
+/* --- page: industry --- */
+
+  .stance { font-family:var(--mono); font-size:10.5px; padding:2px 9px; border-radius:20px; display:inline-block; white-space:nowrap; border:1px solid var(--border); }
+  .stance.ban { background:var(--navy); color:var(--offwhite); border-color:var(--navy); }
+  :root:not([data-theme="light"]) .stance.ban { background:var(--text); color:var(--bg); border-color:var(--text); }
+  .stance.disc { background:transparent; color:var(--text-muted); border-color:var(--silver); }
+  .stance.none { background:transparent; color:var(--text-muted); border-color:var(--border); }
+
+
+/* --- page: framework --- */
+
+  .pending { font-family:var(--mono); font-size:10px; border:1px solid var(--border); color:var(--text-muted); padding:3px 8px; border-radius:20px; text-transform:none; letter-spacing:0; }
+
+
+/* --- page: diagnostic --- */
+
+  .mx-cell.low { border-left:3px solid var(--navy); }
+  .mx-cell.mod { border-left:3px solid var(--silver); }
+  .mx-cell.high { border-left:3px solid var(--slate); }
+  .mx-cell.vhigh { border-left:3px solid var(--text); background:var(--bg); }
+  .risk { font-family:var(--mono); font-size:10px; letter-spacing:.05em; color:var(--text-muted); text-transform:uppercase; }
+
+
+/* ---- SPA page router ---- */
+.page { display:none; }
+.page.active { display:block; }
+
+
+/* ---- Simulation game ---- */
+.game-stats { display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:32px; }
+.game-stat { background:var(--bg-raised); padding:18px 20px; }
+.gs-label { font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin-bottom:6px; }
+.gs-value { font-family:var(--mono); font-weight:600; font-size:22px; }
+.gw-bar { height:5px; background:var(--border); border-radius:3px; margin-top:8px; overflow:hidden; }
+.gw-fill { height:100%; background:var(--navy); width:70%; transition:width .4s ease, background .4s ease; }
+@media (max-width:860px){ .game-stats{ grid-template-columns:repeat(3,1fr);} }
+@media (max-width:560px){ .game-stats{ grid-template-columns:repeat(2,1fr);} }
+
+.game-grid { display:grid; grid-template-columns: 1.3fr 1fr; gap:24px; align-items:start; }
+@media (max-width:900px){ .game-grid{ grid-template-columns:1fr; } }
+.game-panel { border:1px solid var(--border); background:var(--bg-raised); border-radius:6px; padding:26px 26px 28px; }
+.game-h3 { font-family:var(--serif); font-weight:600; font-size:17px; margin:0 0 14px; }
+.game-note { font-size:12.5px; color:var(--text-muted); margin:8px 0 0; }
+
+.pkg-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media (max-width:560px){ .pkg-grid{ grid-template-columns:1fr; } }
+.pkg-card { display:block; border:1px solid var(--border); border-radius:5px; padding:14px 14px 12px; cursor:pointer; position:relative; transition:border-color .15s, box-shadow .15s; }
+.pkg-card:hover { border-color:var(--silver); }
+.pkg-card input { position:absolute; opacity:0; }
+.pkg-card h4 { font-family:var(--serif); font-weight:600; font-size:14.5px; margin:8px 0 4px; }
+.pkg-card p { font-size:11.8px; color:var(--text-muted); margin:0; line-height:1.4; }
+.pkg-card:has(input:checked) { border-color:var(--navy); box-shadow:0 0 0 1px var(--navy); background:var(--bg); }
+:root:not([data-theme="light"]) .pkg-card:has(input:checked) { border-color:var(--text-muted); box-shadow:0 0 0 1px var(--text-muted); }
+
+.slider-row { display:flex; align-items:center; gap:16px; }
+.slider-row input[type="range"] { flex:1; accent-color: var(--navy); }
+.slider-val { font-family:var(--mono); font-weight:600; font-size:16px; min-width:52px; text-align:right; }
+
+.event-toggle { display:flex; align-items:center; gap:10px; font-size:13.5px; cursor:pointer; }
+.event-toggle input { width:16px; height:16px; accent-color:var(--navy); }
+
+.game-log { max-height:560px; overflow-y:auto; }
+.log-entry { border-bottom:1px solid var(--border); padding:14px 0; font-size:13px; }
+.log-entry:first-child { padding-top:0; }
+.log-entry .le-top { display:flex; justify-content:space-between; font-family:var(--mono); font-size:11.5px; color:var(--text-muted); margin-bottom:6px; }
+.log-entry .le-rev { font-family:var(--mono); font-weight:600; font-size:17px; }
+.log-entry .le-flavor { color:var(--text-muted); margin-top:4px; line-height:1.5; }
+.log-entry.warn { color:var(--text); }
+.log-entry.warn .le-rev { color: var(--slate); }
+
+.debrief { border:1px solid var(--border); background:var(--bg-raised); border-radius:6px; padding:40px; text-align:left; }
+.debrief h2 { font-family:var(--serif); font-weight:600; font-size:30px; margin:0 0 8px; }
+.debrief .grade { font-family:var(--mono); font-size:13px; display:inline-block; padding:4px 12px; border-radius:20px; background:var(--navy); color:var(--offwhite); margin-bottom:20px; }
+:root:not([data-theme="light"]) .debrief .grade { background:var(--text); color:var(--bg); }
+.debrief .d-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin:20px 0; }
+.debrief .d-stat { background:var(--bg); padding:16px; }
+.debrief .d-stat .dl { font-family:var(--mono); font-size:10px; color:var(--text-muted); text-transform:uppercase; }
+.debrief .d-stat .dv { font-family:var(--mono); font-weight:600; font-size:20px; margin-top:4px; }
+.debrief p { font-size:14.5px; line-height:1.6; max-width:70ch; }
+.debrief .btn { margin-top:12px; }
+.pkg-card.is-checked { border-color:var(--navy); box-shadow:0 0 0 1px var(--navy); background:var(--bg); }
+:root:not([data-theme="light"]) .pkg-card.is-checked { border-color:var(--text-muted); box-shadow:0 0 0 1px var(--text-muted); }
+
+
+/* ---- Simulation v2: shop builder, ladders, lab, export ---- */
+.flow-steps { list-style:none; padding:0; margin:28px 0 0; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; counter-reset:fs; }
+@media (max-width:860px){ .flow-steps{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:480px){ .flow-steps{ grid-template-columns:1fr;} }
+.flow-steps li { counter-increment:fs; border-top:2px solid var(--navy); padding-top:10px; font-size:13px; }
+:root:not([data-theme="light"]) .flow-steps li { border-top-color:var(--text-muted); }
+.flow-steps li::before { content:"0" counter(fs); font-family:var(--mono); font-size:11px; color:var(--text-muted); display:block; margin-bottom:4px; }
+.flow-steps li b { display:block; font-family:var(--serif); font-size:15px; }
+.flow-steps li span { color:var(--text-muted); font-size:12.5px; }
+
+.pkg-row { border:1px solid var(--border); border-radius:5px; margin-top:10px; background:var(--bg-raised); transition:border-color .15s, box-shadow .15s; }
+.pkg-row.on { border-color:var(--navy); box-shadow:0 0 0 1px var(--navy); }
+:root:not([data-theme="light"]) .pkg-row.on { border-color:var(--text-muted); box-shadow:0 0 0 1px var(--text-muted); }
+.pkg-head { display:flex; align-items:center; gap:12px; padding:12px 14px; cursor:pointer; }
+.pkg-head input { width:17px; height:17px; accent-color:var(--navy); flex:none; }
+.pkg-head .ph-text { flex:1; min-width:0; }
+.pkg-head h4 { font-family:var(--serif); font-weight:600; font-size:15px; margin:0; }
+.pkg-head p { font-size:12px; color:var(--text-muted); margin:2px 0 0; line-height:1.4; }
+.pkg-head .badge { flex:none; }
+.pkg-body { display:none; padding:2px 14px 14px 43px; }
+.pkg-row.on .pkg-body { display:block; }
+.ladder { display:flex; flex-wrap:wrap; gap:6px; }
+.tier { font-family:var(--mono); font-size:12px; padding:5px 10px; border-radius:20px; border:1px solid var(--border); background:var(--bg); color:var(--text-muted); cursor:pointer; user-select:none; }
+.tier.on { background:var(--navy); border-color:var(--navy); color:var(--offwhite); }
+:root:not([data-theme="light"]) .tier.on { background:var(--text); border-color:var(--text); color:var(--bg); }
+.tier:focus-visible { outline:2px solid var(--slate); outline-offset:2px; }
+.ladder-note { font-size:11.5px; color:var(--text-muted); margin-top:7px; }
+.gacha-ctl { display:grid; grid-template-columns:110px 1fr 58px; align-items:center; gap:10px; font-size:12.5px; margin-top:6px; }
+.gacha-ctl input[type=range] { accent-color:var(--navy); width:100%; }
+.gacha-ctl .slider-val { font-size:13px; min-width:0; }
+
+.credits { font-family:var(--mono); font-size:11px; font-weight:500; padding:3px 10px; border-radius:20px; border:1px solid var(--border); margin-left:8px; vertical-align:middle; color:var(--text-muted); }
+.lab-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+@media (max-width:560px){ .lab-actions{ grid-template-columns:1fr; } }
+.lab-btn { text-align:left; border:1px solid var(--border); background:var(--bg); border-radius:5px; padding:10px 12px; cursor:pointer; font-family:var(--sans); color:var(--text); }
+.lab-btn:hover:not(:disabled) { border-color:var(--navy); }
+.lab-btn b { display:block; font-size:13px; margin-bottom:3px; }
+.lab-btn span { display:block; font-size:11.5px; color:var(--text-muted); line-height:1.4; }
+.lab-btn:disabled { opacity:.45; cursor:not-allowed; }
+.lab-result { border-left:3px solid var(--navy); background:var(--bg); padding:12px 14px; margin-top:12px; font-size:12.8px; line-height:1.55; border-radius:0 4px 4px 0; }
+:root:not([data-theme="light"]) .lab-result { border-left-color:var(--text-muted); }
+.lab-result b.t { font-family:var(--serif); font-size:14px; display:block; margin-bottom:4px; }
+.lab-result table { width:100%; border-collapse:collapse; margin-top:6px; font-family:var(--mono); font-size:11.5px; }
+.lab-result td, .lab-result th { padding:4px 6px; border-bottom:1px solid var(--border); text-align:right; }
+.lab-result td:first-child, .lab-result th:first-child { text-align:left; }
+
+table.liveops td, table.liveops th { padding:8px 8px; font-size:12px; white-space:nowrap; }
+table.liveops td { font-family:var(--mono); }
+.mom-up { color:var(--text); } .mom-dn { color:var(--slate); }
+
+.export-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.lab-mini { font-family:var(--sans); font-size:12.5px; font-weight:600; padding:9px 14px; border-radius:3px; border:1px solid var(--navy); background:var(--bg-raised); color:var(--text); cursor:pointer; }
+:root:not([data-theme="light"]) .lab-mini { border-color:var(--text-muted); }
+.lab-mini:hover { background:var(--bg); }
+.export-msg { font-size:12px; color:var(--text-muted); margin-top:8px; }
+.share-bars { margin:14px 0 6px; }
+.share-bar { display:grid; grid-template-columns:140px 1fr 90px; gap:10px; align-items:center; font-size:12.5px; margin-bottom:6px; }
+.share-bar .sb-track { height:10px; background:var(--border); border-radius:5px; overflow:hidden; }
+.share-bar .sb-fill { height:100%; background:var(--navy); }
+:root:not([data-theme="light"]) .share-bar .sb-fill { background:var(--text-muted); }
+.share-bar .sb-v { font-family:var(--mono); text-align:right; }
+.game-grid { grid-template-columns: 1.1fr 1fr; }
+.game-grid > * { min-width:0; }
+@media (max-width:560px){
+  .game-panel { padding:18px 16px 20px; }
+  .pkg-head { flex-wrap:wrap; }
+  .pkg-head .badge { order:3; margin-left:29px; }
+  .pkg-head .ph-text { flex:1 1 calc(100% - 40px); }
+  #game-stats .game-stat:last-child { grid-column:span 2; }
+  .pkg-body { padding:2px 14px 14px 14px; }
+  .gacha-ctl { grid-template-columns:84px 1fr 52px; }
+  .share-bar { grid-template-columns:110px 1fr 44px; }
+  .debrief { padding:24px 18px; }
+  .debrief .d-stats { grid-template-columns:1fr; }
+}
+@media (max-width:980px){ .game-grid{ grid-template-columns:1fr; } }
+
+.case-sub { font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin:18px 0 2px; }
+.compare-table td:first-child { font-family:var(--mono); font-size:11.5px; color:var(--text-muted); white-space:nowrap; }
+.compare-table td { line-height:1.5; }
+/* ---- Simulation v3 additions ---- */
+.ab-box { margin-top:12px; border:1px solid var(--navy); border-radius:5px; padding:12px 14px; background:var(--bg); font-size:12.8px; }
+:root:not([data-theme="light"]) .ab-box { border-color:var(--text-muted); }
+.ab-box b.t { font-family:var(--serif); font-size:14px; display:block; margin-bottom:6px; }
+.ab-row { display:grid; grid-template-columns:120px 1fr; gap:10px; padding:5px 0; border-top:1px solid var(--border); line-height:1.45; }
+.ab-k { font-family:var(--mono); font-size:11px; color:var(--text-muted); text-transform:uppercase; }
+.ab-actions { display:flex; align-items:center; gap:14px; margin-top:10px; }
+.lab-mini:disabled { opacity:.45; cursor:not-allowed; }
+.lab-empty { margin-top:12px; font-size:12.8px; padding:10px 12px; border-radius:4px; background:var(--bg); border:1px solid var(--border); color:var(--text-muted); }
+@media (max-width:560px){ .ab-row { grid-template-columns:1fr; gap:2px; } }
+.shop-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+.link-btn { background:none; border:none; padding:2px 0; margin-left:14px; font-family:var(--sans); font-size:12.5px; color:var(--text-muted); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+.link-btn:first-child { margin-left:0; }
+.link-btn:hover { color:var(--text); }
+.lab-tools { margin-top:10px; }
+.lab-tools .link-btn { margin-left:0; margin-right:14px; }
+#lab-confirm { margin-top:12px; }
+.lab-confirm-inner { border:1px dashed var(--navy); border-radius:5px; padding:12px 14px; font-size:12.8px; line-height:1.5; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:var(--bg); }
+:root:not([data-theme="light"]) .lab-confirm-inner { border-color:var(--text-muted); }
+.lc-btns { display:flex; gap:8px; }
+.lab-mini.ghost { border-color:var(--border); color:var(--text-muted); }
+.spark { width:100%; height:auto; display:block; }
+.spark .sp-lbl { font-family:var(--mono); font-size:10px; fill:var(--text-muted); }
+:root:not([data-theme="light"]) .spark polyline { stroke:var(--text); }
+.le-sub { display:block; font-family:var(--mono); font-size:11px; margin-top:4px; }
+
+/* ---- Home primer ---- */
+.primer-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media (max-width:900px){ .primer-grid{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .primer-grid{ grid-template-columns:1fr;} }
+.primer-card { border:1px solid var(--border); background:var(--bg-raised); border-radius:5px; padding:20px 18px; }
+.primer-card .n { font-family:var(--mono); font-size:11px; width:24px; height:24px; border-radius:50%; background:var(--navy); color:var(--offwhite); display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+:root:not([data-theme="light"]) .primer-card .n { background:var(--text); color:var(--bg); }
+.primer-card h4 { font-family:var(--serif); font-weight:600; font-size:17px; margin:0 0 8px; }
+.primer-card p { font-size:13.6px; color:var(--text-muted); margin:0; line-height:1.55; }
+.market-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+@media (max-width:900px){ .market-grid{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .market-grid{ grid-template-columns:1fr;} }
+details.profiles { margin-top:22px; border:1px solid var(--border); border-radius:5px; background:var(--bg-raised); padding:14px 18px; }
+details.profiles summary { cursor:pointer; font-family:var(--serif); font-weight:600; font-size:15px; }
+details.profiles table { margin-top:14px; }
+details.profiles .src-note { font-size:12px; color:var(--text-muted); margin-top:12px; line-height:1.6; }
+
+/* ---- Reading progress bar ---- */
+#progress-bar { position:fixed; top:0; left:0; width:100%; height:3px; z-index:120; background:transparent; }
+#progress-fill { height:100%; width:0%; background:var(--navy); }
+:root:not([data-theme="light"]) #progress-fill { background:var(--text-muted); }
+
+/* ---- Scroll reveal ---- */
+.reveal { opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+.reveal.is-visible { opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity:1 !important; transform:none !important; transition:none !important; }
+  #progress-fill { transition:none !important; }
+}
+
+/* ---- Market comparison chart ---- */
+.range-chart { width:100%; height:auto; margin-top:28px; }
+.range-chart .axis-label { font-family:var(--mono); font-size:11px; fill:var(--text-muted); }
+.range-chart .mkt-label { font-family:var(--serif); font-weight:600; font-size:14px; fill:var(--text); }
+.range-chart .val-label { font-family:var(--mono); font-size:11.5px; fill:var(--text-muted); }
+.range-chart .ref-label { font-family:var(--mono); font-size:11px; fill:var(--text); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">pay<span> or pray</span></div>
+    <nav class="links">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#industry" data-nav="industry">Industry</a>
+      <a href="#framework" data-nav="framework">Framework</a>
+      <a href="#case-study" data-nav="case-study">Case Study</a>
+      <a href="#diagnostic" data-nav="diagnostic">Diagnostic</a>
+      <a href="#simulation" data-nav="simulation">Simulation</a>
+      <a href="#about" data-nav="about">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page" id="page-home" data-page="home">
+<main>
+<div class="wrap">
+    <section class="hero">
+      <h1>When does <em>freemium</em> make sense?</h1>
+      <p class="lede">Most of today's biggest mobile games are free to download &mdash; yet they earn billions. This project explains how, and asks one question: <b>when does &ldquo;free&rdquo; actually pay off?</b> The short answer depends on one thing most people never notice: whether players <b>know exactly what they're buying</b>, or are <b>paying for a chance</b> at it.</p>
+
+      <div class="duality">
+        <div class="card solid">
+          <span class="badge solid">Deterministic</span>
+          <h3>Fixed Price</h3>
+          <p>Like buying a specific trading card from a shop: you see it, you pay, you get it. Players compare options and choose.</p>
+        </div>
+        <div class="card outline">
+          <span class="badge outline">Probabilistic</span>
+          <h3>Random Draw</h3>
+          <p>Like buying a sealed pack of cards: you pay first and find out what's inside after. Luck, near-misses, and &ldquo;just one more&rdquo; drive spending.</p>
+        </div>
+      </div>
+
+      <div class="byline">OPM 6600 — Pricing &amp; Revenue Optimization · Final Project · Trúc Trinh</div>
+    </section>
+
+    <section class="block" style="padding-top:8px;">
+      <h2 class="sec-title">New here? The 60-second version</h2>
+      <p class="sec-lede">No gaming or pricing background needed. Four ideas are enough to follow everything on this site.</p>
+      <div class="primer-grid">
+        <div class="primer-card reveal"><div class="n">1</div><h4>Freemium</h4><p>&ldquo;Free + premium.&rdquo; The game is free to play; the company earns money by selling optional extras inside it. Most players never pay &mdash; a small share pays a lot.</p></div>
+        <div class="primer-card reveal"><div class="n">2</div><h4>Gacha / loot box</h4><p>A paid lucky draw inside a game. You spend money for a <i>chance</i> at a rare item. Named after Japanese capsule-toy machines.</p></div>
+        <div class="primer-card reveal"><div class="n">3</div><h4>Pay-to-win</h4><p>When money buys a real competitive advantage, not just a new look. Players who don't pay often feel this is unfair &mdash; and leave.</p></div>
+        <div class="primer-card reveal"><div class="n">4</div><h4>Willingness to pay</h4><p>The most a person would pay for something. It differs between people, and between countries &mdash; which is why one global price rarely works.</p></div>
+      </div>
+      <div class="callout" style="margin-top:28px;"><b>The argument in one sentence:</b> selling a known item and selling a lucky draw are two different pricing problems &mdash; they need different tools, carry different risks, and players in different countries react to them differently. The rest of the site shows the evidence.</div>
+    </section>
+
+    <section class="block" style="padding-top:0;">
+      <h2 class="sec-title">Read it in order, or jump to what you need</h2>
+      <p class="sec-lede">Six pages beyond this one. If you're short on time, start with the <a href="#case-study">Case Study</a>, then try the <a href="#simulation">Simulation</a> yourself.</p>
+      <div class="nav-cards">
+        <a class="nav-card reveal" href="#industry"><div class="n">01</div><h4>Industry</h4><p>How big the market is, the main ways free games make money, and how governments are starting to regulate it.</p></a>
+        <a class="nav-card reveal" href="#framework"><div class="n">02</div><h4>Framework</h4><p>The pricing tools behind the analysis &mdash; how to work out the most a player would rationally pay.</p></a>
+        <a class="nav-card reveal" href="#case-study"><div class="n">03</div><h4>Case Study</h4><p>Two real Chinese games that both sell fixed-price skins and lucky draws &mdash; but design the draw in opposite ways.</p></a>
+        <a class="nav-card reveal" href="#diagnostic"><div class="n">04</div><h4>Diagnostic</h4><p>A simple 2&times;2 grid for judging how risky any in-game product is before it launches.</p></a>
+        <a class="nav-card reveal" href="#simulation"><div class="n">05</div><h4>Simulation</h4><p>Play the manager: pick a country, test your shop before launch, run 8 months day by day, then download the data.</p></a>
+        <a class="nav-card reveal" href="#about"><div class="n">06</div><h4>About</h4><p>Who built this project and why.</p></a>
+      </div>
+    </section>
+  </div>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>About this project</h5>
+        <div class="refs">
+          <div>OPM 6600 — Pricing and Revenue Optimization</div>
+          <div>Final project companion site · Trúc Trinh</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-industry" data-page="industry">
+<main>
+<div class="page-hero wrap-wide">
+    <p class="kicker">Industry</p>
+    <h1 class="page-title">The market, its models, and where the rules are headed</h1>
+    <p class="page-lede">Three things worth knowing before the case study: how large and concentrated this market is, the full menu of ways a free game makes money, and the regulatory patchwork that happens to be the reason exact gacha odds are even public.</p>
+  </div>
+
+  <!-- LANDSCAPE -->
+  <section class="block">
+    <div class="wrap-wide">
+      <h2 class="sec-title">The market this argument sits inside</h2>
+      <p class="sec-lede">Mobile gaming is the largest single platform in the games industry, and freemium is why — nearly every top-grossing mobile title today is free to download. But the market is also showing its first signs of maturing.</p>
+
+      <div class="stats">
+        <div class="stat reveal"><div class="num" data-countup="188.8" data-decimals="1" data-prefix="$" data-suffix="B">$0.0B</div><div class="lbl">Global games market, all platforms, 2025</div><div class="src">Newzoo</div></div>
+        <div class="stat reveal"><div class="num" data-countup="103" data-decimals="0" data-prefix="$" data-suffix="B">$0B</div><div class="lbl">Mobile gaming revenue, 2025 — about 55% of the total</div><div class="src">Newzoo</div></div>
+        <div class="stat reveal"><div class="num" data-countup="56" data-decimals="0" data-prefix="" data-suffix="%">0%</div><div class="lbl">Share of all players who spend nothing on games in a year</div><div class="src">Newzoo</div></div>
+        <div class="stat reveal"><div class="num" data-countup="1.3" data-decimals="1" data-prefix="+" data-suffix="%">+0.0%</div><div class="lbl">Mobile game IAP growth, 2025 (~$82B) &mdash; while non-game apps grew 21%</div><div class="src">Sensor Tower</div></div>
+      </div>
+
+      <div class="prose" style="margin-top:32px;">
+        <p>Three publishers anchor almost every example in this project. <b>Tencent</b> — the world's largest games company by revenue — publishes Honor of Kings and PUBG Mobile. <b>NetEase</b>, China's second-largest publisher, backs Everstone Studio's Where Winds Meet. <b>HoYoverse</b> (miHoYo) publishes Genshin Impact — not a case study here, for reasons the Case Study page explains.</p>
+        <p>2025 was also the first year non-gaming apps out-earned games in in-app purchase revenue globally — a quiet signal that the mobile games market, after a decade of growth, is starting to plateau just as the companies in this study are testing the limits of what freemium pricing can still extract.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAXONOMY -->
+  <section class="block">
+    <div class="wrap-wide">
+      <h2 class="sec-title">Seven ways to monetize a free game</h2>
+      <p class="sec-lede">Freemium is an umbrella over genuinely different pricing mechanisms. The badge marks which side of the deterministic / probabilistic line each one sits on by default — the line this project's argument runs along.</p>
+
+      <div class="tax-grid">
+        <div class="tax-card reveal"><span class="badge solid">Deterministic</span><h4>Direct Purchase</h4><p>A known item at a known price — the oldest, simplest freemium mechanic, and the core of both case-study games' shops.</p><div class="ex">e.g. Honor of Kings skin shop</div></div>
+        <div class="tax-card reveal"><span class="badge outline" style="border-style:solid;">Either</span><h4>Virtual Currency</h4><p>Real money converts to an in-game currency, adding psychological distance between payment and spend.</p><div class="ex">Guo, Hao, Mukhopadhyay &amp; Sun, ISR 2019</div></div>
+        <div class="tax-card reveal"><span class="badge solid">Deterministic</span><h4>Subscription / Battle Pass</h4><p>A fixed recurring price for a defined, known set of benefits over a season.</p><div class="ex">Mai &amp; Hu, Mgmt. Sci. 2023</div></div>
+        <div class="tax-card reveal"><span class="badge outline">Probabilistic</span><h4>Loot Box / Gacha</h4><p>Pay for a chance, not a thing. Value is resolved by probability after the transaction completes.</p><div class="ex">Chen, Elmachtoub, Hamilton &amp; Lei, Mgmt. Sci. 2021</div></div>
+        <div class="tax-card reveal"><span class="badge solid">Deterministic</span><h4>Pay-to-Win Add-ons</h4><p>Direct purchase of competitive power. Value is driven by network effects — worth more to an owner the more opponents lack it — which is exactly what makes it tempting despite the fairness risk.</p><div class="ex">Harutyunyan &amp; Koca, Management Science 2025</div></div>
+        <div class="tax-card reveal"><span class="badge outline" style="border-style:solid;">Either</span><h4>Advertising</h4><p>Monetizes attention rather than purchase intent — often paired with other models, not a substitute for them.</p><div class="ex">Common in casual / hyper-casual genres</div></div>
+        <div class="tax-card reveal"><span class="badge outline" style="border-style:solid;">Either</span><h4>Play-to-Earn</h4><p>Inverts the flow — the game pays the player, usually in tradeable tokens or assets, rather than the reverse.</p><div class="ex">Distinct from reward-marketplace models like Mistplay</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUT-GAME ECONOMY -->
+  <section class="block">
+    <div class="wrap-wide">
+      <h2 class="sec-title">Two economies, not one</h2>
+      <p class="sec-lede">Pricing an item isn't just about its role inside the game. An industry practitioner interviewed for this project draws a sharp line between two distinct pricing problems a publisher solves at once.</p>
+
+      <div class="case-grid" style="margin-bottom:28px;">
+        <div class="case-col solid reveal">
+          <span class="badge solid">In-Game Economy</span>
+          <h3 style="font-size:19px;">Supply vs. demand, inside the game</h3>
+          <p class="sub" style="margin-bottom:0;">Items with scarce supply but high use-demand command higher value; items with abundant gameplay supply should be cheap or free, to keep progression from stalling.</p>
+        </div>
+        <div class="case-col outline reveal">
+          <span class="badge outline">Out-Game Economy</span>
+          <h3 style="font-size:19px;">Purchasing power, across markets</h3>
+          <p class="sub" style="margin-bottom:0;">The same item needs a different price in different markets — not a currency conversion, but a localization of relative value, sized to what that market can actually bear.</p>
+        </div>
+      </div>
+
+      <div class="prose">
+        <p>The localization problem is concrete, not abstract. For one evergreen package line spanning 6–8 price tiers, the practitioner's own benchmark: the best-selling tier in a mature Western market lands around <b>US$10–19</b>, while the best-selling tier for the same package line in Vietnam lands closer to <b>US$5–7</b> — roughly half. A publisher that ports its US price ladder unchanged into a new market isn't neutral; it's mispriced for that market's actual willingness-to-pay on one side or the other.</p>
+      </div>
+
+      <svg class="range-chart reveal" viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chart comparing typical best-selling price range in the US versus Vietnam, with a flat $15 price shown for reference">
+        <line x1="376" y1="38" x2="376" y2="150" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="3,4"/>
+        <text x="376" y="26" text-anchor="middle" class="ref-label">Flat $15 price</text>
+
+        <text x="70" y="50" class="mkt-label">United States (US-like)</text>
+        <rect x="274" y="56" width="184" height="26" rx="4" fill="var(--navy)"/>
+        <text x="366" y="73" text-anchor="middle" class="val-label" fill="var(--offwhite)">$10&#8211;19</text>
+
+        <text x="70" y="110" class="mkt-label">Vietnam (VN-like)</text>
+        <rect x="172" y="116" width="41" height="26" rx="4" fill="var(--lightgray)" stroke="var(--silver)" stroke-width="1.5"/>
+        <text x="192" y="160" text-anchor="middle" class="val-label">$5&#8211;7</text>
+
+        <line x1="70" y1="166" x2="580" y2="166" stroke="var(--border)" stroke-width="1"/>
+        <text x="70" y="182" class="axis-label">$0</text>
+        <text x="172" y="182" class="axis-label">$5</text>
+        <text x="274" y="182" class="axis-label">$10</text>
+        <text x="376" y="182" class="axis-label">$15</text>
+        <text x="478" y="182" class="axis-label">$20</text>
+        <text x="572" y="182" class="axis-label">$25</text>
+      </svg>
+      <p class="game-note" style="margin-top:10px;">The dashed line marks a single flat $15 price &mdash; inside the US-like range, well above the VN-like one. This is the exact mismatch the <a href="#simulation">Simulation</a> lets you create and feel the revenue cost of.</p>
+
+      <div class="callout" style="margin-top:20px;">This is precisely the variable the <a href="#simulation">Simulation</a> on this site now lets you test directly — pick a target market, then watch whether your pricing was actually calibrated to it or just carried over from habit.</div>
+    </div>
+  </section>
+
+  <!-- OUTLOOK -->
+  <section class="block">
+    <div class="wrap-wide">
+      <h2 class="sec-title">The rules are catching up to the mechanic</h2>
+      <p class="sec-lede">No two jurisdictions regulate gacha the same way — and that patchwork is precisely why this project can cite exact drop rates for Honor of Kings and Where Winds Meet in the first place.</p>
+
+      <table class="data-table">
+        <thead><tr><th>Jurisdiction</th><th>Approach</th><th>Status, 2026</th></tr></thead>
+        <tbody>
+          <tr><td>China</td><td><span class="stance disc">Disclosure</span></td><td>Mandatory drop-rate disclosure since 2017 — the reason this project has exact odds data</td></tr>
+          <tr><td>Belgium</td><td><span class="stance ban">Ban</span></td><td>Paid loot boxes = gambling since 2018; criminal fines up to €800,000</td></tr>
+          <tr><td>Netherlands</td><td><span class="stance disc">Disclosure</span></td><td>2022 ruling reversed an earlier gambling classification; game-integration test now applies</td></tr>
+          <tr><td>South Korea</td><td><span class="stance disc">Disclosure</span></td><td>Statutory odds disclosure since 2024, with 3x damages for violations</td></tr>
+          <tr><td>United States</td><td><span class="stance none">No federal law</span></td><td>No state or federal statute as of late 2026; active FTC and state-level litigation</td></tr>
+          <tr><td>European Union</td><td><span class="stance none">Pending</span></td><td>No bloc-wide rule yet; Digital Fairness Act proposal expected late 2026</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout"><b>Why this matters for the case study:</b> China's 2017 disclosure law is not incidental to this project — it's the reason Honor of Kings' and Where Winds Meet's exact probabilities are public at all. A regulatory requirement built for consumer protection turned out to be the dataset this entire pricing analysis depends on.</div>
+    </div>
+  </section>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>Select references</h5>
+        <div class="refs">
+          <div>Newzoo (2025). Global Games Market Report 2025. Sensor Tower (2026). State of Mobile 2026.</div>
+          <div>Chen, N., Elmachtoub, A., Hamilton, M., &amp; Lei, X. (2021). Loot Box Pricing and Design. <i>Management Science.</i></div>
+          <div>Harutyunyan, M., &amp; Koca, E. (2025). Pricing and Design of Pay-to-Win Add-Ons. <i>Management Science.</i></div>
+          <div>Industry interview with an anonymized monetization specialist (former manager, name withheld). Personal communication, September 2026.</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-framework" data-page="framework">
+<main>
+<div class="page-hero wrap">
+    <p class="kicker">Framework</p>
+    <h1 class="page-title">Two formulas, one variable</h1>
+    <p class="page-lede">The course's own EVC formula is the pricing ceiling for any good. Whether it applies directly, or has to be re-derived in expectation, depends entirely on whether the good itself is certain or left to chance.</p>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="formula-block reveal">
+        <div class="label"><span>Deterministic goods</span><span class="badge solid" style="font-size:10px;">Applies directly</span></div>
+        <div class="formula">EVC&nbsp;=&nbsp;<span class="term-hl">RefP</span>&nbsp;+&nbsp;<span class="term-hl">DiffV</span></div>
+        <div class="formula-note">The maximum defensible price: the price of the next-best alternative, plus the differentiated value this item adds over it. Both terms are known quantities when the good itself is certain — as with a skin bought directly from the shop.</div>
+        <div class="term-grid">
+          <div class="term"><b>RefP</b> — reference price of the next-best alternative</div>
+          <div class="term"><b>DiffV</b> — differentiated value over that alternative</div>
+        </div>
+      </div>
+
+      <div class="formula-block reveal">
+        <div class="label"><span>Probabilistic goods</span><span class="badge outline">Consistent with published OR literature</span></div>
+        <div class="formula">EVC(gacha)&nbsp;=&nbsp;<span class="term-hl">P(success)</span>&nbsp;×&nbsp;Value&nbsp;−&nbsp;<span class="term-hl">P(failure)</span>&nbsp;×&nbsp;Cost</div>
+        <div class="formula-note">A reframing of the same course formula for a good whose delivery is uncertain: expected gain from success, minus the expected sunk cost of failing. Asked whether EVC can be applied to gaming at all, guest speaker Dr. Tim Smith said yes &mdash; but that it is trickier than a standard case. The general form below, from the operations research literature on loot box design, supports the structure: expected value is a drop-rate-weighted sum of marginal value across every possible outcome, not just a binary success/failure — this simplified two-outcome version is the special case relevant to chasing one specific item.</div>
+        <div class="formula" style="margin-top:16px; font-size:16px;">V(A,v,r)&nbsp;=&nbsp;<span class="term-hl">Σⱼ</span>&nbsp;rⱼ&nbsp;×&nbsp;[v(A∪{j})&nbsp;−&nbsp;v(A)]</div>
+        <div class="formula-note" style="margin-top:8px;">Expected utility of a loot box, summed over every possible item j: its drop rate rⱼ, times the marginal value it adds given the items (A) the player already owns — so a duplicate of something already owned contributes zero. <span style="color:var(--text-muted)">— Han, Ryan &amp; Tong, 2026</span></div>
+      </div>
+
+      <h2 class="sec-title" style="margin-top:44px;">The rest of the toolkit</h2>
+      <div class="prose">
+        <p><b>Willingness-to-pay (WTP).</b> The course's price-response function, d(p) = D·(1 − W(p)), defines Paying Rate as P(wtp ≥ p) — the share of players whose willingness-to-pay for an item exceeds its price. Paying Rate is low not because prices are high, but because most players&rsquo; willingness to pay for extras is zero &mdash; the free game is enough. Newzoo estimates that 56% of all players spend nothing on games in a year, so the share paying in any single game is a minority. Low entry prices exist to convert the marginal player; ARPPU (average spend among payers) can still be very high.</p>
+        <p><b>Choice Architecture.</b> Compromise and anchor effects require a small set of known-value alternatives to compare — exactly the setting a fixed-price shop creates. A gacha purchase has no such comparison set; the relevant psychology shifts to near-miss effects, sunk-cost escalation, and pity-timer anchoring instead. This is the mechanism this project's case study is built to isolate.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>Select references</h5>
+        <div class="refs">
+          <div>Course materials: OPM 6600, Week 3–4, EVC Pricing &amp; Choice Architecture slides.</div>
+          <div>Guest speaker: Dr. Tim Smith, Wiglaf Pricing &mdash; class Q&amp;A on applying EVC to gaming, Sept. 2026.</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-case-study" data-page="case-study">
+<main>
+<div class="page-hero wrap-wide">
+    <p class="kicker">Case Study</p>
+    <h1 class="page-title">Two Chinese games, two ways to sell chance</h1>
+    <p class="page-lede">Honor of Kings and Where Winds Meet both sell fixed-price skins <i>and</i> run lucky draws &mdash; like almost every top-grossing mobile game. So the useful question isn't which game is &ldquo;deterministic.&rdquo; It's how each one <b>designs the lucky draw</b> on top of its shop, and <b>where the randomness ends</b>.</p>
+  </div>
+
+  <section class="block">
+    <div class="wrap-wide">
+      <p class="kicker">01 &mdash; <b>Both sell both</b></p>
+      <div class="case-grid">
+        <div class="case-col solid reveal">
+          <span class="badge outline">Dual channel</span>
+          <h3>Honor of Kings</h3>
+          <div class="sub">Tencent &middot; MOBA &middot; cosmetic-first; skins carry small stat bonuses</div>
+          <div class="case-sub">Fixed-price shop</div>
+          <div class="fact"><span class="k">Skin price ladder</span><span class="v">288 &ndash; 1,788 pts</span></div>
+          <div class="fact"><span class="k">Recharge ladder</span><span class="v">&yen;6 / 30 / 68 / 128 / 328 / 648</span></div>
+          <div class="case-sub">Lucky draw &middot; 积分夺宝 (Points Treasure Hunt)</div>
+          <div class="fact"><span class="k">Starting odds (Honor Crystal)</span><span class="v">0.8%, rising each draw</span></div>
+          <div class="fact"><span class="k">Guarantee</span><span class="v">by draw 361</span></div>
+          <div class="fact"><span class="k">Prize</span><span class="v">Crystal &rarr; skin of your choice</span></div>
+          <div class="fact"><span class="k">Limited variant (暴击夺宝)</span><span class="v">360 guarantee, random skin</span></div>
+          <div class="case-sub">Scale</div>
+          <div class="fact"><span class="k">2016 revenue</span><span class="v">&yen;6.8B</span></div>
+          <div class="fact"><span class="k">2024 daily revenue</span><span class="v">~&yen;100M/day</span></div>
+        </div>
+        <div class="case-col outline reveal">
+          <span class="badge outline">Dual channel</span>
+          <h3>Where Winds Meet</h3>
+          <div class="sub">Everstone Studio / NetEase &middot; Wuxia RPG &middot; China launch Dec 2024 &middot; global Nov 2025 &middot; cosmetic only</div>
+          <div class="case-sub">Fixed-price shop</div>
+          <div class="fact"><span class="k">Direct purchase</span><span class="v">Fixed-price Echo Beads</span></div>
+          <div class="case-sub">Lucky draw &middot; Celestial / Solemn Echo</div>
+          <div class="fact"><span class="k">Featured odds</span><span class="v">0.0415%, fixed</span></div>
+          <div class="fact"><span class="k">Material odds</span><span class="v">0.747%</span></div>
+          <div class="fact"><span class="k">Guarantee</span><span class="v">by pull 150</span></div>
+          <div class="fact"><span class="k">Prize</span><span class="v">One specific named outfit</span></div>
+          <div class="case-sub">Scale</div>
+          <div class="fact"><span class="k">First 14 months since China launch (mobile)</span><span class="v">~$115M (~$8M/mo)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-wide">
+      <p class="kicker">02 &mdash; <b>Where the randomness ends</b></p>
+      <h2 class="sec-title">Same idea, opposite designs</h2>
+      <p class="sec-lede">Both draws are (near-)cosmetic and both guarantee a prize eventually. The differences are in how the odds move, what you win, and what you pay with.</p>
+      <div style="overflow-x:auto;">
+      <table class="data-table compare-table reveal">
+        <thead><tr><th></th><th>Honor of Kings &middot; 积分夺宝</th><th>Where Winds Meet &middot; Echo gacha</th></tr></thead>
+        <tbody>
+          <tr><td>Starting odds</td><td>0.8% for the Honor Crystal</td><td>0.0415% for the featured outfit</td></tr>
+          <tr><td>How odds change</td><td>Rise with a &ldquo;luck value&rdquo; on every draw</td><td>Fixed until the guarantee</td></tr>
+          <tr><td>Guarantee</td><td>361 draws (360 in the limited version)</td><td>150 pulls, shared across both banners</td></tr>
+          <tr><td>What you win</td><td>A crystal you exchange for the collector skin <b>you</b> choose</td><td>One specific outfit <b>the studio</b> chose</td></tr>
+          <tr><td>What you pay with</td><td>Honor points and draw tickets, much of it accumulated from recharge events and free giveaways</td><td>Paid Echo Beads, or Echo Jade earned slowly through play</td></tr>
+          <tr><td>Pay-to-win</td><td>Negligible &mdash; many skins add small stat bonuses (e.g. +10 attack)</td><td>None in either channel</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="callout"><b>The key difference:</b> in Honor of Kings, chance decides <i>how much</i> you pay, but you choose <i>what</i> you get &mdash; the lottery turns back into a known purchase at the end. In Where Winds Meet, chance decides both how much you pay and, until the guarantee, whether you get the item at all.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-wide">
+      <p class="kicker">03 &mdash; <b>What this means for pricing</b></p>
+      <h2 class="sec-title">The item, not the game, sets the pricing tool</h2>
+      <div class="prose">
+        <p><b>The fixed-price skins in both games</b> are priced with the standard EVC formula: the value of the item is known before purchase, so compromise effects, anchors, and tiered ladders do the work.</p>
+        <p><b>Honor of Kings' draw is close to deterministic at the end.</b> Because players pick the final skin, the uncertainty is mostly about <i>price</i> &mdash; somewhere between 1 and 361 draws &mdash; not about value. And because much of the draw currency builds up as a side effect of spending, the lottery works more like a loyalty rebate layered on the shop than a standalone product.</p>
+        <p><b>Where Winds Meet's draw is fully probabilistic</b> until the 150-pull guarantee: both the cost and the outcome are uncertain, so the expected-value form of EVC on the <a href="#framework">Framework</a> page is the one that applies.</p>
+        <p>That is why this project compares <b>what is being sold</b>, not whole games. The same storefront can need two different pricing tools.</p>
+      </div>
+      <div class="case-note" style="margin-top:22px;">A guaranteed prize matters economically, not just for goodwill. It moves a draw toward the &ldquo;unique box&rdquo; design, where every purchase yields an item the player doesn&rsquo;t already own. In Chen et al.&rsquo;s model, unique boxes approach the full revenue-optimal ceiling as the catalog grows, while duplicate-allowing boxes capture only about 36.7% of it. <span style="color:var(--text-muted)">&mdash; Chen, Elmachtoub, Hamilton &amp; Lei, 2021</span></div>
+      <div class="case-note" style="margin-top:12px;">Staying cosmetic-only has a revenue cost: Wuthering Waves, which puts power-affecting characters in its gacha, earned roughly <b>$320M over 21 months</b> &mdash; nearly double Where Winds Meet's pace on a broadly comparable download base. <span style="color:var(--text-muted)">&mdash; Naavik, 2026</span></div>
+
+      <h2 class="sec-title" style="margin-top:48px;">Why this pairing, specifically</h2>
+      <div class="prose">
+        <p>Almost every top-grossing game sells both fixed-price items and lucky draws, so no clean &ldquo;deterministic game vs. probabilistic game&rdquo; pair exists. What can be held (approximately) constant is <b>power</b>: Where Winds Meet sells none in any channel, and Honor of Kings&rsquo; skins add only small stat bonuses &mdash; small enough that academic work on the game treats skins as not affecting match outcomes. That isolates the design of the lucky draw itself as the main variable being compared. This near-match on power is a limitation worth stating, not a perfect control.</p>
+        <p>Genshin Impact was considered and rejected. It also sells both, but its draws grant characters and weapons that make players stronger &mdash; so any difference could come from the randomness or from the power, not cleanly from either.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>Select references</h5>
+        <div class="refs">
+          <div>17173.com (2026). 王者荣耀积分夺宝折扣 / 暴击夺宝避坑指南 [Honor of Kings draw events].</div>
+          <div>NetEase / 163.com (2026). 王者3倍暴击夺宝上架 [Crit Treasure Hunt launch and comparison].</div>
+          <div>Toutiao (2025). 王者荣耀积分夺宝抽水晶技巧 [Honor Crystal odds and guarantee].</div>
+          <div>NetEase / 163.com (n.d.). 王者荣耀“隐藏属性”皮肤 [Skin stat bonuses]. Tencent Cloud Developer (n.d.), skin +10 attack example.</div>
+          <div>KeenGamer (2025). Where Winds Meet release dates (China Dec 27, 2024; global Nov 14, 2025).</div>
+          <div>BitTopup (2025). Where Winds Meet Gacha Rates &amp; Spending Guide.</div>
+          <div>Naavik (2026). Evaluating the &ldquo;Fair&rdquo; Gacha Games Experiment.</div>
+          <div>Chen, N., Elmachtoub, A., Hamilton, M., &amp; Lei, X. (2021). Loot Box Pricing and Design. <i>Management Science.</i></div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>Drop rates and guarantees are as reported by gaming press and in-game disclosures, which Chinese law requires. Event terms change over time; figures reflect reporting from 2025&ndash;2026.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-diagnostic" data-page="diagnostic">
+<main>
+<div class="page-hero wrap">
+    <p class="kicker">Diagnostic Framework</p>
+    <h1 class="page-title">Where any freemium good lands</h1>
+    <p class="page-lede">Two questions place any purchasable good in one of four risk positions — before a single price is set.</p>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="mx-cols">
+        <div class="col-head">DETERMINISTIC VALUE</div>
+        <div class="col-head">PROBABILISTIC VALUE</div>
+      </div>
+
+      <div class="row-label"><span>COSMETIC / NON-POWER</span><div class="line"></div></div>
+      <div class="mx-cols">
+        <div class="mx-cell low reveal">
+          <span class="risk">Lowest risk</span>
+          <h4>Fixed-price cosmetic shop</h4>
+          <p>e.g. the skin shops in Honor of Kings and Where Winds Meet. Compromise/anchor Choice Architecture. The recommended default for most titles.</p>
+        </div>
+        <div class="mx-cell mod reveal">
+          <span class="risk">Moderate risk</span>
+          <h4>Cosmetic lucky draw</h4>
+          <p>e.g. HoK’s Points Treasure Hunt and WWM’s Echo gacha. Pity/near-miss Choice Architecture. Pay-to-win-free, but the probability mechanic alone still draws regulatory attention.</p>
+        </div>
+      </div>
+
+      <div class="row-label"><span>POWER-AFFECTING</span><div class="line"></div></div>
+      <div class="mx-cols">
+        <div class="mx-cell high reveal">
+          <span class="risk">High risk</span>
+          <h4>Fixed pay-to-win shop</h4>
+          <p>Fairness backlash well documented in player-perception research. Generally advised against.</p>
+        </div>
+        <div class="mx-cell vhigh reveal">
+          <span class="risk">Highest risk</span>
+          <h4>Power-affecting loot boxes</h4>
+          <p>Combines gambling-adjacent mechanics with competitive unfairness — the primary target of current loot-box regulation.</p>
+        </div>
+      </div>
+
+      <h2 class="sec-title" style="margin-top:48px;">Reading the matrix</h2>
+      <div class="prose">
+        <p>The diagonal from top-left to bottom-right is the one that matters most: it runs from the safest commercial position (known goods, no power) to the position regulators are actively targeting (chance-based goods that also confer competitive advantage). Both case-study games straddle the top row: their skin shops sit in the top-left cell (Honor of Kings right at its lower edge, given its small skin stat bonuses), and their lucky draws sit one cell over, in moderate risk — because removing power from a probabilistic mechanic reduces but does not eliminate its regulatory exposure. Honor of Kings' draw sits closer to the left edge of that cell than Where Winds Meet's, because players choose the final prize.</p>
+        <p>Freemium "makes sense," in the terms this project set out to answer, when a design deliberately stays in the top row — and when, if it does use a probabilistic mechanic, the Choice Architecture and EVC model applied to it are the ones built for chance, not the ones built for certainty.</p>
+        <p>How costly each cell is also depends on the market. Players in China have historically accepted paid power far more than Western players, so the same item can sit in a more dangerous position in the US than in China &mdash; a difference the <a href="#simulation">Simulation</a> lets you test.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>Select references</h5>
+        <div class="refs">
+          <div>Petrovskaya, E., &amp; Zendle, D. (2022). Predatory Monetisation? <i>Journal of Business Ethics</i>, 181(4).</div>
+          <div>Zendle, D., Meyer, R., &amp; Ballou, N. (2020). The changing face of desktop video game monetisation. <i>PLOS ONE</i>, 15(5).</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-simulation" data-page="simulation">
+<main>
+<div class="page-hero wrap-wide">
+  <p class="kicker">Simulation</p>
+  <h1 class="page-title">You're the new monetization manager</h1>
+  <p class="page-lede">Pick a country, test your plan before launch, then run eight months of live operations &mdash; each month simulated day by day. Like a real game, your shop can sell several things at once &mdash; skins, a battle pass, power items, lucky draws &mdash; each with its own price ladder. But every player has one wallet, so your packages compete with each other. Earn the most without wrecking trust.</p>
+  <ol class="flow-steps">
+    <li><b>Choose a market</b><span>Each country spends and reacts differently.</span></li>
+    <li><b>Test before launch</b><span>Closed beta, survey, A/B test &mdash; limited credits.</span></li>
+    <li><b>Run 8 months</b><span>30 simulated days each. Track paying rate, ARPPU, DAU &amp; churn.</span></li>
+    <li><b>Download the data</b><span>Analyze your moves in Python, R, Excel or Tableau.</span></li>
+  </ol>
+</div>
+
+<section class="block">
+<div class="wrap-wide">
+
+  <!-- STEP 0: MARKET -->
+  <div id="market-select">
+    <h3 class="game-h3">Step 1 &middot; Choose your launch market</h3>
+    <p class="game-note" style="margin-bottom:16px;">Same game, same packages &mdash; but each country's players spend differently and react differently to lucky draws and pay-to-win. Your choice holds for all 8 months, like a real launch decision.</p>
+    <div class="market-grid" id="market-grid">
+      <label class="pkg-card" data-market="us"><input type="radio" name="market" value="us" checked><span class="badge solid">High spend</span><h4>United States</h4><p>High willingness to pay. Strong backlash against pay-to-win and loot boxes.</p></label>
+      <label class="pkg-card" data-market="cn"><input type="radio" name="market" value="cn"><span class="badge solid">High spend</span><h4>China</h4><p>Whale-driven spending. Pay-to-win far more accepted. Drop rates must be disclosed by law.</p></label>
+      <label class="pkg-card" data-market="jp"><input type="radio" name="market" value="jp"><span class="badge solid">Highest spend</span><h4>Japan</h4><p>Highest spending per player. Gacha is culturally embraced, not just tolerated.</p></label>
+      <label class="pkg-card" data-market="vn"><input type="radio" name="market" value="vn"><span class="badge outline">Mid spend</span><h4>Vietnam</h4><p>Roughly half US willingness to pay. Best-selling packages sit around $5&ndash;7.</p></label>
+      <label class="pkg-card" data-market="id"><input type="radio" name="market" value="id"><span class="badge outline">Low spend</span><h4>Indonesia</h4><p>Huge player base, small purchases. Many pay with prepaid phone credit, in bite-sized amounts.</p></label>
+    </div>
+    <details class="profiles">
+      <summary>How each market is modeled &mdash; and where that comes from</summary>
+      <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead><tr><th>Market</th><th>Spending level</th><th>Pay-to-win reaction</th><th>Gacha reaction</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr><td>United States</td><td>High</td><td>Strong backlash</td><td>Moderate backlash</td><td>Pay-to-win generally not accepted by Western gamers (Newzoo via CNBC, 2018); Battlefront II loot-box backlash</td></tr>
+          <tr><td>China</td><td>High, whale-heavy</td><td>Largely accepted</td><td>Mild</td><td>Higher acceptance of paid progress/boosts (Newzoo via CNBC, 2018); mandatory drop-rate disclosure since 2017</td></tr>
+          <tr><td>Japan</td><td>Highest per player</td><td>Moderate</td><td>Embraced</td><td>&ldquo;Exceptionally high&rdquo; ARPU and gacha-led spending (Sensor Tower, 2025); ~90% of top-grossing titles use gacha (GameRefinery)</td></tr>
+          <tr><td>Vietnam</td><td>Mid</td><td>Moderate</td><td>Mild</td><td>Best-selling package tier ~$5&ndash;7 vs. $10&ndash;19 in the US (industry interview, 2026)</td></tr>
+          <tr><td>Indonesia</td><td>Low, small-ticket</td><td>Moderate</td><td>Moderate</td><td>Carrier-billing, bite-sized spending (Xsolla, 2025); Southeast Asia spend per user a fraction of Japan/Korea (Moloco, 2025)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src-note"><b>Honesty note:</b> the direction of each difference comes from the sources above. The exact numbers inside the simulation are illustrative calibrations chosen to reproduce those directions &mdash; for example, the model&rsquo;s best single price lands near $12 in the US and near $6.50 in Vietnam, consistent with the practitioner benchmarks, and most simulated players (72&ndash;82%) never pay, with Japan converting the most and Indonesia the least. They are not measured market statistics.</p>
+    </details>
+    <button class="btn" id="market-confirm-btn" style="margin-top:20px; width:100%; font-size:15px; padding:14px;">Confirm market &amp; open the pre-launch lab &rarr;</button>
+  </div>
+
+  <!-- HUD -->
+  <div class="game-stats" id="game-stats" style="display:none;">
+    <div class="game-stat"><div class="gs-label">Market</div><div class="gs-value" id="g-market" style="font-size:15px;">&mdash;</div></div>
+    <div class="game-stat"><div class="gs-label">Phase</div><div class="gs-value" id="g-round" style="font-size:17px;">Pre-launch</div></div>
+    <div class="game-stat"><div class="gs-label">Population</div><div class="gs-value" id="g-pop">200,000</div></div>
+    <div class="game-stat"><div class="gs-label">Goodwill</div><div class="gs-value" id="g-goodwill">70</div><div class="gw-bar"><div class="gw-fill" id="g-goodwill-fill"></div></div></div>
+    <div class="game-stat"><div class="gs-label">Total Revenue</div><div class="gs-value" id="g-revenue">$0</div></div>
+  </div>
+
+  <div id="game-live" style="display:none;">
+    <div class="game-grid">
+
+      <!-- PLAN BUILDER -->
+      <div class="game-panel">
+        <div class="shop-head"><h3 class="game-h3" style="margin:0;">Build this month's shop</h3><span><button type="button" class="link-btn" id="copy-last" style="display:none;">Undo changes &middot; copy last month</button><button type="button" class="link-btn" id="reset-shop">Reset to default</button></span></div>
+        <p class="game-note" style="margin:0 0 6px;">Turn on any combination of packages. For each one, choose which price tiers to offer. <span id="sweet-note"></span></p>
+        <div id="pkg-list"></div>
+
+        <h3 class="game-h3" style="margin-top:26px;">Run a limited-time event?</h3>
+        <label class="event-toggle"><input type="checkbox" id="event-check"><span>Yes &mdash; a 7-day event at the start of the month boosts spending, but running events back-to-back causes fatigue</span></label>
+
+        <div id="plan-warning" class="game-note" style="margin-top:14px;"></div>
+        <button class="btn" id="launch-btn" style="margin-top:18px; width:100%; font-size:15px; padding:14px;">Launch Month 1 (30 days) &rarr;</button>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div>
+        <div class="game-panel" id="lab-panel">
+          <h3 class="game-h3">Test lab <span class="credits" id="credits">3 credits</span></h3>
+          <p class="game-note" style="margin:0 0 14px;">How a publisher validates a plan before and after launch, per the industry practitioner interviewed for this project. Each test costs one credit. Tests don't earn revenue and don't affect goodwill.</p>
+          <div class="lab-actions">
+            <button class="lab-btn" id="t-cbt"><b>Closed beta test</b><span>Run your current shop on a small cohort. Real behavior &mdash; but a small, noisy sample. Pre-launch only.</span></button>
+            <button class="lab-btn" id="t-survey"><b>In-game survey</b><span>Ask players what they'd pay. Cheap insight &mdash; but people overstate what they'd really spend. Pre-launch only.</span></button>
+            <button class="lab-btn" id="t-saveA"><b>A/B test &middot; save Variant A</b><span>Snapshot your current shop as A, change it, then run A vs. B.</span></button>
+            <button class="lab-btn" id="t-ab" disabled><b>A/B test &middot; run A vs. B</b><span>Compare both shops on two equal cohorts, with a significance check.</span></button>
+          </div>
+          <div id="no-credits" class="lab-empty" style="display:none;">You’ve used all 3 test credits for this run. Tests are locked &mdash; play again for a fresh set.</div>
+          <div id="ab-status" class="ab-box" style="display:none;"></div>
+          <div id="lab-confirm" style="display:none;"></div>
+          <div id="lab-results"></div>
+          <div class="lab-tools"><button type="button" class="link-btn" id="clear-A" style="display:none;">Clear Variant A</button><button type="button" class="link-btn" id="clear-results" style="display:none;">Clear results</button></div>
+        </div>
+
+        <div class="game-panel" style="margin-top:20px;">
+          <h3 class="game-h3">LiveOps dashboard</h3>
+          <p class="game-note" style="margin:0 0 12px;">Post-launch analysis: track Paying Rate, ARPPU, daily active users and churn month over month, and map changes to your events &mdash; not just whether revenue went up.</p>
+          <div style="overflow-x:auto;">
+            <table class="data-table liveops" id="liveops-table">
+              <thead><tr><th>Month</th><th>Revenue</th><th>Paying rate</th><th>ARPPU</th><th>Avg DAU</th><th>Churn</th><th>Event</th><th>Goodwill</th></tr></thead>
+              <tbody><tr><td colspan="8" class="game-note">No months yet.</td></tr></tbody>
+            </table>
+          </div>
+          <div id="spark-wrap"></div>
+          <div id="game-log" class="game-log" style="margin-top:14px;"></div>
+          <div class="export-wrap"><div class="export-row" id="export-row-live" style="display:none;">
+            <button class="lab-mini" data-export="months">Monthly KPIs (CSV)</button>
+            <button class="lab-mini" data-export="daily">Daily KPIs (CSV)</button>
+            <button class="lab-mini" data-export="panel">Player panel (CSV)</button>
+          </div><div class="export-msg"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-over" style="display:none;"></div>
+
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>How this simulation works</h5>
+        <div class="refs">
+          <div>A panel of simulated monthly active players (1,000 at launch, each representing 200 real players &mdash; established players, not raw installs). Most of them (72&ndash;82%, depending on market) never spend at any price, matching the freemium pattern that most players don&rsquo;t pay; each with a persistent spending segment, daily engagement rate and a monthly budget that all packages share. Each month is simulated day by day. Players churn more when goodwill falls below 60; new installs arrive faster when goodwill is high. A player buys the highest price tier they can afford; gacha players pull until they win or hit the 50-pull pity, limited by budget.</div>
+          <div>Offering more than 6 tiers in one ladder slightly lowers conversion (choice overload; directionally after Iyengar &amp; Lepper, 2000). Survey answers are inflated ~1.35&times; to reflect hypothetical bias in stated willingness to pay (Murphy et al., 2005).</div>
+          <div>Goodwill dynamics reflect Petrovskaya &amp; Zendle (2022) and the diagnostic framework on this site. Market differences: Sensor Tower Japan Game Market Insights (2025); Moloco (2025); Xsolla (2025); CNBC / Newzoo (2018); industry interview (2026).</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>All in-game numbers are illustrative calibrations, not measured market data. This site accompanies a written report covering the full analysis, citations, and methodology.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<section class="page" id="page-about" data-page="about">
+<main>
+<div class="wrap">
+    <section class="block" style="border-top:none; padding-top:64px;">
+      <p class="kicker">About</p>
+      <h2 class="sec-title" style="max-width:none; margin-bottom:40px;">Who built this</h2>
+
+      <div class="about-grid">
+        <div>
+          <div class="photo-frame">
+            <span class="mono">TT</span>
+            <img class="headshot" src="headshot.jpg" alt="Portrait of Trúc Trinh" onerror="this.remove()">
+          </div>
+          <div class="about-meta">
+            <div><span class="am-k">Program</span>M.S. Supply Chain Management, Saint Louis University</div>
+            <div><span class="am-k">Background</span>Game LiveOps &amp; localization, VNG Corporation</div>
+            <div><span class="am-k">Localization</span>Chinese &rarr; Vietnamese / English</div>
+          </div>
+        </div>
+        <div class="about-copy">
+          <p><em>Trúc Trinh</em> (Truc Anh Nha Trinh) is a graduate student in Logistics, Materials, and Supply Chain Management at <em>Saint Louis University</em>, where this project was completed for <em>OPM 6600 &mdash; Pricing and Revenue Optimization</em>. She holds a Bachelor of Business Administration in Marketing from <em>Western Sydney University Vietnam</em>.</p>
+          <p>Before graduate school, she spent two years at <em>VNG Corporation</em> as a Game Operation Collaborator, working on live operations and localization for <em>Revelation: New World</em> and <em>Dream &amp; Lethe Record</em>. She led Chinese-to-Vietnamese and English localization, tested patches, and coordinated with regional teams across the Philippines, Indonesia, Singapore and Thailand to ship updates on schedule &mdash; including the Vietnam Gameverse 2023 launch and a one-year anniversary event &mdash; and contributed English localization for <em>Ghost Story</em>.</p>
+          <p>This project grew out of that work. Running events and adapting games for different countries raised the questions it tries to answer: why the same item needs a different price in each market, and why some ways of selling build trust while others burn it.</p>
+
+          <h3 class="about-h3">From experience to analysis</h3>
+          <div class="link-grid">
+            <a class="link-card" href="#industry"><b>Localization across Southeast Asia</b><span>&rarr; the out-of-game economy and regional price ladders on the Industry page</span></a>
+            <a class="link-card" href="#simulation"><b>Live operations &amp; events</b><span>&rarr; the LiveOps dashboard and event mechanics in the Simulation</span></a>
+            <a class="link-card" href="#simulation"><b>Patch testing</b><span>&rarr; the pre-launch test lab: closed beta, survey, A/B test</span></a>
+          </div>
+
+          <h3 class="about-h3">Path</h3>
+          <ol class="timeline">
+            <li><span class="tl-y">2019&ndash;2023</span><b>B.B.A., Marketing</b> &middot; Western Sydney University Vietnam</li>
+            <li><span class="tl-y">2023&ndash;2025</span><b>Game Operation Collaborator</b> &middot; VNG Corporation, Vietnam</li>
+            <li><span class="tl-y">2025&ndash;now</span><b>M.S., Supply Chain Management</b> &middot; Saint Louis University</li>
+          </ol>
+
+          <p class="game-note" style="margin-top:22px;"><b>Acknowledgments.</b> Thanks to a former manager and monetization specialist (anonymized) for the industry interview behind much of this analysis, to guest speaker Dr. Tim Smith of Wiglaf Pricing, and to the OPM 6600 instructor for guidance and access to the course&rsquo;s research database.</p>
+          <a class="btn" href="https://www.linkedin.com/in/truc-trinh-anh-nha-253a63234/" target="_blank" rel="noopener" style="margin-top:8px;">Connect on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<footer>
+<div class="wrap-wide">
+    <div class="foot-grid">
+      <div>
+        <h5>About this project</h5>
+        <div class="refs">
+          <div>OPM 6600 — Pricing and Revenue Optimization</div>
+          <div>Final project companion site · Trúc Trinh</div>
+        </div>
+      </div>
+      <div class="meta">
+        <p>This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<script>
+(function(){
+  var pages = document.querySelectorAll('.page');
+  var navLinks = document.querySelectorAll('nav.links a');
+  var baseTitle = 'When Does Freemium Make Sense?';
+  var titles = {
+    about: 'About', industry: 'Industry', framework: 'Framework',
+    'case-study': 'Case Study', diagnostic: 'Diagnostic', simulation: 'Simulation'
+  };
+  var valid = [];
+  for (var i = 0; i < pages.length; i++) { valid.push(pages[i].getAttribute('data-page')); }
+
+  function show(pageId, skipScroll){
+    if (valid.indexOf(pageId) === -1) pageId = 'home';
+    for (var i = 0; i < pages.length; i++) {
+      var p = pages[i];
+      if (p.getAttribute('data-page') === pageId) { p.className = 'page active'; }
+      else { p.className = 'page'; }
+    }
+    for (var j = 0; j < navLinks.length; j++) {
+      var a = navLinks[j];
+      if (a.getAttribute('data-nav') === pageId) { a.className = 'active'; }
+      else { a.className = ''; }
+    }
+    if (!skipScroll) { window.scrollTo(0,0); }
+    document.title = (pageId === 'home') ? baseTitle : (titles[pageId] || baseTitle) + ' — ' + baseTitle;
+  }
+
+  window.addEventListener('hashchange', function(){
+    show(location.hash.replace('#',''), false);
+  });
+
+  var startPage = location.hash ? location.hash.replace('#','') : 'home';
+  show(startPage, true);
+})();
+</script>
+
+<script>
+(function(){
+  if (!document.getElementById('page-simulation')) return;
+
+  var MARKET_INFO = {
+    us: { label:'United States', nonSpend:0.75, tiers:[3.5,15.4,77], weights:[0.70,0.95], p2wAppeal:1.15, p2wPenalty:1.5, gachaAffinity:1.0, gachaPenalty:1.3, benchmark:'$10\u201319 (practitioner benchmark)' },
+    cn: { label:'China', nonSpend:0.75, tiers:[2.5,12.5,40], weights:[0.70,0.94], p2wAppeal:1.5, p2wPenalty:0.5, gachaAffinity:1.15, gachaPenalty:0.6, benchmark:null },
+    jp: { label:'Japan', nonSpend:0.72, tiers:[3.75,20,56.25], weights:[0.68,0.93], p2wAppeal:1.25, p2wPenalty:1.0, gachaAffinity:1.4, gachaPenalty:0.3, benchmark:null },
+    vn: { label:'Vietnam', nonSpend:0.78, tiers:[1,5.5,25], weights:[0.70,0.95], p2wAppeal:1.3, p2wPenalty:0.8, gachaAffinity:1.0, gachaPenalty:0.9, benchmark:'$5\u20137 (practitioner benchmark)' },
+    id: { label:'Indonesia', nonSpend:0.82, tiers:[0.8,3.5,10], weights:[0.72,0.97], p2wAppeal:1.3, p2wPenalty:0.8, gachaAffinity:0.9, gachaPenalty:1.0, benchmark:null }
+  };
+  var LADDER = [0.99,1.99,2.99,4.99,9.99,19.99,49.99,99.99];
+  var PKGS = [
+    { id:'skin', label:'Cosmetic Skins', desc:'Outfits and looks. No gameplay advantage.', power:false, gacha:false, ladder:LADDER, def:[2.99,9.99,19.99], defOn:true, badge:'solid', badgeText:'Deterministic' },
+    { id:'pass', label:'Battle Pass', desc:'A monthly pass: fixed price, known rewards, feels like good value.', power:false, gacha:false, ladder:[4.99,9.99,19.99], def:[9.99], defOn:false, valueBonus:1.15, badge:'solid', badgeText:'Deterministic' },
+    { id:'item', label:'Power Items', desc:'Shop items that raise competitive power. Pay-to-win.', power:true, gacha:false, ladder:LADDER, def:[4.99,19.99], defOn:false, badge:'solid', badgeText:'Deterministic' },
+    { id:'cgacha', label:'Cosmetic Gacha', desc:'Paid lucky draw for rare looks. 50-pull pity guarantee.', power:false, gacha:true, defPull:3, defOdds:5, defOn:false, badge:'outline', badgeText:'Probabilistic' },
+    { id:'pgacha', label:'Power Gacha', desc:'Paid lucky draw for power. The riskiest combination.', power:true, gacha:true, defPull:3, defOdds:5, defOn:false, badge:'outline', badgeText:'Probabilistic' }
+  ];
+  var PIDS = PKGS.map(function(p){ return p.id; });
+  var SAMPLE = 1000, PITY = 50, BASE_POP = 200000, CREDITS = 3, DAYS = 30, EVENT_DAYS = 7;
+  var WEIGHT = BASE_POP / SAMPLE;
+  var SEG = ['minnow','dolphin','whale','non_spender'];
+  var ENG = [[0.30,0.65],[0.45,0.85],[0.60,0.95],[0.25,0.60]];
+
+  var rngSeed = (Date.now() % 2147483646) + 1;
+  function rand(){ rngSeed = (rngSeed * 16807) % 2147483647; return rngSeed / 2147483647; }
+  function randRange(a,b){ return a + rand()*(b-a); }
+  function shuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(rand()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function fmtMoney(n){ return '$' + Math.round(n).toLocaleString('en-US'); }
+  function fmt2(n){ return '$' + n.toFixed(2); }
+  function pct(n){ return (n*100).toFixed(1) + '%'; }
+  function $(id){ return document.getElementById(id); }
+
+  var players = [], nextId = 1, state;
+  function newState(){ return { round:1, maxRounds:8, goodwill:70, totalRevenue:0, eventStreak:0, history:[], market:null, credits:CREDITS, launched:false, variantA:null, txns:[], panel:[], daily:[], tests:[], sweet:null, pending:null }; }
+  state = newState();
+
+  /* ---------- players ---------- */
+  function makePlayer(installMonth){
+    var mk = MARKET_INFO[state.market], ns = rand() < mk.nonSpend, r = rand(), s = ns ? 3 : (r < mk.weights[0] ? 0 : (r < mk.weights[1] ? 1 : 2));
+    var interest = {}; PKGS.forEach(function(p){ interest[p.id] = randRange(0.3,1.2); });
+    return { id:nextId++, seg:s, base: ns ? 0 : -mk.tiers[s]*Math.log(1-rand()), interest:interest, eng:randRange(ENG[s][0],ENG[s][1]), install:installMonth, active:true, churnMonth:null };
+  }
+  function initPlayers(){ players = []; nextId = 1; for (var i=0;i<SAMPLE;i++) players.push(makePlayer(1)); }
+  function activeIdx(){ var a=[]; players.forEach(function(p,i){ if (p.active) a.push(i); }); return a; }
+  function population(){ return activeIdx().length * WEIGHT; }
+
+  function sweetSpot(mk){
+    var W=[mk.weights[0], mk.weights[1]-mk.weights[0], 1-mk.weights[1]], best=1, bestRev=0;
+    for (var p=0.5;p<=60;p+=0.5){
+      var r=0;
+      for (var s=0;s<3;s++){
+        var c=0;
+        for (var j=0;j<80;j++){ var b=-mk.tiers[s]*Math.log(1-(j+0.5)/80);
+          for (var k=0;k<12;k++){ var it=0.3+0.9*(k+0.5)/12; if (Math.min(b*it,b) >= p) c++; } }
+        r += W[s]*p*c/960;
+      }
+      if (r>bestRev){ bestRev=r; best=p; }
+    }
+    return { price:best, revPerPlayer:bestRev };
+  }
+
+  /* ---------- plan ---------- */
+  function readPlan(){
+    var plan = {};
+    PKGS.forEach(function(p){
+      var row = document.querySelector('.pkg-row[data-pkg="'+p.id+'"]');
+      var e = { on: row.querySelector('.pkg-on').checked };
+      if (!p.gacha){ e.tiers = []; row.querySelectorAll('.tier.on').forEach(function(t){ e.tiers.push(parseFloat(t.dataset.price)); }); e.tiers.sort(function(a,b){return a-b;}); }
+      else { e.pull = parseFloat(row.querySelector('.g-pull').value); e.odds = parseFloat(row.querySelector('.g-odds').value); }
+      plan[p.id] = e;
+    });
+    return plan;
+  }
+  function isLive(p, e){ return e.on && (p.gacha || e.tiers.length > 0); }
+  function planIsValid(plan){ return PKGS.some(function(p){ return isLive(p, plan[p.id]); }); }
+  function planSummary(plan){
+    var parts=[];
+    PKGS.forEach(function(p){ var e=plan[p.id]; if (!isLive(p,e)) return;
+      parts.push(p.gacha ? p.label+' ('+fmt2(e.pull)+'/pull, '+e.odds+'%)' : p.label+' ['+e.tiers.map(fmt2).join(', ')+']'); });
+    return parts.join(' + ') || 'nothing';
+  }
+
+  /* ---------- core simulation (one 30-day month) ---------- */
+  function simulate(plan, eventOn, streak, cohort, withDays){
+    var mk = MARKET_INFO[state.market];
+    var shock = randRange(0.85,1.18);
+    var boost = eventOn ? (1.18 - Math.min(streak,4)*0.03) : 1.0;
+    var idx = cohort || activeIdx();
+    var offered = PKGS.filter(function(p){ return isLive(p, plan[p.id]); });
+    var res = { byPkg:{}, buys:{}, revenue:0, payers:0, perPlayer:[], txns:[], rows:[], n:idx.length, daily:[] };
+    PIDS.forEach(function(id){ res.byPkg[id]=0; res.buys[id]=0; });
+    for (var d=0; d<DAYS; d++) res.daily.push({ dau:0, revenue:0, purchases:0, payerSet:{} });
+    idx.forEach(function(i){
+      var pl = players[i], days = [];
+      if (withDays){ for (var d=0; d<DAYS; d++) if (rand() < pl.eng) days.push(d); days.forEach(function(d){ res.daily[d].dau++; }); }
+      var budget = pl.base * shock * boost * randRange(0.85,1.15);
+      if (withDays && days.length === 0) budget = 0;
+      var remaining = budget, spent = 0, row = { pid:pl.id, buys:0, spend:{} };
+      PIDS.forEach(function(id){ row.spend[id] = 0; });
+      function pickDay(){
+        if (!withDays) return '';
+        if (eventOn && rand() < 0.6){ var ev = days.filter(function(d){ return d < EVENT_DAYS; }); if (ev.length) return ev[Math.floor(rand()*ev.length)]; }
+        return days[Math.floor(rand()*days.length)];
+      }
+      shuffle(offered.slice()).forEach(function(p){
+        if (remaining < 0.5) return;
+        var e = plan[p.id];
+        var wtp = budget * pl.interest[p.id] * randRange(0.9,1.1) * (p.power ? mk.p2wAppeal : 1);
+        var spend = 0, tier = '', pulls = '', won = '';
+        if (!p.gacha){
+          var conv = e.tiers.length > 6 ? Math.pow(0.93, e.tiers.length-6) : 1;
+          if (rand() > conv) return;
+          var cap = Math.min(wtp * (p.valueBonus||1), remaining), best = 0;
+          e.tiers.forEach(function(t){ if (t <= cap && t > best) best = t; });
+          if (best <= 0) return;
+          spend = best; tier = best;
+        } else {
+          var odds = e.odds/100, expPulls = Math.min(1/odds, PITY);
+          var thr = e.pull * expPulls * randRange(0.65,0.95) / mk.gachaAffinity;
+          if (!(wtp >= thr && remaining >= e.pull)) return;
+          var n=0, hit=false;
+          while (n < PITY && !hit && remaining - n*e.pull >= e.pull){ n++; if (rand() < odds) hit = true; }
+          if (n === PITY) hit = true;
+          spend = n * e.pull; tier = e.pull; pulls = n; won = hit ? 1 : 0;
+        }
+        remaining -= spend; spent += spend; res.byPkg[p.id] += spend; res.buys[p.id]++; row.buys++; row.spend[p.id] += spend;
+        var day = pickDay();
+        if (withDays){ res.daily[day].revenue += spend; res.daily[day].purchases++; res.daily[day].payerSet[pl.id] = 1; }
+        res.txns.push({ day: withDays ? day+1 : '', player:pl.id, seg:SEG[pl.seg], pkg:p.id, tier:tier, pulls:pulls, won:won, spend:spend });
+      });
+      if (spent > 0) res.payers++;
+      res.revenue += spent; res.perPlayer.push(spent);
+      row.activeDays = days.length; row.budget = budget; row.spent = spent;
+      res.rows.push(row);
+    });
+    return res;
+  }
+  function meanSE(a){ var n=a.length, m=a.reduce(function(x,y){return x+y;},0)/n, v=0; a.forEach(function(x){ v+=(x-m)*(x-m); }); v/= (n>1?n-1:1); return { mean:m, se:Math.sqrt(v/n) }; }
+
+  function goodwillDelta(plan, eventOn){
+    var mk = MARKET_INFO[state.market], d = 0, n = 0;
+    PKGS.forEach(function(p){ var e=plan[p.id]; if (!isLive(p,e)) return; n++;
+      if (p.power) d -= 3 * mk.p2wPenalty;
+      if (p.gacha) d -= (p.power ? 2 : 1) * mk.gachaPenalty;
+      if (!p.power && !p.gacha) d += 0.6; });
+    if (n > 3) d -= (n-3) * 0.8;
+    if (eventOn) d -= Math.max(0, state.eventStreak - 1);
+    d += randRange(-2,2);
+    return d;
+  }
+  function churnAndInstall(gw, payerSet){
+    var churned = 0, start = activeIdx().length;
+    var h0 = 0.075 + Math.max(0, 60-gw)*0.004 - Math.max(0, gw-80)*0.001;
+    players.forEach(function(p){ if (!p.active) return;
+      var h = h0 * (payerSet[p.id] ? 0.7 : 1) * (1.3 - p.eng*0.5);
+      if (rand() < Math.max(0.005, Math.min(0.4, h))){ p.active = false; p.churnMonth = state.round; churned++; } });
+    var acq = Math.max(0.02, 0.065 + Math.max(0, gw-70)*0.0015 - Math.max(0, 40-gw)*0.001);
+    var installs = 0, n = Math.round(start * acq + randRange(-1.5,1.5));
+    for (var i=0;i<Math.max(0,n);i++){ players.push(makePlayer(state.round+1)); installs++; }
+    return { churned:churned, installs:installs, start:start };
+  }
+
+  /* ---------- UI: plan builder ---------- */
+  var pkgList = $('pkg-list');
+  function buildPkgList(){
+    pkgList.innerHTML = '';
+    PKGS.forEach(function(p){
+      var row = document.createElement('div'); row.className = 'pkg-row' + (p.defOn ? ' on' : ''); row.dataset.pkg = p.id;
+      var head = '<label class="pkg-head"><input type="checkbox" class="pkg-on"' + (p.defOn?' checked':'') + '><span class="ph-text"><h4>' + p.label + '</h4><p>' + p.desc + '</p></span><span class="badge ' + p.badge + '">' + p.badgeText + '</span></label>';
+      var body = '<div class="pkg-body">';
+      if (!p.gacha){
+        body += '<div class="ladder" role="group" aria-label="' + p.label + ' price ladder">';
+        p.ladder.forEach(function(t){ var on = p.def.indexOf(t) > -1;
+          body += '<button type="button" class="tier' + (on?' on':'') + '" data-price="' + t + '" aria-pressed="' + on + '">' + fmt2(t) + '</button>'; });
+        body += '</div><div class="ladder-note"></div>';
+      } else {
+        body += '<div class="gacha-ctl"><span>Price per pull</span><input type="range" class="g-pull" min="0.5" max="10" step="0.5" value="' + p.defPull + '" aria-label="' + p.label + ' price per pull"><span class="slider-val g-pull-v"></span></div>';
+        body += '<div class="gacha-ctl"><span>Drop rate</span><input type="range" class="g-odds" min="1" max="15" step="1" value="' + p.defOdds + '" aria-label="' + p.label + ' drop rate"><span class="slider-val g-odds-v"></span></div><div class="ladder-note"></div>';
+      }
+      row.innerHTML = head + body + '</div>';
+      pkgList.appendChild(row);
+    });
+    pkgList.querySelectorAll('.pkg-on').forEach(function(c){ c.addEventListener('change', refreshPlanUI); });
+    pkgList.querySelectorAll('.tier').forEach(function(b){ b.addEventListener('click', function(){ b.classList.toggle('on'); b.setAttribute('aria-pressed', b.classList.contains('on')); refreshPlanUI(); }); });
+    pkgList.querySelectorAll('input[type=range]').forEach(function(r){ r.addEventListener('input', refreshPlanUI); });
+    refreshPlanUI();
+  }
+  function applyPlan(plan){
+    PKGS.forEach(function(p){
+      var row = document.querySelector('.pkg-row[data-pkg="'+p.id+'"]'), e = plan[p.id];
+      row.querySelector('.pkg-on').checked = e.on;
+      if (!p.gacha) row.querySelectorAll('.tier').forEach(function(t){ var on = e.tiers.indexOf(parseFloat(t.dataset.price)) > -1; t.classList.toggle('on', on); t.setAttribute('aria-pressed', on); });
+      else { row.querySelector('.g-pull').value = e.pull; row.querySelector('.g-odds').value = e.odds; }
+    });
+    refreshPlanUI();
+  }
+  function refreshPlanUI(){
+    var mk = state.market ? MARKET_INFO[state.market] : null, plan = readPlan(), onCount = 0;
+    PKGS.forEach(function(p){
+      var row = document.querySelector('.pkg-row[data-pkg="'+p.id+'"]'), e = plan[p.id], note = row.querySelector('.ladder-note');
+      row.classList.toggle('on', e.on);
+      if (isLive(p,e)) onCount++;
+      if (!p.gacha){
+        var t = e.tiers.length + ' tier' + (e.tiers.length===1?'':'s') + ' offered.';
+        if (e.tiers.length === 0) t = 'Pick at least one price tier, or turn this package off.';
+        else if (e.tiers.length > 6) t += ' More than 6 tiers starts to overwhelm buyers (choice overload).';
+        if (mk && state.sweet && e.tiers.length){
+          if (e.tiers[e.tiers.length-1] > state.sweet.price * 4) t += ' Your top tier is far above what most players in ' + mk.label + ' can spend \u2014 only big spenders will reach it.';
+          if (e.tiers[0] > state.sweet.price * 1.6) t += ' Your cheapest tier is high for ' + mk.label + ' \u2014 many players can\u2019t afford any option.';
+        }
+        note.textContent = t;
+      } else {
+        row.querySelector('.g-pull-v').textContent = fmt2(e.pull);
+        row.querySelector('.g-odds-v').textContent = e.odds + '%';
+        note.textContent = 'Expected cost to win the featured item: about ' + fmt2(Math.min(100/e.odds, PITY) * e.pull) + ' (worst case ' + fmt2(PITY*e.pull) + ' at the 50-pull pity).';
+      }
+    });
+    var w = onCount === 0 ? 'Your shop is empty \u2014 turn on at least one package.' :
+      onCount > 3 ? onCount + ' packages at once: more ways to spend, but players share one wallet, and a crowded store adds offer fatigue (goodwill cost).' :
+      onCount + ' package' + (onCount===1?'':'s') + ' on. Players share one wallet across everything you sell.';
+    $('plan-warning').textContent = w;
+    $('launch-btn').disabled = onCount === 0;
+    if (state.market) updateHUD();
+  }
+  $('reset-shop').addEventListener('click', function(){
+    var def = {}; PKGS.forEach(function(p){ def[p.id] = p.gacha ? { on:p.defOn, pull:p.defPull, odds:p.defOdds } : { on:p.defOn, tiers:p.def.slice() }; });
+    applyPlan(def);
+  });
+  $('copy-last').addEventListener('click', function(){ if (state.history.length) applyPlan(state.history[state.history.length-1].plan); });
+
+  /* ---------- A/B status ---------- */
+  function normPlan(plan){ var o = {}; PKGS.forEach(function(p){ var e = plan[p.id]; o[p.id] = !isLive(p,e) ? { on:false } : (p.gacha ? { on:true, pull:e.pull, odds:e.odds } : { on:true, tiers:e.tiers }); }); return JSON.stringify(o); }
+  function abState(){
+    var cur = readPlan(), same = !!state.variantA && normPlan(state.variantA) === normPlan(cur);
+    var reason = !state.variantA ? 'Save a Variant A first.' : state.credits < 1 ? 'No test credits left.' : !planIsValid(cur) ? 'Your current shop (B) is empty.' : same ? 'B is still identical to A \u2014 change a tier, package or pull price first.' : '';
+    return { same:same, reason:reason, cur:cur };
+  }
+  function renderAB(ab, busy){
+    var box = $('ab-status');
+    if (!state.variantA){ box.style.display = 'none'; box.innerHTML = ''; return; }
+    box.style.display = 'block';
+    box.innerHTML = '<b class="t">A/B test setup</b>' +
+      '<div class="ab-row"><span class="ab-k">A \u00b7 saved</span><span>' + planSummary(state.variantA) + '</span></div>' +
+      '<div class="ab-row"><span class="ab-k">B \u00b7 your shop now</span><span>' + (ab.same ? '<i>Same as A</i>' : planSummary(ab.cur)) + '</span></div>' +
+      '<div class="ab-actions"><button type="button" class="lab-mini" data-ab="run"' + ((busy || ab.reason) ? ' disabled' : '') + '>Run A vs. B \u00b7 1 credit</button><button type="button" class="link-btn" data-ab="clear">Clear A</button></div>' +
+      (ab.reason ? '<div class="game-note" style="margin-top:8px;">' + ab.reason + '</div>' : '<div class="game-note" style="margin-top:8px;">Ready. B differs from A, so the test can tell you which earns more.</div>');
+  }
+  document.addEventListener('click', function(ev){
+    var b = ev.target.closest('#ab-status [data-ab]'); if (!b || b.disabled) return;
+    if (b.dataset.ab === 'run') askConfirm('ab');
+    if (b.dataset.ab === 'clear'){ state.variantA = null; updateHUD(); }
+  });
+
+  /* ---------- HUD ---------- */
+  function updateHUD(){
+    $('g-round').textContent = state.launched ? ('Month ' + Math.min(state.round, state.maxRounds) + ' / ' + state.maxRounds) : 'Pre-launch';
+    $('g-pop').textContent = Math.round(population()).toLocaleString('en-US');
+    $('g-goodwill').textContent = Math.round(state.goodwill);
+    var f = $('g-goodwill-fill'); f.style.width = Math.max(0,Math.min(100,state.goodwill)) + '%';
+    f.style.background = state.goodwill < 35 ? 'var(--slate)' : (state.goodwill < 60 ? 'var(--silver)' : 'var(--navy)');
+    $('g-revenue').textContent = fmtMoney(state.totalRevenue);
+    $('credits').textContent = state.credits + ' credit' + (state.credits===1?'':'s');
+    var busy = !!state.pending;
+    $('t-cbt').disabled = busy || state.launched || state.credits < 1;
+    $('t-survey').disabled = busy || state.launched || state.credits < 1;
+    var ab = abState();
+    $('t-saveA').disabled = busy || state.credits < 1;
+    $('t-ab').disabled = busy || !!ab.reason;
+    $('t-saveA').querySelector('b').textContent = state.variantA ? 'A/B test \u00b7 re-save Variant A' : 'A/B test \u00b7 save Variant A';
+    $('t-saveA').querySelector('span').textContent = state.credits < 1 ? 'No test credits left.' : state.variantA ? 'Replaces the saved A with your current shop. Free.' : 'Snapshot your current shop as A. Free.';
+    $('t-ab').querySelector('span').textContent = ab.reason || 'Compare A with your current shop (B) on two equal cohorts. Costs 1 credit.';
+    $('clear-A').style.display = 'none';
+    $('no-credits').style.display = state.credits < 1 ? 'block' : 'none';
+    renderAB(ab, busy);
+    $('clear-results').style.display = labResults.children.length ? 'inline-block' : 'none';
+    $('copy-last').style.display = state.history.length ? 'inline-block' : 'none';
+    $('launch-btn').innerHTML = 'Launch Month ' + Math.min(state.round, state.maxRounds) + ' (30 days) &rarr;';
+  }
+
+  /* ---------- Test lab with confirm step ---------- */
+  var labResults = $('lab-results'), confirmBox = $('lab-confirm');
+  var TEST_NAMES = { cbt:'Closed beta test', survey:'In-game survey', ab:'A/B test (A vs. B)' };
+  function labOut(html){ var d=document.createElement('div'); d.className='lab-result'; d.innerHTML=html; labResults.insertBefore(d, labResults.firstChild); updateHUD(); }
+  function cohortOf(n){ return shuffle(activeIdx()).slice(0,n); }
+  function askConfirm(kind){
+    if (kind !== 'ab' || state.variantA){
+      if (kind !== 'survey' && !planIsValid(readPlan())){ labOut('<b class="t">' + TEST_NAMES[kind] + '</b>Your shop is empty \u2014 add a package first.'); return; }
+    }
+    state.pending = kind;
+    confirmBox.innerHTML = '<div class="lab-confirm-inner"><span>Run <b>' + TEST_NAMES[kind] + '</b>? This spends 1 credit (' + (state.credits-1) + ' left after). Results can\u2019t be un-seen, so credits aren\u2019t refunded.</span><span class="lc-btns"><button class="lab-mini" id="lc-run">Run test</button><button class="lab-mini ghost" id="lc-cancel">Cancel</button></span></div>';
+    confirmBox.style.display = 'block'; updateHUD();
+    $('lc-run').addEventListener('click', function(){ var k = state.pending; closeConfirm(); state.credits--; RUNNERS[k](); updateHUD(); });
+    $('lc-cancel').addEventListener('click', closeConfirm);
+  }
+  function closeConfirm(){ state.pending = null; confirmBox.style.display = 'none'; confirmBox.innerHTML = ''; updateHUD(); }
+
+  var RUNNERS = {
+    cbt: function(){
+      var plan = readPlan(), r = simulate(plan, false, 0, cohortOf(150), false), ms = meanSE(r.perPlayer), pr = r.payers/r.n;
+      var rows = PKGS.filter(function(p){return isLive(p,plan[p.id]);}).map(function(p){ return '<tr><td>'+p.label+'</td><td>'+r.buys[p.id]+'</td><td>'+fmt2(r.byPkg[p.id]/r.n)+'</td></tr>'; }).join('');
+      labOut('<b class="t">Closed beta \u00b7 150 testers</b>Shop: ' + planSummary(plan) + '<br>Revenue per player: <b>' + fmt2(ms.mean) + '</b> (95% range ' + fmt2(Math.max(0,ms.mean-1.96*ms.se)) + '\u2013' + fmt2(ms.mean+1.96*ms.se) + ') \u00b7 Paying rate ' + pct(pr) + ' \u00b7 ARPPU ' + (r.payers?fmt2(r.revenue/r.payers):'\u2014') +
+        '<table><tr><th>Package</th><th>Buyers</th><th>Rev / player</th></tr>' + rows + '</table><span class="game-note">Small cohort: treat this as a direction, not a forecast. The wide range is the point.</span>');
+      state.tests.push({ test:'CBT', when:'pre-launch', details:planSummary(plan), metric:'revenue_per_player', value:ms.mean.toFixed(3), extra:'paying_rate=' + pr.toFixed(3) + ';n=150' });
+    },
+    survey: function(){
+      var mk = MARKET_INFO[state.market], idx = cohortOf(300), rows='';
+      PKGS.filter(function(p){ return !p.gacha; }).forEach(function(p){
+        var all = idx.map(function(i){ var pl=players[i]; return pl.base * pl.interest[p.id] * (p.power?mk.p2wAppeal:1) * 1.35 * Math.exp(randRange(-0.25,0.25)); });
+        var st = all.filter(function(v){ return v >= 0.5; }).sort(function(a,b){return a-b;}), share = st.length/all.length;
+        var q = function(f){ return st.length ? st[Math.floor(f*(st.length-1))] : 0; };
+        rows += '<tr><td>'+p.label+'</td><td>'+pct(share)+'</td><td>'+fmt2(q(0.25))+'</td><td>'+fmt2(q(0.5))+'</td><td>'+fmt2(q(0.75))+'</td><td>'+fmt2(q(0.9))+'</td></tr>';
+        state.tests.push({ test:'Survey', when:'pre-launch', details:p.label, metric:'stated_wtp_median_among_would_pay', value:q(0.5).toFixed(3), extra:'share_would_pay=' + share.toFixed(3) + ';p25=' + q(0.25).toFixed(2) + ';p75=' + q(0.75).toFixed(2) + ';p90=' + q(0.9).toFixed(2) + ';n=300' });
+      });
+      labOut('<b class="t">In-game survey \u00b7 300 respondents</b>&ldquo;What\u2019s the most you\u2019d pay this month for\u2026?&rdquo; Most players answer $0; percentiles are among those who\u2019d pay something.<table><tr><th>Package</th><th>Would pay</th><th>25th pct</th><th>Median</th><th>75th pct</th><th>90th pct</th></tr>' + rows + '</table><span class="game-note">Careful: people overstate what they\u2019d really spend (hypothetical bias). Stated answers typically run around 1.35\u00d7 real behavior \u2014 discount before setting prices. The top 10% matter most: a few big spenders often carry the revenue.</span>');
+    },
+    ab: function(){
+      var B = readPlan(), all = shuffle(activeIdx()), half = Math.floor(all.length/2);
+      var ra = simulate(state.variantA, false, 0, all.slice(0,half), false), rb = simulate(B, false, 0, all.slice(half), false);
+      var a = meanSE(ra.perPlayer), b = meanSE(rb.perPlayer), z = (b.mean - a.mean) / (Math.sqrt(a.se*a.se + b.se*b.se) || 1e-9);
+      var verdict = Math.abs(z) < 1.96 ? 'No statistically clear winner (|z| = ' + Math.abs(z).toFixed(2) + ' &lt; 1.96). The difference could be noise.' :
+        ((z > 0 ? 'B' : 'A') + ' earns more per player, and the gap is statistically clear (z = ' + z.toFixed(2) + ').');
+      labOut('<b class="t">A/B test \u00b7 ' + half + ' vs. ' + (all.length-half) + ' players</b><table><tr><th></th><th>Rev / player</th><th>Paying rate</th><th>ARPPU</th></tr>' +
+        '<tr><td>A</td><td>'+fmt2(a.mean)+'</td><td>'+pct(ra.payers/ra.n)+'</td><td>'+(ra.payers?fmt2(ra.revenue/ra.payers):'\u2014')+'</td></tr>' +
+        '<tr><td>B</td><td>'+fmt2(b.mean)+'</td><td>'+pct(rb.payers/rb.n)+'</td><td>'+(rb.payers?fmt2(rb.revenue/rb.payers):'\u2014')+'</td></tr></table>' + verdict +
+        '<br><span class="game-note">A: ' + planSummary(state.variantA) + '<br>B: ' + planSummary(B) + '</span>');
+      state.tests.push({ test:'AB', when: state.launched ? 'after month ' + (state.round-1) : 'pre-launch', details:'A=' + planSummary(state.variantA) + ' | B=' + planSummary(B), metric:'z_B_minus_A', value:z.toFixed(3), extra:'revA=' + a.mean.toFixed(3) + ';revB=' + b.mean.toFixed(3) });
+    }
+  };
+  $('t-cbt').addEventListener('click', function(){ askConfirm('cbt'); });
+  $('t-survey').addEventListener('click', function(){ askConfirm('survey'); });
+  $('t-ab').addEventListener('click', function(){ askConfirm('ab'); });
+  $('t-saveA').addEventListener('click', function(){
+    var plan = readPlan(); if (!planIsValid(plan)){ labOut('<b class="t">A/B test</b>Your shop is empty \u2014 add a package first.'); return; }
+    state.variantA = JSON.parse(JSON.stringify(plan));
+    updateHUD();
+  });
+  $('clear-A').addEventListener('click', function(){ state.variantA = null; updateHUD(); });
+  $('clear-results').addEventListener('click', function(){ labResults.innerHTML = ''; updateHUD(); });
+
+  /* ---------- Months ---------- */
+  function flavorText(plan, d){
+    var pw = isLive(PKGS[2],plan.item) || plan.pgacha.on, pg = plan.pgacha.on, ga = plan.cgacha.on || plan.pgacha.on, mk = MARKET_INFO[state.market];
+    if (pg && d < -3) return 'Players are furious \u2014 a lucky draw for power is the riskiest combination on the diagnostic matrix.';
+    if (pw && mk.p2wPenalty < 0.7 && d > -2) return 'Pay-to-win drew little complaint here \u2014 this market tolerates it far more than the West.';
+    if (pw && d < -1) return 'Non-paying players feel the competitive gap widening. The big spenders loved it.';
+    if (ga && mk.gachaPenalty < 0.5) return 'Lucky draws are part of the fun here \u2014 almost no backlash.';
+    if (ga) return 'The lucky draw drew some gambling-adjacent criticism.';
+    if (d > 1) return 'Clean, fair, well received \u2014 steady revenue without burning trust.';
+    return 'A quiet month. Revenue came in, nobody complained much.';
+  }
+  function sparkline(h){
+    var W=560, H=110, pad=22, max = Math.max.apply(null, h.daily.map(function(x){return x.revenue;})) || 1;
+    var x = function(i){ return pad + i*(W-2*pad)/(DAYS-1); }, y = function(v){ return H-pad - v/max*(H-2*pad); };
+    var pts = h.daily.map(function(dd,i){ return x(i).toFixed(1)+','+y(dd.revenue).toFixed(1); }).join(' ');
+    var ev = h.event ? '<rect x="'+(x(0)-4)+'" y="'+(pad-6)+'" width="'+(x(EVENT_DAYS-1)-x(0)+8)+'" height="'+(H-2*pad+6)+'" fill="var(--lightgray)" opacity=".55"/><text x="'+(x(0))+'" y="'+(pad-9)+'" class="sp-lbl">event week</text>' : '';
+    return '<svg viewBox="0 0 '+W+' '+H+'" class="spark" role="img" aria-label="Daily revenue for month '+h.season+'">' + ev +
+      '<line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+(W-pad)+'" y2="'+(H-pad)+'" stroke="var(--border)"/>' +
+      '<polyline points="'+pts+'" fill="none" stroke="var(--navy)" stroke-width="2"/>' +
+      '<text x="'+pad+'" y="'+(H-6)+'" class="sp-lbl">Day 1</text><text x="'+(W-pad)+'" y="'+(H-6)+'" text-anchor="end" class="sp-lbl">Day 30</text>' +
+      '<text x="'+(W-pad)+'" y="'+(pad-9)+'" text-anchor="end" class="sp-lbl">peak '+fmtMoney(max)+'/day</text></svg>';
+  }
+  function renderLiveOps(){
+    var tb = $('liveops-table').querySelector('tbody'); tb.innerHTML = '';
+    state.history.forEach(function(h, i){
+      var prev = state.history[i-1];
+      var arrow = function(cur, old){ if (!prev || !old) return ''; var c = (cur-old)/old; return ' <span class="' + (c>=0?'mom-up':'mom-dn') + '">' + (c>=0?'\u25b2':'\u25bc') + Math.abs(c*100).toFixed(0) + '%</span>'; };
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + h.season + '</td><td>' + fmtMoney(h.revenue) + '</td><td>' + pct(h.payingRate) + arrow(h.payingRate, prev&&prev.payingRate) + '</td><td>' + fmt2(h.arppu) + arrow(h.arppu, prev&&prev.arppu) +
+        '</td><td>' + Math.round(h.avgDau).toLocaleString('en-US') + '</td><td>' + pct(h.churnRate) + '</td><td>' + (h.event?'Yes':'\u2014') + '</td><td>' + Math.round(h.gwEnd) + '</td>';
+      tb.appendChild(tr);
+    });
+    var last = state.history[state.history.length-1];
+    $('spark-wrap').innerHTML = '<div class="game-note" style="margin:16px 0 4px;"><b>Daily revenue \u00b7 Month ' + last.season + '</b></div>' + sparkline(last);
+  }
+
+  $('launch-btn').addEventListener('click', function(){
+    if (state.round > state.maxRounds) return;
+    if (state.pending) closeConfirm();
+    var plan = readPlan(); if (!planIsValid(plan)) return;
+    var eventOn = $('event-check').checked;
+    state.launched = true;
+    state.eventStreak = eventOn ? state.eventStreak + 1 : 0;
+    var popStart = population();
+    var r = simulate(plan, eventOn, state.eventStreak, null, true);
+    var d = goodwillDelta(plan, eventOn), gwStart = state.goodwill, rev = r.revenue * WEIGHT, byPkg = {};
+    PIDS.forEach(function(id){ byPkg[id] = r.byPkg[id] * WEIGHT; });
+    state.totalRevenue += rev;
+    state.goodwill = Math.max(0, Math.min(100, state.goodwill + d));
+    var payerSet = {}; r.rows.forEach(function(row){ if (row.spent > 0) payerSet[row.pid] = 1; });
+    var ci = churnAndInstall(state.goodwill, payerSet);
+    var churnedSet = {}; players.forEach(function(p){ if (p.churnMonth === state.round) churnedSet[p.id] = 1; });
+
+    var byId = {}; players.forEach(function(p){ byId[p.id] = p; });
+    r.rows.forEach(function(row){ var pl = byId[row.pid];
+      state.panel.push({ month:state.round, pid:pl.id, install:pl.install, seg:SEG[pl.seg], base:pl.base, eng:pl.eng, interest:pl.interest, activeDays:row.activeDays, budget:row.budget, buys:row.buys, spent:row.spent, spend:row.spend, payer:row.spent>0?1:0, churned:churnedSet[pl.id]?1:0 }); });
+    var dailyOut = r.daily.map(function(dd, i){ return { month:state.round, day:i+1, abs:(state.round-1)*DAYS+i+1, event: eventOn && i < EVENT_DAYS ? 1 : 0, dau:dd.dau*WEIGHT, revenue:dd.revenue*WEIGHT, purchases:dd.purchases*WEIGHT, payers:Object.keys(dd.payerSet).length*WEIGHT }; });
+    dailyOut.forEach(function(x){ state.daily.push(x); });
+    r.txns.forEach(function(t){ t.month = state.round; t.abs = t.day ? (state.round-1)*DAYS + t.day : ''; t.weight = WEIGHT; state.txns.push(t); });
+
+    var avgDau = dailyOut.reduce(function(a,x){return a+x.dau;},0)/DAYS;
+    var mau = r.rows.filter(function(x){return x.activeDays>0;}).length * WEIGHT;
+    var h = { season:state.round, plan:JSON.parse(JSON.stringify(plan)), event:eventOn, revenue:rev, byPkg:byPkg, buys:r.buys,
+      payingRate:r.payers/r.n, arppu: r.payers ? r.revenue/r.payers : 0, payersEst: Math.round(r.payers*WEIGHT),
+      gwStart:gwStart, gwEnd:state.goodwill, popStart:popStart, popEnd:population(), dGoodwill:d,
+      avgDau:avgDau, mau:mau, stickiness: mau ? avgDau/mau : 0, churned:ci.churned*WEIGHT, installs:ci.installs*WEIGHT, churnRate: ci.start ? ci.churned/ci.start : 0, daily:dailyOut };
+    state.history.push(h);
+
+    var log = $('game-log'), el = document.createElement('div');
+    el.className = 'log-entry' + (d < -2 ? ' warn' : '');
+    el.innerHTML = '<div class="le-top"><span>Month ' + h.season + (eventOn?' \u00b7 event':'') + '</span><span>Goodwill ' + (d>=0?'+':'') + Math.round(d) + '</span></div><div class="le-rev">' + fmtMoney(rev) + '</div><div class="le-flavor">' + flavorText(plan, d) +
+      ' <span class="le-sub">' + Math.round(h.churned).toLocaleString('en-US') + ' players left, ' + Math.round(h.installs).toLocaleString('en-US') + ' joined.</span></div>';
+    log.insertBefore(el, log.firstChild);
+    renderLiveOps();
+    $('export-row-live').style.display = 'flex';
+    state.round++;
+    updateHUD();
+    if (state.round > state.maxRounds) setTimeout(endGame, 350);
+  });
+
+  /* ---------- Export ---------- */
+  function csvCell(v){ v = (v===null||v===undefined) ? '' : String(v); return /[",\n;]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v; }
+  function toCSV(rows){ return rows.map(function(r){ return r.map(csvCell).join(','); }).join('\n'); }
+  var mkLabel = function(){ return MARKET_INFO[state.market].label; };
+  function monthsCSV(){
+    var rows = [['month','market','event','packages_offered','skin_tiers','pass_tiers','item_tiers','cgacha_price_per_pull','cgacha_odds_pct','pgacha_price_per_pull','pgacha_odds_pct','revenue_total','rev_skin','rev_pass','rev_item','rev_cgacha','rev_pgacha','paying_rate','arppu','payers_est','avg_dau','mau','dau_mau_stickiness','churned_est','new_installs_est','churn_rate','goodwill_start','goodwill_end','population_start','population_end']];
+    state.history.forEach(function(h){
+      var p = h.plan, on = PKGS.filter(function(k){return isLive(k,p[k.id]);}).map(function(k){return k.id;}).join('|');
+      var t = function(id){ return isLive(PKGS[PIDS.indexOf(id)], p[id]) ? p[id].tiers.join('|') : ''; };
+      var g = function(id,f){ return p[id].on ? p[id][f] : ''; };
+      rows.push([h.season, mkLabel(), h.event?1:0, on, t('skin'), t('pass'), t('item'), g('cgacha','pull'), g('cgacha','odds'), g('pgacha','pull'), g('pgacha','odds'),
+        h.revenue.toFixed(2), h.byPkg.skin.toFixed(2), h.byPkg.pass.toFixed(2), h.byPkg.item.toFixed(2), h.byPkg.cgacha.toFixed(2), h.byPkg.pgacha.toFixed(2),
+        h.payingRate.toFixed(4), h.arppu.toFixed(3), h.payersEst, Math.round(h.avgDau), Math.round(h.mau), h.stickiness.toFixed(3), Math.round(h.churned), Math.round(h.installs), h.churnRate.toFixed(4),
+        h.gwStart.toFixed(2), h.gwEnd.toFixed(2), Math.round(h.popStart), Math.round(h.popEnd)]);
+    });
+    return toCSV(rows);
+  }
+  function dailyCSV(){
+    var rows = [['month','day_of_month','day_overall','event_active','dau_est','revenue_est','purchases_est','payers_est']];
+    state.daily.forEach(function(x){ rows.push([x.month, x.day, x.abs, x.event, Math.round(x.dau), x.revenue.toFixed(2), Math.round(x.purchases), Math.round(x.payers)]); });
+    return toCSV(rows);
+  }
+  function panelCSV(){
+    var head = ['month','player_id','install_month','segment','base_monthly_budget','engagement_daily_prob'].concat(PIDS.map(function(id){return 'interest_'+id;})).concat(['active_days','month_budget','purchases','spend_total']).concat(PIDS.map(function(id){return 'spend_'+id;})).concat(['is_payer','churned_after_month','weight_players_represented']);
+    var rows = [head];
+    state.panel.forEach(function(x){ rows.push([x.month, x.pid, x.install, x.seg, x.base.toFixed(3), x.eng.toFixed(3)].concat(PIDS.map(function(id){return x.interest[id].toFixed(3);})).concat([x.activeDays, x.budget.toFixed(3), x.buys, x.spent.toFixed(2)]).concat(PIDS.map(function(id){return x.spend[id].toFixed(2);})).concat([x.payer, x.churned, WEIGHT.toFixed(2)])); });
+    return toCSV(rows);
+  }
+  function txnCSV(){
+    var rows = [['month','day_of_month','day_overall','player_id','segment','package','tier_or_pull_price','pulls','won','spend','weight_players_represented']];
+    state.txns.forEach(function(t){ rows.push([t.month, t.day, t.abs, t.player, t.seg, t.pkg, t.tier, t.pulls, t.won, t.spend.toFixed(2), t.weight.toFixed(2)]); });
+    return toCSV(rows);
+  }
+  function testsCSV(){
+    var rows = [['test','when','details','metric','value','extra']];
+    state.tests.forEach(function(t){ rows.push([t.test, t.when, t.details, t.metric, t.value, t.extra]); });
+    return toCSV(rows);
+  }
+  var EXPORTS = { months:['months', monthsCSV], daily:['daily', dailyCSV], panel:['player_panel', panelCSV], txns:['transactions', txnCSV], tests:['tests', testsCSV] };
+  function download(name, text){
+    try { var blob = new Blob([text], { type:'text/csv;charset=utf-8' }), a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500); return true; } catch (e) { return false; }
+  }
+  function copyText(text, msgEl){
+    function done(ok){ if (msgEl) msgEl.textContent = ok ? 'Copied to clipboard \u2014 paste into Excel, Sheets, or a .csv file.' : 'Copy failed \u2014 use the download buttons instead.'; }
+    function fallback(){ try { var ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); var ok=document.execCommand('copy'); ta.remove(); done(ok); } catch(e){ done(false); } }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function(){done(true);}, fallback); else fallback();
+  }
+  document.addEventListener('click', function(ev){
+    var b = ev.target.closest('[data-export]'); if (!b || !state.market) return;
+    var kind = b.dataset.export, wrap = b.closest('.export-wrap'), msg = wrap ? wrap.querySelector('.export-msg') : null;
+    if (kind === 'copy'){ copyText(monthsCSV(), msg); return; }
+    var e = EXPORTS[kind]; if (e) download('payorpray_' + state.market + '_' + e[0] + '.csv', e[1]());
+  });
+
+  /* ---------- Debrief ---------- */
+  function endGame(){
+    $('game-live').style.display = 'none';
+    var go = $('game-over'); go.style.display = 'block';
+    var mk = MARKET_INFO[state.market];
+    var avgGW = state.history.reduce(function(a,h){return a+h.gwEnd;},0) / state.history.length;
+    var baseline = state.sweet.revPerPlayer * (1 - mk.nonSpend) * BASE_POP * state.maxRounds;
+    var ratio = state.totalRevenue * (Math.max(20,avgGW)/70) / baseline;
+    var grade = ratio >= 3.7 ? 'S' : ratio >= 3.1 ? 'A' : ratio >= 2.4 ? 'B' : ratio >= 1.3 ? 'C' : 'D';
+
+    var tot = {}; PIDS.forEach(function(id){ tot[id] = state.history.reduce(function(a,h){return a+h.byPkg[id];},0); });
+    var bars = PKGS.filter(function(p){return tot[p.id] > 0;}).sort(function(a,b){return tot[b.id]-tot[a.id];}).map(function(p){
+      var s = tot[p.id]/state.totalRevenue;
+      return '<div class="share-bar"><span>' + p.label + '</span><div class="sb-track"><div class="sb-fill" style="width:' + (s*100).toFixed(1) + '%"></div></div><span class="sb-v">' + (s*100).toFixed(0) + '%</span></div>'; }).join('');
+    var best = state.history.slice().sort(function(a,b){return b.revenue-a.revenue;})[0];
+    var direct = state.txns.filter(function(t){ return t.pulls === ''; });
+    var avgPaid = direct.length ? direct.reduce(function(a,t){return a+t.spend;},0)/direct.length : 0;
+    var calib = direct.length ? ('Your average direct purchase was ' + fmt2(avgPaid) + ' against a model sweet spot of ~$' + state.sweet.price.toFixed(0) + ' for ' + mk.label + '.') : 'You sold no fixed-price items.';
+    if (mk.benchmark) calib += ' Real-world best-selling tier: ' + mk.benchmark + '.';
+    var dead = [];
+    PKGS.filter(function(p){return !p.gacha;}).forEach(function(p){
+      var offered = {}; state.history.forEach(function(h){ if (isLive(p,h.plan[p.id])) h.plan[p.id].tiers.forEach(function(t){ offered[t]=1; }); });
+      Object.keys(offered).forEach(function(t){ var sold = direct.some(function(x){ return x.pkg===p.id && Math.abs(x.tier-parseFloat(t))<0.001; }); if (!sold) dead.push(p.label + ' ' + fmt2(parseFloat(t))); });
+    });
+    var deadNote = dead.length ? 'Tiers that never sold to a single sampled player: <b>' + dead.join(', ') + '</b>. In ' + mk.label + ', those rungs were dead weight \u2014 exactly why a publisher localizes the ladder instead of copying it from another market.' : 'Every tier you offered sold at least once \u2014 a well-localized ladder.';
+    var orig = players.filter(function(p){ return p.install === 1; }), kept = orig.filter(function(p){ return p.active; }).length;
+    var retention = kept / orig.length;
+    var evMonths = state.history.filter(function(h){return h.event;}), noEv = state.history.filter(function(h){return !h.event;});
+    var lift = '';
+    if (evMonths.length && noEv.length){
+      var wk = function(hs, from, to){ return hs.reduce(function(a,h){ return a + h.daily.slice(from,to).reduce(function(s,x){return s+x.revenue;},0)/(to-from); },0)/hs.length; };
+      var l1 = wk(evMonths,0,7)/Math.max(1,wk(noEv,0,7)) - 1, l4 = wk(evMonths,21,30)/Math.max(1,wk(noEv,21,30)) - 1;
+      lift = '<p><b>Event effect:</b> in event months, average daily revenue in week 1 was ' + (l1>=0?'+':'') + (l1*100).toFixed(0) + '% vs. non-event months, but ' + (l4>=0?'+':'') + (l4*100).toFixed(0) + '% in the last week of the month. ' + (l4 < 0 ? 'Some of the event\u2019s spending was pulled forward from later in the month, not purely new revenue.' : 'The boost held up across the month.') + '</p>';
+    }
+    var marketNote = '';
+    if (mk.p2wPenalty < 0.7) marketNote += ' Players here tolerate pay-to-win far more than in Western markets \u2014 the same plan would cost much more goodwill in the US.';
+    if (mk.gachaPenalty < 0.5) marketNote += ' Lucky draws are culturally embraced here \u2014 they would draw far more criticism in the US.';
+    var testsUsed = CREDITS - state.credits;
+
+    go.innerHTML = '<div class="debrief">' +
+      '<span class="grade">Grade ' + grade + '</span><h2>8-month report \u00b7 ' + mk.label + '</h2>' +
+      '<div class="d-stats"><div class="d-stat"><div class="dl">Total Revenue</div><div class="dv">' + fmtMoney(state.totalRevenue) + '</div></div>' +
+      '<div class="d-stat"><div class="dl">Final Population</div><div class="dv">' + Math.round(population()).toLocaleString('en-US') + '</div></div>' +
+      '<div class="d-stat"><div class="dl">Launch Cohort Retained</div><div class="dv">' + pct(retention) + '</div></div></div>' +
+      '<p><b>Where your revenue came from</b></p><div class="share-bars">' + bars + '</div>' +
+      '<p><b>Best month:</b> Month ' + best.season + ' (' + fmtMoney(best.revenue) + ') with ' + planSummary(best.plan) + (best.event?', plus an event':'') + '.</p>' +
+      lift +
+      '<p><b>Retention:</b> ' + pct(retention) + ' of the players who were there at launch were still playing after 8 months (average goodwill ' + Math.round(avgGW) + '). Players leave faster when goodwill drops below 60, and new installs slow down too.</p>' +
+      '<p><b>Price ladder check:</b> ' + calib + ' ' + deadNote + '</p>' +
+      (marketNote ? '<p><b>Market note:</b>' + marketNote + '</p>' : '') +
+      '<p><b>Testing:</b> you used ' + testsUsed + ' of ' + CREDITS + ' test credits. ' + (testsUsed === 0 ? 'Launching blind is how real studios get surprised \u2014 next time, try a closed beta or an A/B test first.' : 'Compare what your tests predicted with what actually happened in the monthly data.') + '</p>' +
+      '<p>Your grade compares revenue (weighted by the goodwill you kept) to a simple benchmark: one cosmetic item at this market\u2019s sweet spot, every month. See the <a href="#diagnostic">Diagnostic page</a> for the risk framework and the <a href="#industry">Industry page</a> for why markets need different ladders.</p>' +
+      '<div class="game-panel export-wrap" style="margin-top:22px; background:var(--bg);"><h3 class="game-h3">Analyze your run</h3><p class="game-note" style="margin:0 0 6px;">Five files, ready for Python, R, Excel, or Tableau. Every simulated player represents ' + WEIGHT + ' real players (the <code>weight</code> column).</p>' +
+      '<div class="export-row"><button class="lab-mini" data-export="months">Monthly KPIs</button><button class="lab-mini" data-export="daily">Daily KPIs (240 days)</button><button class="lab-mini" data-export="panel">Player panel (incl. non-payers)</button><button class="lab-mini" data-export="txns">Transactions</button><button class="lab-mini" data-export="tests">Test results</button><button class="lab-mini ghost" data-export="copy">Copy monthly KPIs</button></div><div class="export-msg"></div>' +
+      '<details class="profiles" style="margin-top:14px;"><summary>What\u2019s in each file &amp; starter analyses</summary><div class="src-note">' +
+      '<b>Monthly KPIs</b> &mdash; one row per month: your shop setup, revenue by package, paying rate, ARPPU, DAU, MAU, stickiness, churn, installs, goodwill.<br>' +
+      '<b>Daily KPIs</b> &mdash; one row per day: DAU, revenue, purchases, payers, and whether an event was running.<br>' +
+      '<b>Player panel</b> &mdash; one row per player per month, <i>including players who spent nothing</i>: segment, install month, budget, engagement, interest in each package, active days, spend by package, payer flag, and whether they churned.<br>' +
+      '<b>Transactions</b> &mdash; one row per purchase, with the day it happened.<br><b>Test results</b> &mdash; what your closed beta, survey, and A/B tests reported.<br><br>' +
+      '&bull; <b>Event lift:</b> plot daily revenue and shade <code>event_active</code> &mdash; is the spike new money, or spending pulled forward?<br>' +
+      '&bull; <b>Paying rate vs. ARPPU:</b> did revenue grow from more payers or bigger payers, month over month?<br>' +
+      '&bull; <b>Churn drivers:</b> in the player panel, compare <code>churned_after_month</code> for payers vs. non-payers, and by segment.<br>' +
+      '&bull; <b>Cohort retention:</b> group players by <code>install_month</code> and track how many are still active each month.<br>' +
+      '&bull; <b>Who pays for what:</b> sum <code>spend_*</code> by segment (weighted) &mdash; do whales carry the gacha?<br>' +
+      '&bull; <b>Test accuracy:</b> compare your closed-beta revenue per player with actual Month 1 revenue per player.</div></details></div>' +
+      '<button class="btn" id="replay-btn" style="margin-top:20px;">Play again</button></div>';
+    $('replay-btn').addEventListener('click', resetGame);
+  }
+
+  /* ---------- Flow ---------- */
+  function resetGame(){
+    state = newState(); players = [];
+    $('game-log').innerHTML = ''; labResults.innerHTML = ''; closeConfirm();
+    $('liveops-table').querySelector('tbody').innerHTML = '<tr><td colspan="8" class="game-note">No months yet.</td></tr>';
+    $('spark-wrap').innerHTML = '';
+    $('export-row-live').style.display = 'none';
+    $('event-check').checked = false;
+    $('market-select').style.display = 'block'; $('game-stats').style.display = 'none'; $('game-live').style.display = 'none'; $('game-over').style.display = 'none';
+    buildPkgList(); updateMarketCards();
+    window.scrollTo(0, $('page-simulation').offsetTop);
+  }
+  function updateMarketCards(){ document.querySelectorAll('#market-grid .pkg-card').forEach(function(c){ c.classList.toggle('is-checked', c.querySelector('input').checked); }); }
+  document.querySelectorAll('input[name="market"]').forEach(function(r){ r.addEventListener('change', updateMarketCards); });
+
+  $('market-confirm-btn').addEventListener('click', function(){
+    var r = document.querySelector('input[name="market"]:checked'); state.market = r ? r.value : 'us';
+    var mk = MARKET_INFO[state.market];
+    initPlayers(); state.sweet = sweetSpot(mk);
+    $('g-market').textContent = mk.label;
+    $('sweet-note').textContent = 'In ' + mk.label + ', the model\u2019s best single price for one cosmetic item is about $' + state.sweet.price.toFixed(0) + (mk.benchmark ? ' (real-world best-selling tier: ' + mk.benchmark + ').' : '.');
+    $('market-select').style.display = 'none'; $('game-stats').style.display = 'grid'; $('game-live').style.display = 'block';
+    refreshPlanUI(); updateHUD();
+  });
+
+  buildPkgList(); updateMarketCards(); updateHUD();
+})();
+</script>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Reading progress bar ---- */
+  var progressFill = document.getElementById('progress-fill');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollable = h.scrollHeight - h.clientHeight;
+    var pct = scrollable > 0 ? (h.scrollTop / scrollable) * 100 : 0;
+    if (progressFill) progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('hashchange', function(){ setTimeout(updateProgress, 60); });
+  updateProgress();
+
+  /* ---- Count-up numbers ---- */
+  function runCountUp(el){
+    if (el.dataset.counted === '1') return;
+    el.dataset.counted = '1';
+    var target = parseFloat(el.getAttribute('data-countup'));
+    var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    var prefix = el.getAttribute('data-prefix') || '';
+    var suffix = el.getAttribute('data-suffix') || '';
+    if (reduceMotion) { el.textContent = prefix + target.toFixed(decimals) + suffix; return; }
+    var duration = 1100, startTime = null;
+    function frame(ts){
+      if (startTime === null) startTime = ts;
+      var p = Math.min(1, (ts - startTime) / duration);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = target * eased;
+      el.textContent = prefix + val.toFixed(decimals) + suffix;
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ---- Scroll reveal + count-up trigger, one shared observer ---- */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          if (entry.target.hasAttribute('data-countup')) runCountUp(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+    document.querySelectorAll('[data-countup]').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('is-visible'); });
+    document.querySelectorAll('[data-countup]').forEach(function(el){ runCountUp(el); });
+  }
+})();
+</script>
+</body>
+</html>
