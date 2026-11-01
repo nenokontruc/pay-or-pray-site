@@ -671,7 +671,7 @@ window.PAYORPRAY_I18N = [
     "vi": "GIÁ TRỊ NGẪU NHIÊN",
     "zh": "随机性价值" },
   { "en": "COSMETIC / NON-POWER",
-    "vi": "TRANG TRÍ / KHÔNG ẢNH HƯỞNG SỨC MẠNH",
+    "vi": "TRANG PHỤC / KHÔNG ẢNH HƯỞNG SỨC MẠNH",
     "zh": "外观 / 不影响实力" },
   { "en": "Lowest risk",
     "vi": "Rủi ro thấp nhất",
