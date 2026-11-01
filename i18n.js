@@ -57,7 +57,7 @@ window.PAYORPRAY_I18N = [
     "vi": "Rút ngẫu nhiên",
     "zh": "随机抽取" },
   { "en": "Like buying a sealed pack of cards: you pay first and find out what's inside after. Luck, near-misses, and \"just one more\" drive spending.",
-    "vi": "Giống như mua một gói bài niêm phong: bạn trả tiền trước rồi mới biết bên trong có gì. May rủi, cảm giác “suýt trúng” và tâm lý “thêm một lần nữa” thúc đẩy chi tiêu.",
+    "vi": "Giống như mua một gói túi mù: bạn trả tiền trước rồi mới biết bên trong có gì. May rủi, cảm giác “suýt trúng” và tâm lý “thêm một lần nữa” thúc đẩy chi tiêu.",
     "zh": "就像买一包未拆封的卡包：先付钱，之后才知道里面是什么。运气、“差一点就中”的感觉和“再来一次”的心理推动着消费。" },
   { "en": "New here? The 60-second version",
     "vi": "Lần đầu ghé thăm? Tóm tắt trong 60 giây",
