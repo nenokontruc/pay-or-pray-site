@@ -1,0 +1,92 @@
+/* Case Study styles — original rules from legacy/index.html:115-129, 383-385, plus the new
+   comparison, chart and implications pieces. Everything is scoped under .cs. */
+
+.cs .case-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+@media (max-width:760px){ .cs .case-grid{grid-template-columns:1fr;} }
+.cs .case-col { padding:26px 24px; background:var(--bg-raised); }
+.cs .case-col.solid { border-top:4px solid var(--navy); }
+.cs .case-col.outline { border-top:4px solid var(--silver); }
+:root:not([data-theme="light"]) .cs .case-col.solid { border-top-color:var(--text-muted); }
+.cs .case-col + .case-col { border-left:1px solid var(--border); }
+@media (max-width:760px){ .cs .case-col + .case-col{border-left:none; border-top:1px solid var(--border);} }
+.cs .case-col h3 { font-family:var(--serif); font-weight:600; font-size:23px; margin:10px 0 4px; }
+.cs .case-col .sub { font-size:12.5px; color:var(--text-muted); margin-bottom:16px; }
+.cs .case-sub { display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin:18px 0 2px; }
+.cs .fact { display:flex; justify-content:space-between; gap:14px; padding:10px 0; border-top:1px solid var(--border); font-size:13.3px; }
+.cs .case-sub + .fact { border-top:none; }
+.cs .fact .k { color:var(--text-muted); }
+.cs .fact .v { font-family:var(--mono); text-align:right; font-weight:500; }
+@media (max-width:640px){ .cs .fact { flex-direction:column; gap:2px; } .cs .fact .v { text-align:left; } }
+.cs .case-note { padding:16px 18px; background:var(--bg); border:1px solid var(--border); border-radius:4px; font-size:13.3px; line-height:1.55; }
+.cs .cs-src { color:var(--text-muted); }
+.cs .compare-table td:first-child { font-family:var(--mono); font-size:11.5px; color:var(--text-muted); white-space:nowrap; }
+.cs .compare-table td { line-height:1.5; }
+.cs .prose p { max-width:72ch; margin:0 0 12px; font-size:15px; }
+.cs .prose a { text-decoration:underline; }
+:root:not([data-theme="light"]) .cs .callout { border-left-color:var(--text-muted); }
+.cs .cs-hero-art { display:flex; gap:18px; justify-content:center; }
+.cs .cs-hero-art svg { width:84px; }
+.cs .cs-h3 { font-family:var(--serif); font-weight:600; font-size:22px; margin:44px 0 14px; }
+
+/* interactive comparison */
+.cs .cs-dims { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.cs .cs-dims .chip { font-size:11.5px; padding:6px 12px; }
+.cs .cs-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:640px){ .cs .cs-pair { grid-template-columns:1fr; } }
+.cs .cs-side { border:1px solid var(--border); background:var(--bg-raised); border-radius:6px; padding:18px 20px; min-height:110px; }
+.cs .cs-side.solid { border-top:3px solid var(--navy); }
+.cs .cs-side.outline { border-top:3px solid var(--silver); }
+:root:not([data-theme="light"]) .cs .cs-side.solid { border-top-color:var(--text-muted); }
+.cs .cs-side-k { display:block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin-bottom:8px; }
+.cs .cs-side p { font-family:var(--serif); font-size:clamp(17px,2vw,21px); line-height:1.35; }
+.cs .cs-why { margin-top:12px; font-size:14px; max-width:80ch; color:var(--text); }
+.cs .cs-why-k { display:inline-block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin-right:10px; }
+
+/* probability chart */
+.cs .cs-viz-head { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:baseline; }
+.cs .cs-legend { display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:var(--text-muted); }
+.cs .cs-legend b { color:var(--text); font-weight:600; }
+.cs .cs-key { display:inline-block; width:18px; height:10px; margin-right:6px; vertical-align:-1px; border-radius:2px; }
+.cs .cs-key.wwm { background:var(--navy); }
+.cs .cs-key.hok { background:repeating-linear-gradient(45deg, var(--silver) 0 2px, transparent 2px 5px); border:1px solid var(--silver); }
+:root:not([data-theme="light"]) .cs .cs-key.wwm { background:var(--text); }
+.cs .cs-chart { width:100%; height:auto; display:block; margin:6px 0 4px; }
+.cs .cs-axis { font-family:var(--mono); font-size:10.5px; fill:var(--text-muted); }
+.cs .cs-note { font-family:var(--mono); font-size:10.5px; fill:var(--text-muted); }
+:root:not([data-theme="light"]) .cs .cs-wwm { stroke:var(--text); }
+:root:not([data-theme="light"]) .cs .cs-wwm-dot { fill:var(--text); }
+.cs .cs-readout { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px; }
+@media (max-width:640px){ .cs .cs-readout { grid-template-columns:1fr; } }
+.cs .cs-read { border:1px solid var(--border); border-radius:5px; padding:12px 14px; background:var(--bg); font-size:12.8px; color:var(--text-muted); line-height:1.45; }
+.cs .cs-read.wwm { border-left:3px solid var(--navy); }
+.cs .cs-read.hok { border-left:3px solid var(--silver); }
+.cs .cs-read-k { display:block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; }
+.cs .cs-read b { display:block; font-family:var(--serif); font-size:26px; color:var(--text); margin:2px 0; }
+.cs .cs-math { margin:6px 0 12px 20px; list-style:disc; font-size:14.5px; line-height:1.7; }
+
+/* implications */
+.cs .cs-impl { border:1px solid var(--border); border-radius:6px; overflow:hidden; background:var(--bg-raised); }
+.cs .cs-impl-row { display:grid; grid-template-columns:170px repeat(3, 1fr); border-top:1px solid var(--border); }
+.cs .cs-impl-row:first-child { border-top:none; }
+.cs .cs-impl-row > span { padding:14px 16px; font-size:14px; line-height:1.45; }
+.cs .cs-impl-row > span + span { border-left:1px solid var(--border); }
+.cs .cs-impl-head > span { font-family:var(--serif); font-weight:600; font-size:15.5px; }
+.cs .cs-impl-col.solid { box-shadow:inset 0 3px 0 var(--navy); }
+.cs .cs-impl-col.mid { box-shadow:inset 0 3px 0 var(--slate); }
+.cs .cs-impl-col.outline { box-shadow:inset 0 3px 0 var(--silver); }
+.cs .cs-impl-k { font-family:var(--mono); font-size:10.5px !important; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); background:var(--bg); }
+@media (max-width:760px){
+  .cs .cs-impl-row { grid-template-columns:1fr; }
+  .cs .cs-impl-row > span + span { border-left:none; border-top:1px dashed var(--border); }
+  .cs .cs-impl-head { display:none; }
+  .cs .cs-impl-row > span[role="cell"]::before { display:block; font-family:var(--mono); font-size:10px; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px; }
+  .cs .cs-impl-row > span[role="cell"]:nth-child(2)::before { content:"Fixed-price skins"; }
+  .cs .cs-impl-row > span[role="cell"]:nth-child(3)::before { content:"Honor of Kings draw"; }
+  .cs .cs-impl-row > span[role="cell"]:nth-child(4)::before { content:"Where Winds Meet draw"; }
+}
+
+/* evidence */
+.cs .cs-evidence { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:20px; }
+@media (max-width:760px){ .cs .cs-evidence { grid-template-columns:1fr; } }
+.cs .cs-ev-num { font-family:var(--serif); font-weight:700; font-size:34px; margin-bottom:8px; }
+.cs .cs-ev-num small { font-size:15px; font-weight:400; color:var(--text-muted); }

@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import Home from './pages/Home'
 import Industry from './pages/Industry'
 import Coming from './pages/Coming'
 import Simulation from './pages/Simulation'
+import CaseStudy from './pages/CaseStudy'
+import Diagnostic from './pages/Diagnostic'
+import About from './pages/About'
+import { CASE_FOOTER_META, CASE_REFERENCES } from './data/caseStudy'
+import { DIAGNOSTIC_REFERENCES } from './data/diagnostic'
 import { SimulationProvider } from './pages/simulation/controller'
 import { LangSwitch } from './components/LangSwitch'
 import { PAGES, useRoute, type PageId } from './lib/router'
@@ -41,8 +46,29 @@ function SimulationFooter() {
   )
 }
 
+const DEFAULT_META = 'This site accompanies a written report covering the full analysis, citations, and methodology behind the framework presented here.'
+
+/** Page footer with "Select references" (original per-page footers, legacy/index.html). */
+function RefFooter({ refs, meta = DEFAULT_META }: { refs: ReactNode[]; meta?: ReactNode }) {
+  return (
+    <footer>
+      <div className="wrap-wide">
+        <div className="foot-grid">
+          <div>
+            <h5>Select references</h5>
+            <div className="refs notranslate" translate="no">{refs.map((r, i) => <div key={i}>{r}</div>)}</div>
+          </div>
+          <div className="meta"><p>{meta}</p></div>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
 function Footer({ page }: { page: PageId }) {
   if (page === 'simulation') return <SimulationFooter />
+  if (page === 'case-study') return <RefFooter refs={CASE_REFERENCES} meta={CASE_FOOTER_META} />
+  if (page === 'diagnostic') return <RefFooter refs={DIAGNOSTIC_REFERENCES} />
   const industry = page === 'industry'
   return (
     <footer>
@@ -117,7 +143,13 @@ export default function App({ simulationSeed }: { simulationSeed?: number } = {}
         </div>
       </header>
       <main id="main" key={page} className="page-enter">
-        {page === 'home' ? <Home /> : page === 'industry' ? <Industry /> : page === 'simulation' ? <Simulation /> : <Coming page={page} />}
+        {page === 'home' ? <Home />
+          : page === 'industry' ? <Industry />
+          : page === 'case-study' ? <CaseStudy />
+          : page === 'diagnostic' ? <Diagnostic />
+          : page === 'simulation' ? <Simulation />
+          : page === 'about' ? <About />
+          : <Coming page={page} />}
         <PageNav page={page} />
       </main>
       <Footer page={page} />
