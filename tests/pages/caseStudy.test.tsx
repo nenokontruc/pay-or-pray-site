@@ -29,17 +29,60 @@ describe('Case Study page', () => {
     }
   })
 
-  it('comparison tabs show exactly the original table values for each row', () => {
-    open()
+  it('channel map: both games × both channels; only the lucky draws are marked uncertain', () => {
+    const { container } = open()
+    expect(screen.getByRole('heading', { level: 2, name: 'Do these games sell chance differently?' })).toBeTruthy()
+    const table = screen.getByRole('table', { name: 'Sales channels in each game' })
+    const rows = within(table).getAllByRole('row').slice(1)
+    expect(rows.map((r) => within(r).getByRole('rowheader').querySelector('b')!.textContent)).toEqual(['Honor of Kings', 'Where Winds Meet'])
+    expect(container.querySelectorAll('.cs-ch-cell.known')).toHaveLength(2)
+    expect(container.querySelectorAll('.cs-ch-cell.uncertain')).toHaveLength(2)
+    // Figures moved behind a disclosure, unchanged.
+    expect(container.querySelector('.case-grid')!.closest('details')).not.toBeNull()
+  })
+
+  // Steps of the purchase path → the original table row each one shows.
+  const STEP_ROWS: [string, string][] = [['Pay', 'What you pay with'], ['Draw', 'Starting odds'], ['Miss', 'How odds change'], ['Guarantee', 'Guarantee'], ['What you get', 'What you win']]
+
+  it('purchase path: each step shows exactly the original table cells for its row, and highlights that row', () => {
+    const { container } = open()
     expect(LEGACY_ROWS).toHaveLength(6)
-    const tabs = screen.getByRole('tablist', { name: 'Compare the two lucky draws' })
-    for (const [label, hok, wwm] of LEGACY_ROWS) {
-      fireEvent.click(within(tabs).getByRole('tab', { name: label }))
-      expect(within(tabs).getByRole('tab', { name: label }).getAttribute('aria-selected')).toBe('true')
-      const panel = screen.getByRole('tabpanel', { name: label })
-      expect(norm(panel.textContent ?? '')).toContain(hok)
-      expect(norm(panel.textContent ?? '')).toContain(wwm)
+    const rail = screen.getByRole('tablist', { name: 'Steps of a lucky-draw purchase' })
+    for (const [step, rowLabel] of STEP_ROWS) {
+      fireEvent.click(within(rail).getByRole('tab', { name: new RegExp(`${step}$`) }))
+      const [, hok, wwm] = LEGACY_ROWS.find((r) => r[0] === rowLabel)!
+      const panel = screen.getByRole('tabpanel')
+      expect(norm(panel.textContent ?? ''), `${step}: HoK`).toContain(hok)
+      expect(norm(panel.textContent ?? ''), `${step}: WWM`).toContain(wwm)
+      const on = container.querySelector('.compare-table tr.cs-row-on')!
+      expect(norm(on.querySelector('td')!.textContent!)).toBe(rowLabel)
     }
+  })
+
+  it('purchase path: arrow keys, Home/End, previous/next and reset', () => {
+    open()
+    const rail = screen.getByRole('tablist', { name: 'Steps of a lucky-draw purchase' })
+    const tabs = within(rail).getAllByRole('tab')
+    const current = () => tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true')
+    tabs[0].focus()
+    fireEvent.keyDown(tabs[0], { key: 'ArrowRight' }); expect(current()).toBe(1); expect(document.activeElement).toBe(tabs[1])
+    fireEvent.keyDown(tabs[1], { key: 'End' }); expect(current()).toBe(4)
+    expect((screen.getByRole('button', { name: /Next step/ }) as HTMLButtonElement).disabled).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: /Previous step/ })); expect(current()).toBe(3)
+    fireEvent.click(screen.getByRole('button', { name: 'Reset' })); expect(current()).toBe(0)
+    expect(screen.getByRole('tabpanel').textContent).toContain('Step 1 of 5')
+    expect(tabs.map((t) => t.tabIndex)).toEqual([0, -1, -1, -1, -1])
+  })
+
+  it('summary separates what chance decides from what it does not (original key-difference callout)', () => {
+    const { container } = open()
+    const games = Array.from(container.querySelectorAll('.cs-open-game'))
+    const chance = (g: Element) => Array.from(g.querySelectorAll('.cs-chip-u.on'), (c) => norm(c.textContent!))
+    const known = (g: Element) => Array.from(g.querySelectorAll('.cs-chip-u.off'), (c) => norm(c.textContent!))
+    expect(chance(games[0])).toEqual(['? How much you pay'])
+    expect(known(games[0])).toEqual(['✓ What you get — you choose the skin'])
+    expect(chance(games[1])).toEqual(['? How much you pay', '? Whether you get it, until the guarantee'])
+    expect(known(games[1])).toEqual(['✓ Which outfit — the studio chose it'])
   })
 
   it('keeps the original detailed comparison table available', () => {

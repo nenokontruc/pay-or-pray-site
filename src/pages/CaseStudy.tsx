@@ -5,6 +5,8 @@ import { Disclosure, Takeaway } from '../components/Disclosure'
 import { PixelIcon } from '../components/PixelIcon'
 import { COMPARE, GAMES, WWM_GUARANTEE } from '../data/caseStudy'
 import { PityChart, WWM_BEFORE_GUARANTEE, WWM_EXPECTED_PULLS } from './case-study/PityChart'
+import { ChannelMap } from './case-study/ChannelMap'
+import { PurchasePath, STEPS } from './case-study/PurchasePath'
 import './case-study/caseStudy.css'
 
 function GamePanels() {
@@ -27,27 +29,6 @@ function GamePanels() {
   )
 }
 
-function Compare() {
-  const [id, setId] = useState('win')
-  const row = COMPARE.find((r) => r.id === id)!
-  return (
-    <div className="cs-compare">
-      <div className="cs-dims" role="tablist" aria-label="Compare the two lucky draws">
-        {COMPARE.map((r) => (
-          <button key={r.id} type="button" role="tab" aria-selected={r.id === id} className={`chip ${r.id === id ? 'on' : ''}`} onClick={() => setId(r.id)}>{r.label}</button>
-        ))}
-      </div>
-      <div className="cs-pair" role="tabpanel" aria-label={row.label} key={row.id}>
-        <div className="cs-side solid"><span className="cs-side-k">Honor of Kings &middot; 积分夺宝</span><p>{row.hok}</p></div>
-        <div className="cs-side outline"><span className="cs-side-k">Where Winds Meet &middot; Echo gacha</span><p>{row.wwm}</p></div>
-      </div>
-      {row.why && (
-        <p className="cs-why"><span className="cs-why-k">Why it matters</span>{row.why}{row.whySource && <span className="cs-src"> &mdash; {row.whySource}</span>}</p>
-      )}
-    </div>
-  )
-}
-
 /** Short, source-faithful labels; the full paragraphs are in the disclosure below. */
 const IMPLICATIONS = [
   { head: 'Fixed-price skins (both games)', tone: 'solid', rows: ['Nothing — the value of the item is known before purchase', 'You do', 'Standard EVC formula: compromise effects, anchors, tiered ladders'] },
@@ -57,6 +38,9 @@ const IMPLICATIONS = [
 const IMPL_ROWS = ['What chance decides', 'Who chooses the prize', 'Pricing tool that applies']
 
 export default function CaseStudy() {
+  // Current step of the purchase path; the full table highlights the same row.
+  const [step, setStep] = useState(0)
+  const activeRow = STEPS[step].row
   return (
     <div className="cs">
       <div className="wrap-wide page-hero">
@@ -74,10 +58,13 @@ export default function CaseStudy() {
         <div className="wrap-wide">
           <header className="slide-head">
             <p className="kicker">01 &mdash; <b>Both sell both</b></p>
-            <h2 className="sec-title">A fixed-price shop and a lucky draw, in each game</h2>
+            <h2 className="sec-title">Do these games sell chance differently?</h2>
           </header>
-          <GamePanels />
+          <ChannelMap />
           <Takeaway>Both games sell known items at known prices and run a lucky draw &mdash; so the comparison is about how each one designs the draw.</Takeaway>
+          <Disclosure label="All figures for both games (prices, odds, guarantees, revenue)">
+            <GamePanels />
+          </Disclosure>
         </div>
       </section>
 
@@ -88,16 +75,17 @@ export default function CaseStudy() {
             <h2 className="sec-title">Same idea, opposite designs</h2>
             <p className="sec-lede">Both draws are (near-)cosmetic and both guarantee a prize eventually. The differences are in how the odds move, what you win, and what you pay with.</p>
           </header>
-          <Compare />
+          <PurchasePath step={step} setStep={setStep} />
+          <div className="callout"><b>The key difference:</b> in Honor of Kings, chance decides <i>how much</i> you pay, but you choose <i>what</i> you get &mdash; the lottery turns back into a known purchase at the end. In Where Winds Meet, chance decides both how much you pay and, until the guarantee, whether you get the item at all.</div>
           <Disclosure label="View the full comparison table">
             <div className="table-scroll">
               <table className="data-table compare-table">
                 <thead><tr><th></th><th>Honor of Kings &middot; 积分夺宝</th><th>Where Winds Meet &middot; Echo gacha</th></tr></thead>
-                <tbody>{COMPARE.map((r) => <tr key={r.id}><td>{r.label}</td><td>{r.hok}</td><td>{r.wwm}</td></tr>)}</tbody>
+                <tbody>{COMPARE.map((r) => <tr key={r.id} className={r.id === activeRow ? 'cs-row-on' : undefined} aria-current={r.id === activeRow ? 'true' : undefined}><td>{r.label}</td><td>{r.hok}</td><td>{r.wwm}</td></tr>)}</tbody>
               </table>
             </div>
+            <p className="game-note">The highlighted row is the step selected above. &ldquo;Pay-to-win&rdquo; is not a step of the purchase; it is compared here and under &ldquo;Why this pairing&rdquo;.</p>
           </Disclosure>
-          <div className="callout"><b>The key difference:</b> in Honor of Kings, chance decides <i>how much</i> you pay, but you choose <i>what</i> you get &mdash; the lottery turns back into a known purchase at the end. In Where Winds Meet, chance decides both how much you pay and, until the guarantee, whether you get the item at all.</div>
 
           <h3 className="cs-h3">How the odds play out</h3>
           <PityChart />
