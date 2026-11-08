@@ -1,27 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Quattrocento:ital,wght@0,400;0,700;1,400&family=Quattrocento+Sans:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 
+/* Design tokens — copied exactly from the original site (legacy/index.html:12-44),
+   which is the authoritative specification. */
 :root {
   color-scheme: light;
   --bg:#F4F6F6; --bg-raised:#FFFFFF;
   --navy:#1C2833; --slate:#2E4053; --silver:#AAB7B8; --lightgray:#D5DBDB; --offwhite:#F4F6F6;
   --text:#1C2833; --text-muted:#5A6872; --border:#D5DBDB;
   --badge-solid-bg:#1C2833; --badge-solid-text:#F4F6F6;
-  --badge-outline-text:#5A6872; --badge-outline-border:#AAB7B8;
+  --badge-outline-text:#5A6872; --badge-outline-border:#AAB7B8; --badge-outline-bg:transparent;
   --shadow: 0 1px 2px rgba(28,40,51,.05), 0 10px 26px rgba(28,40,51,.07);
   --serif:'Quattrocento', Georgia, serif;
   --sans:'Quattrocento Sans', -apple-system, sans-serif;
   --mono:'IBM Plex Mono', 'SF Mono', monospace;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
     --bg:#12161B; --bg-raised:#1C2833;
     --text:#F0F2F2; --text-muted:#AAB7B8; --border:#2E4053;
     --badge-solid-bg:#AAB7B8; --badge-solid-text:#12161B;
-    --badge-outline-text:#AAB7B8; --badge-outline-border:#2E4053;
+    --badge-outline-text:#AAB7B8; --badge-outline-border:#2E4053; --badge-outline-bg:transparent;
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
   }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg:#12161B; --bg-raised:#1C2833;
+  --text:#F0F2F2; --text-muted:#AAB7B8; --border:#2E4053;
+  --badge-solid-bg:#AAB7B8; --badge-solid-text:#12161B;
+  --badge-outline-text:#AAB7B8; --badge-outline-border:#2E4053; --badge-outline-bg:transparent;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.4);
 }
 
 @layer base {
