@@ -45,7 +45,7 @@ function reactText(pageId: string): string {
   return norm(container.textContent ?? '')
 }
 
-describe.each(['framework', 'case-study', 'diagnostic', 'about'])('%s: every original text item is preserved', (pageId) => {
+describe.each(['home', 'framework', 'case-study', 'diagnostic', 'about'])('%s: every original text item is preserved', (pageId) => {
   it('has a meaningful inventory', () => {
     expect(legacyTexts(pageId).length).toBeGreaterThan(pageId === 'about' || pageId === 'framework' ? 15 : 25)
   })

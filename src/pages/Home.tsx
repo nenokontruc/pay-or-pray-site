@@ -1,4 +1,10 @@
-import { DisplayCase, Gashapon, Seal } from '../components/Art'
+import { useState } from 'react'
+import { Seal } from '../components/Art'
+import { drawMany, initialGacha, type GachaState } from '../lib/homeGacha'
+import { ShopDemo, type ShopStep } from './home/ShopDemo'
+import { GachaDemo } from './home/GachaDemo'
+import { Comparison } from './home/Comparison'
+import './home/home.css'
 
 const STEPS = [
   ['Freemium', <>&ldquo;Free + premium.&rdquo; The game is free to play; the company earns money by selling optional extras inside it. Most players never pay &mdash; a small share pays a lot.</>],
@@ -16,7 +22,13 @@ const CARDS = [
   ['about', 'About', 'Who built this project and why.'],
 ] as const
 
-export default function Home() {
+/** `rng` is for tests only; the page uses Math.random for its teaching gacha (independent of src/sim). */
+export default function Home({ rng = Math.random }: { rng?: () => number } = {}) {
+  const [shopStep, setShopStep] = useState<ShopStep>('closed')
+  const [inspect, setInspect] = useState(false)
+  const [g, setG] = useState<GachaState>(initialGacha)
+  // Draw in the click handler (not inside a state updater), so React's development double-run can't draw twice.
+  const onDraw = (k: number) => setG(drawMany(g, k, rng))
   return (
     <>
         <div className="wrap-wide">
@@ -28,7 +40,7 @@ export default function Home() {
 
             <div className="duality">
               <div className="card solid">
-                <div className="stage"><DisplayCase /></div>
+                <div className="stage hd-stage"><ShopDemo step={shopStep} setStep={setShopStep} inspect={inspect} setInspect={setInspect} /></div>
                 <div className="body">
                   <span className="badge solid">Deterministic</span>
                   <h3>Fixed Price</h3>
@@ -36,7 +48,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="card outline">
-                <div className="stage"><Gashapon /></div>
+                <div className="stage hd-stage"><GachaDemo g={g} onDraw={onDraw} onReset={() => setG(initialGacha())} /></div>
                 <div className="body">
                   <span className="badge outline">Probabilistic</span>
                   <h3>Random Draw</h3>
@@ -44,6 +56,8 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            <Comparison bought={shopStep === 'bought'} g={g} />
 
             <div className="byline">OPM 6600 — Pricing &amp; Revenue Optimization · Final Project · Trúc Trinh</div>
           </section>

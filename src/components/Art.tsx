@@ -2,7 +2,7 @@ import { Sprite, R, Disc } from './Pixel'
 
 const svgProps = { shapeRendering: 'crispEdges' as const, xmlns: 'http://www.w3.org/2000/svg', role: 'img' as const }
 
-const ITEMS = {
+export const ITEMS = {
   crown: ['n..nn..n', 'nn.nn.nn', 'nsnnnnsn', 'nnnnnnnn', 'nglnnlgn', 'nnnnnnnn'],
   gem: ['.gggggg.', 'gwwlllsg', '.glllsg.', '..glsg..', '...gg...'],
   sword: ['...ll...', '...lg...', '...lg...', '...lg...', '..nnnn..', '...ss...', '...ss...', '...nn...'],
@@ -71,7 +71,7 @@ export function DisplayCase() {
   )
 }
 
-const CAPSULE = ['.nnn.', 'nsssn', 'nwwwn', 'nlllg', '.ggg.']
+export const CAPSULE = ['.nnn.', 'nsssn', 'nwwwn', 'nlllg', '.ggg.']
 
 /** Probabilistic: a gashapon machine, contents hidden inside identical capsules. */
 export function Gashapon() {
