@@ -1,0 +1,23 @@
+{
+  "us-default": {
+    "months": "94729dbfe74236feee01d364d4c3060b56767dbbb8556eb4f9ec9b4d41589602",
+    "daily": "83ded15e63674e212f8a1ad2ecc6dd29f063ec36bd17ea6b0e1db62bcf94ce4c",
+    "panel": "b6045c70778d1a94891585b5d062761f6b35258ed6900a167034182c47ebbc34",
+    "txns": "aa54032e1dca5e12e7bf9354bd8f68abc6df745f3446c20af78264d17d71b873",
+    "tests": "03ccb0a1060febbe9de77038d762e7bdf3b93c8d0d3440eb2f4864994d642b87"
+  },
+  "jp-gacha-boundaries": {
+    "months": "c6d2670dafbfc9177fd076383b55a6306be6b9962727f0dab8ffc56e1b95a781",
+    "daily": "57adf0b5a11a239fbaa67ca929f019817ef53547c730a0d4bed37eb7a022cf61",
+    "panel": "ad73ad8f4addbfbfecf3095415c4c35a0175d2aae2d4aab2a791bdc83fba4f1a",
+    "txns": "c8f4dc224a1e462b15adebde0b2dbaf15b19d10965e6caf2f4221f3f7e036e36",
+    "tests": "03ccb0a1060febbe9de77038d762e7bdf3b93c8d0d3440eb2f4864994d642b87"
+  },
+  "cn-all-five": {
+    "months": "3d1658c53199ca3312c702f046df40010e2ff338049082d3a52c45c5dc5def67",
+    "daily": "aacac0c0b67b5a6b531981a91ab49ebe758afd6864a8ebeceebd811812c09740",
+    "panel": "3156d3c20fa202174a8eaad87f8a4596f47b6dabc27fc6b41b4763c0543cd399",
+    "txns": "dd5e7ca972c2b3f3e429eaab61bfef678b828cd2e8c8b3683ff1335d7d53890d",
+    "tests": "03ccb0a1060febbe9de77038d762e7bdf3b93c8d0d3440eb2f4864994d642b87"
+  }
+}
