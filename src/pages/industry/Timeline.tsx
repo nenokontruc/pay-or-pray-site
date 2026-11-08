@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { HISTORY, ERAS, HISTORY_SOURCES, type Era } from '../../data/industry'
 import { PixelIcon } from '../../components/PixelIcon'
+import { Disclosure } from '../../components/Disclosure'
 
 export function Timeline() {
   const [i, setI] = useState(0)
@@ -39,12 +40,23 @@ export function Timeline() {
         <button type="button" className="tl-arrow" aria-label="Next milestone" disabled={i === HISTORY.length - 1} onClick={() => go(i + 1, true)}>›</button>
       </div>
       <div className={`tl-panel ${m.era}`} id="tl-panel" role="tabpanel" aria-labelledby={`tl-tab-${i}`} key={i}>
-        <div className="tl-panel-head"><span className="tl-panel-year">{m.year}</span><span className="tl-panel-era">{ERAS[m.era]}</span><span className="tl-count">{i + 1} / {HISTORY.length}</span></div>
+        <div className="tl-panel-head"><span className="tl-panel-year">{m.year}</span><span className="tl-panel-era">Era {m.era.slice(1)} of 3 &middot; {ERAS[m.era]}</span><span className="tl-count">{i + 1} / {HISTORY.length}</span></div>
         <h3>{m.title}</h3>
         <p>{m.body}</p>
-        <p className="h-why">{m.lesson}</p>
+        <div className="ind-lesson"><span className="ind-lesson-k">What changed for pricing managers</span><p className="h-why">{m.lesson}</p></div>
+      </div>
+      <div className="ind-tl-nav">
+        <button type="button" className="btn-ghost" onClick={() => go(i - 1, true)} disabled={i === 0}>&larr; Previous milestone</button>
+        <button type="button" className="btn-ghost" onClick={() => go(i + 1, true)} disabled={i === HISTORY.length - 1}>Next milestone &rarr;</button>
       </div>
       <p className="game-note">{HISTORY_SOURCES}</p>
+      <Disclosure label="All eight milestones (text version)">
+        <ol className="ind-history">
+          {HISTORY.map((h) => (
+            <li key={h.year}><span className="ind-h-year">{h.year}</span><b>{h.title}</b><p>{h.body}</p><span className="ind-h-why">{h.lesson}</span></li>
+          ))}
+        </ol>
+      </Disclosure>
     </div>
   )
 }

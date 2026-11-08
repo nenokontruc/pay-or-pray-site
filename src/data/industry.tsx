@@ -55,7 +55,7 @@ export type Kind = 'Deterministic' | 'Either' | 'Probabilistic'
 export type Model = { id: string; label: string; icon: string; kind: Kind; how: string; example: string; cite?: string }
 export const MODELS: Model[] = [
   { id: 'direct', label: 'Direct Purchase', icon: 'cart', kind: 'Deterministic',
-    how: 'A known item at a known price — the oldest, simplest freemium mechanic, and the core of both case-study games’ shops.',
+    how: "A known item at a known price — the oldest, simplest freemium mechanic, and the core of both case-study games' shops.",
     example: 'Honor of Kings skin shop' },
   { id: 'currency', label: 'Virtual Currency', icon: 'gem', kind: 'Either',
     how: 'Real money converts to an in-game currency, adding psychological distance between payment and spend.',
@@ -94,26 +94,34 @@ export const BENCHMARKS = {
 
 /* ---------- Regulation (original six-row table, unaltered wording) ---------- */
 export type Stance = 'disc' | 'ban' | 'none'
-export type Jurisdiction = { id: string; name: string; approach: string; stance: Stance; year: string; status: string; source: string; lon: number; lat: number }
+/** Type of legal instrument behind each status (see INSTRUMENTS). */
+export type Instrument = 'enacted' | 'interpretation' | 'proposal' | 'litigation'
+export type Jurisdiction = { id: string; name: string; approach: string; stance: Stance; year: string; status: string; source: string; lon: number; lat: number; instrument: Instrument; instrumentBasis: string }
 export const JURISDICTIONS: Jurisdiction[] = [
   { id: 'cn', name: 'China', approach: 'Disclosure', stance: 'disc', year: '2017',
     status: 'Mandatory drop-rate disclosure since 2017 — the reason this project has exact odds data',
-    source: 'Project regulation table (status, 2026); 2017 milestone on the timeline', lon: 104, lat: 35 },
+    source: 'Project regulation table (status, 2026); 2017 milestone on the timeline', lon: 104, lat: 35,
+    instrument: 'enacted', instrumentBasis: 'The status describes a mandatory disclosure requirement.' },
   { id: 'be', name: 'Belgium', approach: 'Ban', stance: 'ban', year: '2018',
     status: 'Paid loot boxes = gambling since 2018; criminal fines up to €800,000',
-    source: 'Project regulation table (status, 2026); Game Informer (2018)', lon: -4, lat: 48 },
+    source: 'Project regulation table (status, 2026); Game Informer (2018)', lon: -4, lat: 48,
+    instrument: 'interpretation', instrumentBasis: 'The Belgian Gaming Commission applied the existing 1999 Gambling Act to paid loot boxes (2018 report; Osborne Clarke; CMS).' },
   { id: 'nl', name: 'Netherlands', approach: 'Disclosure', stance: 'disc', year: '2022',
     status: '2022 ruling reversed an earlier gambling classification; game-integration test now applies',
-    source: 'Project regulation table (status, 2026)', lon: 4, lat: 56 },
+    source: 'Project regulation table (status, 2026)', lon: 4, lat: 56,
+    instrument: 'interpretation', instrumentBasis: 'A court ruling (Council of State, 9 March 2022) on how existing gambling law applies (CMS; SCL).' },
   { id: 'kr', name: 'South Korea', approach: 'Disclosure', stance: 'disc', year: '2024',
     status: 'Statutory odds disclosure since 2024, with 3x damages for violations',
-    source: 'Project regulation table (status, 2026)', lon: 128, lat: 37 },
+    source: 'Project regulation table (status, 2026)', lon: 128, lat: 37,
+    instrument: 'enacted', instrumentBasis: 'The status describes statutory (legislated) odds disclosure.' },
   { id: 'us', name: 'United States', approach: 'No federal law', stance: 'none', year: 'No statute',
     status: 'No state or federal statute as of late 2026; active FTC and state-level litigation',
-    source: 'Project regulation table (status, 2026)', lon: -98, lat: 39 },
+    source: 'Project regulation table (status, 2026)', lon: -98, lat: 39,
+    instrument: 'litigation', instrumentBasis: 'No statute; the status describes FTC activity and state-level litigation.' },
   { id: 'eu', name: 'European Union', approach: 'Pending', stance: 'none', year: 'Proposal expected late 2026',
     status: 'No bloc-wide rule yet; Digital Fairness Act proposal expected late 2026',
-    source: 'Project regulation table (status, 2026)', lon: 14, lat: 45 },
+    source: 'Project regulation table (status, 2026)', lon: 14, lat: 45,
+    instrument: 'proposal', instrumentBasis: 'No bloc-wide rule; the status describes a proposal that is expected, not yet adopted.' },
 ]
 
 export const PUBLISHERS_TEXT = (
@@ -131,3 +139,12 @@ export const LOCALIZATION_TEXT = (
     The localization problem is concrete, not abstract. For one evergreen package line spanning 6–8 price tiers, the practitioner's own benchmark: the best-selling tier in a mature Western market lands around <b>US$10–19</b>, while the best-selling tier for the same package line in Vietnam lands closer to <b>US$5–7</b> — roughly half. A publisher that ports its US price ladder unchanged into a new market isn't neutral; it's mispriced for that market's actual willingness-to-pay on one side or the other.
   </>
 )
+
+/** What kind of rule each jurisdiction's status rests on. Labels summarise; the status line carries the nuance. */
+export const INSTRUMENTS: Record<Instrument, { label: string; short: string }> = {
+  enacted: { label: 'Enacted rule', short: 'Enacted' },
+  interpretation: { label: 'Interpretation of existing law (regulator or court)', short: 'Interpretation' },
+  litigation: { label: 'Litigation and enforcement, no specific rule', short: 'Litigation' },
+  proposal: { label: 'Proposal, not yet adopted', short: 'Proposal' },
+}
+export const INSTRUMENT_CHECK_SOURCES = 'Instrument types for Belgium and the Netherlands were checked against Osborne Clarke, “Loot box update”; CMS, “Loot boxes: a treasure trove of gambling regulatory issues”; CMS, “Dutch court rules FIFA loot boxes not a game of chance”; SCL, “Loot boxes are NOT gambling under Dutch law”. Others follow from the wording of the original status line.'

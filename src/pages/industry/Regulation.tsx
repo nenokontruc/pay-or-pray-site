@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { JURISDICTIONS } from '../../data/industry'
+import { INSTRUMENTS, INSTRUMENT_CHECK_SOURCES, JURISDICTIONS, type Instrument } from '../../data/industry'
 import { PixelIcon } from '../../components/PixelIcon'
 
 type Pt = [number, number][]
@@ -54,6 +54,7 @@ export function Regulation() {
         <div className="reg-detail" aria-live="polite" key={id}>
           <div className="reg-detail-head"><h3>{j.name}</h3><span className={`stance ${j.stance}`}>{j.approach}</span></div>
           <dl>
+            <dt>Type of rule</dt><dd><span className={`ind-inst ${j.instrument}`}>{INSTRUMENTS[j.instrument].label}</span></dd>
             <dt>Relevant year</dt><dd>{j.year}</dd>
             <dt>Documented status</dt><dd>{j.status}</dd>
             <dt>Supporting source</dt><dd className="mono-note">{j.source}</dd>
@@ -64,22 +65,26 @@ export function Regulation() {
       <div className="reg-chips" role="group" aria-label="Choose a jurisdiction">
         {JURISDICTIONS.map((x) => (
           <button key={x.id} type="button" className={`reg-chip ${x.id === id ? 'on' : ''}`} aria-pressed={x.id === id} onClick={() => setId(x.id)}>
-            <span>{x.name}</span><span className={`stance ${x.stance}`}>{x.approach}</span>
+            <span>{x.name}</span><span className={`stance ${x.stance}`}>{x.approach}</span><span className={`ind-inst ${x.instrument}`}>{INSTRUMENTS[x.instrument].short}</span>
           </button>
         ))}
         <span className="reg-scales"><PixelIcon name="scales" size={40} /></span>
       </div>
+      <ul className="ind-inst-legend" aria-label="Types of rule">
+        {(Object.keys(INSTRUMENTS) as Instrument[]).map((k) => <li key={k}><span className={`ind-inst ${k}`}>{INSTRUMENTS[k].short}</span> {INSTRUMENTS[k].label}</li>)}
+      </ul>
       <details className="disclosure">
         <summary><span className="chev" aria-hidden />View sources — the full regulation table</summary>
         <div className="disclosure-body">
           <div className="table-scroll">
             <table className="data-table">
-              <thead><tr><th>Jurisdiction</th><th>Approach</th><th>Status, 2026</th></tr></thead>
+              <thead><tr><th>Jurisdiction</th><th>Approach</th><th>Status, 2026</th><th>Type of rule</th></tr></thead>
               <tbody>
-                {JURISDICTIONS.map((x) => (<tr key={x.id}><td>{x.name}</td><td><span className={`stance ${x.stance}`}>{x.approach}</span></td><td>{x.status}</td></tr>))}
+                {JURISDICTIONS.map((x) => (<tr key={x.id}><td>{x.name}</td><td><span className={`stance ${x.stance}`}>{x.approach}</span></td><td>{x.status}</td><td>{INSTRUMENTS[x.instrument].label}</td></tr>))}
               </tbody>
             </table>
           </div>
+          <p className="game-note">{INSTRUMENT_CHECK_SOURCES}</p>
         </div>
       </details>
     </div>

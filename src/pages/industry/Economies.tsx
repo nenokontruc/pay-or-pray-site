@@ -7,21 +7,23 @@ const VERDICT: Record<RangeVerdict, string> = { inside: 'Inside the benchmark ra
 
 function Compare() {
   const [tab, setTab] = useState<'in' | 'out'>('in')
-  const e = ECONOMIES[tab]
   return (
     <div className="eco">
       <div className="eco-tabs" role="tablist" aria-label="Two economies">
         {(['in', 'out'] as const).map((k) => (
-          <button key={k} role="tab" type="button" aria-selected={tab === k} className={`eco-tab ${k} ${tab === k ? 'on' : ''}`} onClick={() => setTab(k)}>
+          <button key={k} role="tab" type="button" id={`eco-tab-${k}`} aria-controls={`eco-panel-${k}`} aria-selected={tab === k} className={`eco-tab ${k} ${tab === k ? 'on' : ''}`} onClick={() => setTab(k)}>
             <span className={`badge ${k === 'in' ? 'solid' : 'outline'}`}>{ECONOMIES[k].badge}</span>
             <strong>{ECONOMIES[k].keywords.join(' · ')}</strong>
           </button>
         ))}
       </div>
-      <div className={`eco-panel ${tab}`} role="tabpanel" key={tab}>
-        <h3>{e.title}</h3>
-        <p>{e.text}</p>
-      </div>
+      {/* Both panels stay in the page (the inactive one hidden), so both original texts remain available. */}
+      {(['in', 'out'] as const).map((k) => (
+        <div key={k} className={`eco-panel ${k}`} role="tabpanel" id={`eco-panel-${k}`} aria-labelledby={`eco-tab-${k}`} hidden={tab !== k}>
+          <h3>{ECONOMIES[k].title}</h3>
+          <p>{ECONOMIES[k].text}</p>
+        </div>
+      ))}
     </div>
   )
 }
