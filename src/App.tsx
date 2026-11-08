@@ -6,6 +6,8 @@ import Simulation from './pages/Simulation'
 import CaseStudy from './pages/CaseStudy'
 import Diagnostic from './pages/Diagnostic'
 import About from './pages/About'
+import Framework from './pages/Framework'
+import { FRAMEWORK_REFERENCES } from './data/framework'
 import { CASE_FOOTER_META, CASE_REFERENCES } from './data/caseStudy'
 import { DIAGNOSTIC_REFERENCES } from './data/diagnostic'
 import { SimulationProvider } from './pages/simulation/controller'
@@ -69,6 +71,7 @@ function Footer({ page }: { page: PageId }) {
   if (page === 'simulation') return <SimulationFooter />
   if (page === 'case-study') return <RefFooter refs={CASE_REFERENCES} meta={CASE_FOOTER_META} />
   if (page === 'diagnostic') return <RefFooter refs={DIAGNOSTIC_REFERENCES} />
+  if (page === 'framework') return <RefFooter refs={FRAMEWORK_REFERENCES} />
   const industry = page === 'industry'
   return (
     <footer>
@@ -145,6 +148,7 @@ export default function App({ simulationSeed }: { simulationSeed?: number } = {}
       <main id="main" key={page} className="page-enter">
         {page === 'home' ? <Home />
           : page === 'industry' ? <Industry />
+          : page === 'framework' ? <Framework />
           : page === 'case-study' ? <CaseStudy />
           : page === 'diagnostic' ? <Diagnostic />
           : page === 'simulation' ? <Simulation />

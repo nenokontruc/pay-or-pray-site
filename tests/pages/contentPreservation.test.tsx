@@ -18,7 +18,7 @@ const norm = (s: string) => s.replace(/ /g, ' ').replace(/\s+/g, ' ').trim()
  * (a lone "0.747%" elsewhere on the page would not satisfy "Material odds0.747%").
  */
 const SELECTORS = [
-  '.fact', 'tr', '.mx-cell',
+  '.fact', 'tr', '.mx-cell', '.formula', '.formula-note', '.term', '.formula-block .label span',
   '.kicker', 'h1', 'h2', 'h3', 'h4', 'p', 'li', 'th', 'td',
   '.fact .k', '.fact .v', '.case-sub', '.sub', '.badge', '.callout', '.case-note',
   '.risk', '.col-head', '.row-label span', '.am-k', '.about-meta div', '.link-card b', '.link-card span', '.tl-y',
@@ -45,9 +45,9 @@ function reactText(pageId: string): string {
   return norm(container.textContent ?? '')
 }
 
-describe.each(['case-study', 'diagnostic', 'about'])('%s: every original text item is preserved', (pageId) => {
+describe.each(['framework', 'case-study', 'diagnostic', 'about'])('%s: every original text item is preserved', (pageId) => {
   it('has a meaningful inventory', () => {
-    expect(legacyTexts(pageId).length).toBeGreaterThan(pageId === 'about' ? 15 : 25)
+    expect(legacyTexts(pageId).length).toBeGreaterThan(pageId === 'about' || pageId === 'framework' ? 15 : 25)
   })
   it('each original item appears word for word', () => {
     // Whitespace between elements differs between hand-written HTML and React output, so
