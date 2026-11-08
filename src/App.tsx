@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import Home from './pages/Home'
 import Industry from './pages/Industry'
 import Coming from './pages/Coming'
+import Simulation from './pages/Simulation'
+import { SimulationProvider } from './pages/simulation/controller'
 import { LangSwitch } from './components/LangSwitch'
 import { PAGES, useRoute, type PageId } from './lib/router'
 
@@ -18,7 +20,29 @@ function PageNav({ page }: { page: PageId }) {
   )
 }
 
+/** "How this simulation works" footer, verbatim from legacy/index.html:1065-1081. */
+function SimulationFooter() {
+  return (
+    <footer>
+      <div className="wrap-wide">
+        <div className="foot-grid">
+          <div>
+            <h5>How this simulation works</h5>
+            <div className="refs">
+              <div>A panel of simulated monthly active players (1,000 at launch, each representing 200 real players &mdash; established players, not raw installs). Most of them (72&ndash;82%, depending on market) never spend at any price, matching the freemium pattern that most players don&rsquo;t pay; each with a persistent spending segment, daily engagement rate and a monthly budget that all packages share. Each month is simulated day by day. Players churn more when goodwill falls below 60; new installs arrive faster when goodwill is high. A player buys the highest price tier they can afford; gacha players pull until they win or hit the 50-pull pity, limited by budget.</div>
+              <div>Offering more than 6 tiers in one ladder slightly lowers conversion (choice overload; directionally after Iyengar &amp; Lepper, 2000). Survey answers are inflated ~1.35&times; to reflect hypothetical bias in stated willingness to pay (Murphy et al., 2005).</div>
+              <div>Goodwill dynamics reflect Petrovskaya &amp; Zendle (2022) and the diagnostic framework on this site. Market differences: Sensor Tower Japan Game Market Insights (2025); Moloco (2025); Xsolla (2025); CNBC / Newzoo (2018); industry interview (2026).</div>
+            </div>
+          </div>
+          <div className="meta"><p>All in-game numbers are illustrative calibrations, not measured market data. This site accompanies a written report covering the full analysis, citations, and methodology.</p></div>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
 function Footer({ page }: { page: PageId }) {
+  if (page === 'simulation') return <SimulationFooter />
   const industry = page === 'industry'
   return (
     <footer>
@@ -49,7 +73,8 @@ function Footer({ page }: { page: PageId }) {
   )
 }
 
-export default function App() {
+/** `simulationSeed` is for tests only; the live site seeds from the clock like the original. */
+export default function App({ simulationSeed }: { simulationSeed?: number } = {}) {
   const page = useRoute()
   const [present, setPresent] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -73,7 +98,7 @@ export default function App() {
   }, [present])
 
   return (
-    <>
+    <SimulationProvider seed={simulationSeed}>
       <div id="progress-bar"><div id="progress-fill" style={{ width: `${progress}%` }} /></div>
       <header className="nav">
         <div className="nav-inner">
@@ -92,10 +117,10 @@ export default function App() {
         </div>
       </header>
       <main id="main" key={page} className="page-enter">
-        {page === 'home' ? <Home /> : page === 'industry' ? <Industry /> : <Coming page={page} />}
+        {page === 'home' ? <Home /> : page === 'industry' ? <Industry /> : page === 'simulation' ? <Simulation /> : <Coming page={page} />}
         <PageNav page={page} />
       </main>
       <Footer page={page} />
-    </>
+    </SimulationProvider>
   )
 }

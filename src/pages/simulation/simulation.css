@@ -1,0 +1,175 @@
+/* Simulation page styles — ported from legacy/index.html:143-164, 251-410, 439-445.
+   Every selector is scoped under .sim so nothing here can affect other pages.
+   Dark-mode rules keep the original `:root:not([data-theme="light"])` form. */
+
+.sim .btn { display:inline-block; background:var(--navy); color:var(--offwhite); font-family:var(--sans); font-weight:600; font-size:13px; letter-spacing:.03em; text-decoration:none; padding:12px 22px; border-radius:3px; border:1px solid var(--navy); cursor:pointer; }
+:root:not([data-theme="light"]) .sim .btn { background:var(--text); color:var(--bg); border-color:var(--text); }
+.sim .btn:hover { opacity:.9; }
+/* Added: Tailwind's reset removes the browser's disabled look, so show it explicitly. */
+.sim .btn:disabled { opacity:.45; cursor:not-allowed; }
+.sim .btn-wide { margin-top:18px; width:100%; font-size:15px; padding:14px; }
+
+.sim table.data-table { min-width:0; }
+.sim .table-scroll { overflow-x:auto; }
+
+.sim .game-stats { display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:32px; }
+.sim .game-stat { background:var(--bg-raised); padding:18px 20px; }
+.sim .gs-label { font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin-bottom:6px; }
+.sim .gs-value { font-family:var(--mono); font-weight:600; font-size:22px; }
+.sim .gw-bar { height:5px; background:var(--border); border-radius:3px; margin-top:8px; overflow:hidden; }
+.sim .gw-fill { height:100%; background:var(--navy); width:70%; transition:width .4s ease, background .4s ease; }
+@media (max-width:860px){ .sim .game-stats{ grid-template-columns:repeat(3,1fr);} }
+@media (max-width:560px){ .sim .game-stats{ grid-template-columns:repeat(2,1fr);} }
+
+.sim .game-grid { display:grid; grid-template-columns:1.1fr 1fr; gap:24px; align-items:start; }
+.sim .game-grid > * { min-width:0; }
+@media (max-width:980px){ .sim .game-grid{ grid-template-columns:1fr; } }
+.sim .game-panel { border:1px solid var(--border); background:var(--bg-raised); border-radius:6px; padding:26px 26px 28px; }
+.sim .game-h3 { font-family:var(--serif); font-weight:600; font-size:17px; margin:0 0 14px; }
+.sim .game-note { font-size:12.5px; color:var(--text-muted); margin:8px 0 0; }
+.sim .game-note a, .sim .debrief a { text-decoration:underline; }
+
+.sim .pkg-card { display:block; border:1px solid var(--border); border-radius:5px; padding:14px 14px 12px; cursor:pointer; position:relative; transition:border-color .15s, box-shadow .15s; }
+.sim .pkg-card:hover { border-color:var(--silver); }
+.sim .pkg-card input { position:absolute; opacity:0; }
+.sim .pkg-card h4 { font-family:var(--serif); font-weight:600; font-size:14.5px; margin:8px 0 4px; }
+.sim .pkg-card p { font-size:11.8px; color:var(--text-muted); margin:0; line-height:1.4; }
+.sim .pkg-card.is-checked { border-color:var(--navy); box-shadow:0 0 0 1px var(--navy); background:var(--bg); }
+:root:not([data-theme="light"]) .sim .pkg-card.is-checked { border-color:var(--text-muted); box-shadow:0 0 0 1px var(--text-muted); }
+.sim .pkg-card:has(input:focus-visible) { outline:2px solid var(--slate); outline-offset:2px; }
+
+.sim .event-toggle { display:flex; align-items:center; gap:10px; font-size:13.5px; cursor:pointer; }
+.sim .event-toggle input { width:16px; height:16px; accent-color:var(--navy); flex:none; }
+
+.sim .game-log { max-height:560px; overflow-y:auto; }
+.sim .log-entry { border-bottom:1px solid var(--border); padding:14px 0; font-size:13px; }
+.sim .log-entry:first-child { padding-top:0; }
+.sim .log-entry .le-top { display:flex; justify-content:space-between; font-family:var(--mono); font-size:11.5px; color:var(--text-muted); margin-bottom:6px; }
+.sim .log-entry .le-rev { font-family:var(--mono); font-weight:600; font-size:17px; }
+.sim .log-entry .le-flavor { color:var(--text-muted); margin-top:4px; line-height:1.5; }
+.sim .log-entry.warn { color:var(--text); }
+.sim .log-entry.warn .le-rev { color:var(--slate); }
+.sim .le-sub { display:block; font-family:var(--mono); font-size:11px; margin-top:4px; }
+
+.sim .debrief { border:1px solid var(--border); background:var(--bg-raised); border-radius:6px; padding:40px; text-align:left; }
+.sim .debrief h2 { font-family:var(--serif); font-weight:600; font-size:30px; margin:0 0 8px; }
+.sim .debrief .grade { font-family:var(--mono); font-size:13px; display:inline-block; padding:4px 12px; border-radius:20px; background:var(--navy); color:var(--offwhite); margin-bottom:20px; }
+:root:not([data-theme="light"]) .sim .debrief .grade { background:var(--text); color:var(--bg); }
+.sim .debrief .d-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin:20px 0; }
+.sim .debrief .d-stat { background:var(--bg); padding:16px; }
+.sim .debrief .d-stat .dl { font-family:var(--mono); font-size:10px; color:var(--text-muted); text-transform:uppercase; }
+.sim .debrief .d-stat .dv { font-family:var(--mono); font-weight:600; font-size:20px; margin-top:4px; }
+.sim .debrief > p { font-size:14.5px; line-height:1.6; max-width:70ch; margin:0 0 14px; }
+.sim .debrief .btn { margin-top:12px; }
+
+.sim .flow-steps { list-style:none; padding:0; margin:28px 0 0; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; counter-reset:fs; }
+@media (max-width:860px){ .sim .flow-steps{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:480px){ .sim .flow-steps{ grid-template-columns:1fr;} }
+.sim .flow-steps li { counter-increment:fs; border-top:2px solid var(--navy); padding-top:10px; font-size:13px; }
+:root:not([data-theme="light"]) .sim .flow-steps li { border-top-color:var(--text-muted); }
+.sim .flow-steps li::before { content:"0" counter(fs); font-family:var(--mono); font-size:11px; color:var(--text-muted); display:block; margin-bottom:4px; }
+.sim .flow-steps li b { display:block; font-family:var(--serif); font-size:15px; }
+.sim .flow-steps li span { color:var(--text-muted); font-size:12.5px; }
+/* Added: highlight the step the player is on (progress indicator). */
+.sim .flow-steps li.current { border-top-width:4px; }
+.sim .flow-steps li.done { opacity:.6; }
+
+.sim .pkg-row { border:1px solid var(--border); border-radius:5px; margin-top:10px; background:var(--bg-raised); transition:border-color .15s, box-shadow .15s; }
+.sim .pkg-row.on { border-color:var(--navy); box-shadow:0 0 0 1px var(--navy); }
+:root:not([data-theme="light"]) .sim .pkg-row.on { border-color:var(--text-muted); box-shadow:0 0 0 1px var(--text-muted); }
+.sim .pkg-head { display:flex; align-items:center; gap:12px; padding:12px 14px; cursor:pointer; }
+.sim .pkg-head input { width:17px; height:17px; accent-color:var(--navy); flex:none; }
+.sim .pkg-head .ph-text { flex:1; min-width:0; }
+.sim .pkg-head h4 { font-family:var(--serif); font-weight:600; font-size:15px; margin:0; }
+.sim .pkg-head p { font-size:12px; color:var(--text-muted); margin:2px 0 0; line-height:1.4; }
+.sim .pkg-head .badge { flex:none; }
+.sim .pkg-body { display:none; padding:2px 14px 14px 43px; }
+.sim .pkg-row.on .pkg-body { display:block; }
+.sim .ladder { display:flex; flex-wrap:wrap; gap:6px; }
+.sim .tier { font-family:var(--mono); font-size:12px; padding:5px 10px; border-radius:20px; border:1px solid var(--border); background:var(--bg); color:var(--text-muted); cursor:pointer; user-select:none; }
+.sim .tier.on { background:var(--navy); border-color:var(--navy); color:var(--offwhite); }
+:root:not([data-theme="light"]) .sim .tier.on { background:var(--text); border-color:var(--text); color:var(--bg); }
+.sim .tier:focus-visible { outline:2px solid var(--slate); outline-offset:2px; }
+.sim .ladder-note { font-size:11.5px; color:var(--text-muted); margin-top:7px; }
+.sim .gacha-ctl { display:grid; grid-template-columns:110px 1fr 58px; align-items:center; gap:10px; font-size:12.5px; margin-top:6px; }
+.sim .gacha-ctl input[type=range] { accent-color:var(--navy); width:100%; }
+.sim .slider-val { font-family:var(--mono); font-weight:600; font-size:13px; text-align:right; }
+
+.sim .credits { font-family:var(--mono); font-size:11px; font-weight:500; padding:3px 10px; border-radius:20px; border:1px solid var(--border); margin-left:8px; vertical-align:middle; color:var(--text-muted); }
+.sim .lab-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+@media (max-width:560px){ .sim .lab-actions{ grid-template-columns:1fr; } }
+.sim .lab-btn { text-align:left; border:1px solid var(--border); background:var(--bg); border-radius:5px; padding:10px 12px; cursor:pointer; font-family:var(--sans); color:var(--text); }
+.sim .lab-btn:hover:not(:disabled) { border-color:var(--navy); }
+.sim .lab-btn b { display:block; font-size:13px; margin-bottom:3px; }
+.sim .lab-btn span { display:block; font-size:11.5px; color:var(--text-muted); line-height:1.4; }
+.sim .lab-btn:disabled { opacity:.45; cursor:not-allowed; }
+.sim .lab-result { border-left:3px solid var(--navy); background:var(--bg); padding:12px 14px; margin-top:12px; font-size:12.8px; line-height:1.55; border-radius:0 4px 4px 0; }
+:root:not([data-theme="light"]) .sim .lab-result { border-left-color:var(--text-muted); }
+.sim .lab-result b.t { font-family:var(--serif); font-size:14px; display:block; margin-bottom:4px; }
+.sim .lab-result table { width:100%; border-collapse:collapse; margin-top:6px; font-family:var(--mono); font-size:11.5px; }
+.sim .lab-result td, .sim .lab-result th { padding:4px 6px; border-bottom:1px solid var(--border); text-align:right; }
+.sim .lab-result td:first-child, .sim .lab-result th:first-child { text-align:left; }
+.sim .lab-result .game-note { display:block; }
+
+.sim table.liveops td, .sim table.liveops th { padding:8px 8px; font-size:12px; white-space:nowrap; }
+.sim table.liveops td { font-family:var(--mono); }
+.sim .mom-up { color:var(--text); } .sim .mom-dn { color:var(--slate); }
+
+.sim .export-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.sim .lab-mini { font-family:var(--sans); font-size:12.5px; font-weight:600; padding:9px 14px; border-radius:3px; border:1px solid var(--navy); background:var(--bg-raised); color:var(--text); cursor:pointer; }
+:root:not([data-theme="light"]) .sim .lab-mini { border-color:var(--text-muted); }
+.sim .lab-mini:hover { background:var(--bg); }
+.sim .lab-mini:disabled { opacity:.45; cursor:not-allowed; }
+.sim .lab-mini.ghost { border-color:var(--border); color:var(--text-muted); }
+.sim .export-msg { font-size:12px; color:var(--text-muted); margin-top:8px; min-height:1em; }
+.sim .share-bars { margin:14px 0 6px; }
+.sim .share-bar { display:grid; grid-template-columns:140px 1fr 90px; gap:10px; align-items:center; font-size:12.5px; margin-bottom:6px; }
+.sim .share-bar .sb-track { height:10px; background:var(--border); border-radius:5px; overflow:hidden; }
+.sim .share-bar .sb-fill { height:100%; background:var(--navy); }
+:root:not([data-theme="light"]) .sim .share-bar .sb-fill { background:var(--text-muted); }
+.sim .share-bar .sb-v { font-family:var(--mono); text-align:right; }
+
+.sim .ab-box { margin-top:12px; border:1px solid var(--navy); border-radius:5px; padding:12px 14px; background:var(--bg); font-size:12.8px; }
+:root:not([data-theme="light"]) .sim .ab-box { border-color:var(--text-muted); }
+.sim .ab-box b.t { font-family:var(--serif); font-size:14px; display:block; margin-bottom:6px; }
+.sim .ab-row { display:grid; grid-template-columns:120px 1fr; gap:10px; padding:5px 0; border-top:1px solid var(--border); line-height:1.45; }
+.sim .ab-k { font-family:var(--mono); font-size:11px; color:var(--text-muted); text-transform:uppercase; }
+.sim .ab-actions { display:flex; align-items:center; gap:14px; margin-top:10px; }
+.sim .lab-empty { margin-top:12px; font-size:12.8px; padding:10px 12px; border-radius:4px; background:var(--bg); border:1px solid var(--border); color:var(--text-muted); }
+@media (max-width:560px){ .sim .ab-row { grid-template-columns:1fr; gap:2px; } }
+.sim .shop-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+.sim .link-btn { background:none; border:none; padding:2px 0; margin-left:14px; font-family:var(--sans); font-size:12.5px; color:var(--text-muted); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+.sim .link-btn:first-child { margin-left:0; }
+.sim .link-btn:hover { color:var(--text); }
+.sim .lab-tools { margin-top:10px; }
+.sim .lab-tools .link-btn { margin-left:0; margin-right:14px; }
+.sim .lab-confirm { margin-top:12px; }
+.sim .lab-confirm-inner { border:1px dashed var(--navy); border-radius:5px; padding:12px 14px; font-size:12.8px; line-height:1.5; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:var(--bg); }
+:root:not([data-theme="light"]) .sim .lab-confirm-inner { border-color:var(--text-muted); }
+.sim .lc-btns { display:flex; gap:8px; }
+.sim .spark { width:100%; height:auto; display:block; }
+.sim .spark .sp-lbl { font-family:var(--mono); font-size:10px; fill:var(--text-muted); }
+:root:not([data-theme="light"]) .sim .spark polyline { stroke:var(--text); }
+
+.sim .market-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+@media (max-width:900px){ .sim .market-grid{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .sim .market-grid{ grid-template-columns:1fr;} }
+.sim details.profiles { margin-top:22px; border:1px solid var(--border); border-radius:5px; background:var(--bg-raised); padding:14px 18px; }
+.sim details.profiles summary { cursor:pointer; font-family:var(--serif); font-weight:600; font-size:15px; }
+.sim details.profiles table { margin-top:14px; }
+.sim details.profiles .src-note { font-size:12px; color:var(--text-muted); margin-top:12px; line-height:1.6; }
+.sim .sim-head { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; }
+@media (max-width:640px){ .sim .sim-head .mascot { display:none; } }
+
+@media (max-width:560px){
+  .sim .game-panel { padding:18px 16px 20px; }
+  .sim .pkg-head { flex-wrap:wrap; }
+  .sim .pkg-head .badge { order:3; margin-left:29px; }
+  .sim .pkg-head .ph-text { flex:1 1 calc(100% - 40px); }
+  .sim .game-stats .game-stat:last-child { grid-column:span 2; }
+  .sim .pkg-body { padding:2px 14px 14px 14px; }
+  .sim .gacha-ctl { grid-template-columns:84px 1fr 52px; }
+  .sim .share-bar { grid-template-columns:110px 1fr 44px; }
+  .sim .debrief { padding:24px 18px; }
+  .sim .debrief .d-stats { grid-template-columns:1fr; }
+}
