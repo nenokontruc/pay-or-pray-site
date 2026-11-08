@@ -29,12 +29,12 @@ export function PityChart() {
       <div className="cs-viz-head">
         <h3 className="viz-title">Chance of having won the top prize, by number of draws</h3>
         <span className="cs-legend">
-          <span><i className="cs-key wwm" />Where Winds Meet &middot; <b>exact</b> (derived)</span>
+          <span><i className="cs-key wwm" />Where Winds Meet &middot; <b>hypothetical teaching model</b></span>
           <span><i className="cs-key hok" />Honor of Kings &middot; <b>range only</b> (schedule not published)</span>
         </span>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="cs-chart" role="img"
-        aria-label={`Line chart. Where Winds Meet: chance of the featured outfit stays near ${p1(WWM_BEFORE_GUARANTEE)} until pull 149, then 100% at pull 150. Honor of Kings: exact curve unknown; at least 1 minus 0.992 to the power n, and 100% at draw 361.`}>
+        aria-label={`Line chart. Where Winds Meet, hypothetical teaching model: chance of the outfit reaches about ${p1(WWM_BEFORE_GUARANTEE)} by pull 149, then 100% on pull 150. Honor of Kings: exact curve unknown; at least 1 minus 0.992 to the power n, and 100% at draw 361.`}>
         <defs>
           <pattern id={`${id}-hatch`} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
             <line x1="0" y1="0" x2="0" y2="6" stroke="var(--silver)" strokeWidth="1.4" />
@@ -65,7 +65,7 @@ export function PityChart() {
         <div className="cs-read wwm">
           <span className="cs-read-k">Where Winds Meet</span>
           <b data-testid="wwm-readout">{n >= WWM_GUARANTEE ? '100%' : p1(wwmAt)}</b>
-          <span>{n >= WWM_GUARANTEE ? 'guaranteed by pull 150' : 'exact chance the featured outfit has dropped (0.0415% per pull)'}</span>
+          <span>{n >= WWM_GUARANTEE ? 'in the model, guaranteed on pull 150' : 'model-derived chance the outfit has dropped (0.0415% per pull, teaching model)'}</span>
         </div>
         <div className="cs-read hok">
           <span className="cs-read-k">Honor of Kings</span>
@@ -74,7 +74,7 @@ export function PityChart() {
         </div>
       </div>
       <p className="viz-foot">
-        <b>What is exact and what is not.</b> The Where Winds Meet line follows directly from the published fixed odds (0.0415%) and the 150-pull guarantee. Honor of Kings publishes its starting odds (0.8%) and guarantee (draw 361) but not how much the odds rise per draw, so no curve is drawn &mdash; only the range those two facts allow.
+        <b>What this chart is.</b> The Where Winds Meet line is a <b>hypothetical teaching model</b>: it assumes the reported fixed odds (0.0415%) apply to every pull and that the 150-pull guarantee always delivers this outfit. Reseller guides disagree on how the guarantee resets, so the line is not an observed outcome (details below). Honor of Kings publishes its starting odds (0.8%) and guarantee (draw 361) but not how much the odds rise per draw, so no curve is drawn &mdash; only the range those two facts allow.
       </p>
     </div>
   )

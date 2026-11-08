@@ -102,15 +102,20 @@ export default function CaseStudy() {
           <h3 className="cs-h3">How the odds play out</h3>
           <PityChart />
           <Takeaway>
-            Derived from the published odds: only about {(WWM_BEFORE_GUARANTEE * 100).toFixed(0)}% of players chasing the Where Winds Meet outfit win it before the {WWM_GUARANTEE}-pull guarantee &mdash; for most, the price of the outfit is the full {WWM_GUARANTEE} pulls.
+            Teaching model, not an observed outcome: if 0.0415% applied to every pull and the guarantee always gave this outfit, about {(WWM_BEFORE_GUARANTEE * 100).toFixed(1)}% of players would win it within the first 149 pulls; the other {((1 - WWM_BEFORE_GUARANTEE) * 100).toFixed(1)}% would get it on the guaranteed 150th pull. By pull 150, 100% have it.
           </Takeaway>
-          <Disclosure label="How the Where Winds Meet figures are derived">
+          <Disclosure label="Teaching model: formula, assumptions and source check">
+            <p>These are <b>model-derived estimates</b>, not observed outcomes or numbers reported by the sources.</p>
             <p>With a fixed chance <i>p</i> = 0.0415% per pull, the chance of no win in the first <i>n</i> pulls is (1 &minus; <i>p</i>)<sup><i>n</i></sup>. So:</p>
             <ul className="cs-math">
-              <li>Chance of winning within the first 149 pulls: 1 &minus; (1 &minus; 0.000415)<sup>149</sup> = <b>{(WWM_BEFORE_GUARANTEE * 100).toFixed(2)}%</b>.</li>
-              <li>Expected pulls to win, with the guarantee on pull 150: (1 &minus; (1 &minus; <i>p</i>)<sup>150</sup>) / <i>p</i> = <b>{WWM_EXPECTED_PULLS.toFixed(1)}</b> pulls.</li>
+              <li><b>Win before the guarantee</b> (within pulls 1&ndash;149): 1 &minus; (1 &minus; 0.000415)<sup>149</sup> = <b>{(WWM_BEFORE_GUARANTEE * 100).toFixed(2)}%</b>.</li>
+              <li><b>Reach the guaranteed pull</b> without an earlier win: (1 &minus; 0.000415)<sup>149</sup> = <b>{((1 - WWM_BEFORE_GUARANTEE) * 100).toFixed(2)}%</b>.</li>
+              <li><b>Win on or before the guaranteed pull</b> (by pull 150): <b>100%</b>, by the guarantee.</li>
+              <li><b>Expected pulls until the outfit</b>: (1 &minus; (1 &minus; <i>p</i>)<sup>150</sup>) / <i>p</i> = <b>{WWM_EXPECTED_PULLS.toFixed(1)}</b> pulls.</li>
             </ul>
-            <p><b>Assumptions:</b> pulls are independent and all on one banner. The guarantee is shared across both banners in the game; the 0.747% material odds are not part of this calculation. These are derived figures, not numbers reported by the sources.</p>
+            <p><b>Assumptions.</b> (1) Every pull has the same 0.0415% chance for this outfit, independent of earlier pulls &mdash; consistent with the source&rsquo;s &ldquo;0.0415%, fixed&rdquo; and &ldquo;fixed until the guarantee&rdquo;. (2) The 150-pull guarantee always delivers this outfit, and nothing else resets the counter. (3) All pulls are on one banner. The 0.747% material odds are not part of the calculation.</p>
+            <p><b>Source check (November 2026) &mdash; unresolved.</b> The cited guide (BitTopup, 2025) supports the fixed 0.0415% outfit rate, the absence of soft pity and a 150-pull hard pity for a specific outfit. But the same guide says the shared counter resets when the player obtains <i>any</i> Legendary, and a second BitTopup guide gives a 0.83% featured-Legendary rate and says the guarantee awards <i>any</i> Legendary. Both are top-up reseller pages, not official game disclosures. If other Legendaries reset the counter, assumption (2) fails and the figures above do not hold. That is why the line is shown only as a hypothetical teaching model.</p>
+            <p>The arithmetic was checked three ways (closed form, step-by-step product, and a 2-million-player simulation), all giving 6.00% and 145.5 pulls.</p>
             <p>For Honor of Kings, the only safe statement is a lower bound: because the odds start at 0.8% and only rise, the chance of having won by draw <i>n</i> is at least 1 &minus; (1 &minus; 0.008)<sup><i>n</i></sup>. The rise per draw (&ldquo;luck value&rdquo;) is not published, so the true curve is not shown.</p>
           </Disclosure>
         </div>

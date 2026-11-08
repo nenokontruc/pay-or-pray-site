@@ -63,7 +63,13 @@ describe('Case Study page', () => {
   it('labels derived and unpublished quantities honestly', () => {
     const { container } = open()
     const text = norm(container.textContent ?? '')
-    expect(text).toContain('These are derived figures, not numbers reported by the sources.')
+    expect(text).toContain('These are model-derived estimates, not observed outcomes or numbers reported by the sources.')
+    expect(text).toContain('hypothetical teaching model')
+    expect(text).toContain('Source check (November 2026) — unresolved.')
+    // Before the guarantee vs on-or-before the guaranteed pull are stated separately.
+    expect(text).toContain('Win before the guarantee (within pulls 1–149): 1 − (1 − 0.000415)149 = 6.00%')
+    expect(text).toContain('Win on or before the guaranteed pull (by pull 150): 100%')
+    expect(text).toContain('Expected pulls until the outfit: (1 − (1 − p)150) / p = 145.5 pulls')
     expect(text).toContain('not how much the odds rise per draw, so no curve is drawn')
     expect(container.querySelector('.prose a')!.getAttribute('href')).toBe('#framework')
   })
