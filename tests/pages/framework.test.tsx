@@ -154,11 +154,77 @@ describe('Framework — tabs, mathematics, accessibility, navigation', () => {
     expect(screen.getByTestId('general-total').textContent).toBe('2.15')
   })
 
-  it('"Open the mathematics" stays on the Framework page (no hash navigation)', () => {
+  it('"Open the mathematics" (toolkit step 3) stays on the Framework page (no hash navigation)', () => {
     const { container } = open()
+    fireEvent.click(screen.getByRole('tab', { name: /So, how do we value it/ }))
     fireEvent.click(screen.getByRole('button', { name: /Open the mathematics/ }))
     expect(window.location.hash).toBe('#framework')
     expect(container.querySelector<HTMLDetailsElement>('#fw-math')!.open).toBe(true)
+  })
+})
+
+describe('Framework — toolkit chain (WTP → choice architecture → EVC)', () => {
+  const steps = () => within(screen.getByRole('tablist', { name: 'Toolkit steps' })).getAllByRole('tab')
+  const current = () => steps().findIndex((t) => t.getAttribute('aria-selected') === 'true')
+
+  it('opens on step 1 with the question, and the price slider drives d(p) (hand-checked: 24, 39, 4 buyers)', () => {
+    open()
+    expect(current()).toBe(0)
+    expect(screen.getByRole('tabpanel', { name: /Who pays/ }).textContent).toContain('how many of 100 players buy it?')
+    expect(screen.getByTestId('buyers').textContent).toBe('24 buyers') // default $4.99
+    expect(screen.getByTestId('paying-rate').textContent).toBe('24%')
+    const price = screen.getByRole('slider', { name: 'Skin price' })
+    fireEvent.change(price, { target: { value: '0.99' } })
+    expect(screen.getByTestId('buyers').textContent).toBe('39 buyers')
+    fireEvent.change(price, { target: { value: '19.99' } })
+    expect(screen.getByTestId('buyers').textContent).toBe('4 buyers')
+    expect(screen.getByTestId('wtp-price').textContent).toBe('$19.99')
+  })
+
+  it('labels the population as illustrative and the 56% as real (Newzoo)', () => {
+    const { container } = open()
+    const panel = container.querySelector('#fw-chain-panel-who')!.textContent!
+    expect(panel).toContain('Illustrative population')
+    expect(panel).toContain('Real 56% of players spend nothing on games in a year (Newzoo).')
+    expect(panel).toContain('Illustrative The 44 dots are made-up willingness-to-pay values')
+    expect(panel).toContain('d(p) = D·(1 − W(p))')
+  })
+
+  it('next/previous, arrow keys and Home/End move between the three steps', () => {
+    open()
+    fireEvent.click(screen.getByRole('button', { name: /Next/ })); expect(current()).toBe(1)
+    steps()[1].focus()
+    fireEvent.keyDown(steps()[1], { key: 'End' }); expect(current()).toBe(2); expect(document.activeElement).toBe(steps()[2])
+    expect((screen.getByRole('button', { name: /Next/ }) as HTMLButtonElement).disabled).toBe(true)
+    fireEvent.keyDown(steps()[2], { key: 'ArrowLeft' }); expect(current()).toBe(1)
+    fireEvent.click(screen.getByRole('button', { name: /Previous/ })); expect(current()).toBe(0)
+    expect(screen.getByText('1 / 3')).toBeTruthy()
+  })
+
+  it('step 2 contrasts known options (compromise, anchor) with a lucky draw (no comparison set)', () => {
+    open()
+    fireEvent.click(screen.getByRole('tab', { name: /What do they compare/ }))
+    const p = screen.getByRole('tabpanel', { name: /What do they compare/ }).textContent!
+    expect(p).toContain('compromise')
+    expect(p).toContain('anchor')
+    expect(p).toContain('near-miss effects, sunk-cost escalation and pity-timer anchoring')
+  })
+
+  it('step 3 routes back to the matching calculator tab', () => {
+    open()
+    fireEvent.click(screen.getByRole('tab', { name: /So, how do we value it/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Open the Probabilistic calculator/ }))
+    expect(screen.getByRole('tab', { name: /Probabilistic Goods/ }).getAttribute('aria-selected')).toBe('true')
+    fireEvent.click(screen.getByRole('tab', { name: /So, how do we value it/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Open the Deterministic calculator/ }))
+    expect(screen.getByRole('tab', { name: /Deterministic Goods/ }).getAttribute('aria-selected')).toBe('true')
+  })
+
+  it('original WTP and Choice Architecture paragraphs remain available in full', () => {
+    const { container } = open()
+    const t = container.querySelector('.fw-chain')!.textContent!
+    expect(t).toContain('Paying Rate is low not because prices are high, but because most players’ willingness to pay for extras is zero')
+    expect(t).toContain('This is the mechanism this project\'s case study is built to isolate.')
   })
 
   it('keeps the rest of the toolkit and the original references', () => {

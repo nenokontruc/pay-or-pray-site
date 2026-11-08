@@ -3,9 +3,9 @@
 import { useRef, useState, type KeyboardEvent } from 'react'
 import { Seal } from '../components/Art'
 import { PixelIcon } from '../components/PixelIcon'
-import { Disclosure, Takeaway } from '../components/Disclosure'
+import { Takeaway } from '../components/Disclosure'
 import { DETERMINISTIC_DEFAULTS, PROBABILISTIC_DEFAULTS } from '../lib/evc'
-import { CHOICE_PARAGRAPH, WTP_PARAGRAPH } from '../data/framework'
+import { ToolkitChain } from './framework/ToolkitChain'
 import { DeterministicTab, type DetState } from './framework/DeterministicTab'
 import { ProbabilisticTab, type ProbState } from './framework/ProbabilisticTab'
 import { MathPanel } from './framework/MathPanel'
@@ -23,6 +23,20 @@ export default function Framework() {
   const [prob, setProb] = useState<ProbState>({ ...PROBABILISTIC_DEFAULTS })
   const tabRefs = useRef<Record<TabId, HTMLButtonElement | null>>({ det: null, prob: null })
   const go = (id: TabId) => { setTab(id); tabRefs.current[id]?.focus() }
+  const smooth = (): ScrollBehavior => (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth')
+  // Used by the toolkit chain: jump back up to the workbench with the right tab selected.
+  const openTab = (id: TabId) => {
+    setTab(id)
+    document.getElementById('fw-workbench')?.scrollIntoView?.({ behavior: smooth(), block: 'start' })
+    tabRefs.current[id]?.focus({ preventScroll: true })
+  }
+  // A button, not an "#anchor" link: the site's router uses the URL hash for pages.
+  const openMath = () => {
+    const d = document.getElementById('fw-math') as HTMLDetailsElement | null
+    if (!d) return
+    d.open = true
+    d.scrollIntoView?.({ behavior: smooth(), block: 'start' })
+  }
   const onKey = (e: KeyboardEvent) => {
     const i = TABS.findIndex((t) => t.id === tab)
     const next = e.key === 'ArrowRight' ? TABS[(i + 1) % 2] : e.key === 'ArrowLeft' ? TABS[(i + 1) % 2] : e.key === 'Home' ? TABS[0] : e.key === 'End' ? TABS[1] : null
@@ -69,39 +83,9 @@ export default function Framework() {
 
       <section className="block slide" id="fw-toolkit">
         <div className="wrap-wide">
-          <h2 className="sec-title">The rest of the toolkit</h2>
-          <div className="fw-cards">
-            <article className="fw-card">
-              <span className="fw-card-k">Willingness-to-pay &amp; price response</span>
-              <div className="fw-card-formula notranslate" translate="no">d(p) = D·(1 − W(p))</div>
-              <p>Paying Rate = P(wtp ≥ p): the share of players whose willingness to pay exceeds the price.</p>
-              <p className="fw-card-ex"><b>56%</b> of players spend nothing on games in a year (Newzoo).</p>
-              <Disclosure label="Full explanation"><p>{WTP_PARAGRAPH}</p></Disclosure>
-            </article>
-            <article className="fw-card">
-              <span className="fw-card-k">Choice architecture</span>
-              <div className="fw-card-vs">
-                <div><b>Fixed-price shop</b><span>Compromise &amp; anchor effects</span></div>
-                <div><b>Gacha</b><span>Near-miss, sunk-cost escalation, pity-timer anchoring</span></div>
-              </div>
-              <p>Anchors need a set of known-value alternatives to compare &mdash; a lucky draw has none.</p>
-              <Disclosure label="Full explanation"><p>{CHOICE_PARAGRAPH}</p></Disclosure>
-            </article>
-            <article className="fw-card">
-              <span className="fw-card-k">EVC and gaming</span>
-              <p className="fw-quote">Can EVC be applied to gaming? Yes &mdash; but it is trickier than a standard case.</p>
-              <p className="fw-card-ex">Guest speaker Dr. Tim Smith, Wiglaf Pricing &mdash; class Q&amp;A, Sept. 2026.</p>
-              <p>That is why the probabilistic tab re-derives EVC in expectation, and why the full mathematics sits one click away.</p>
-              {/* A button, not an "#anchor" link: the site's router uses the URL hash for pages. */}
-              <button type="button" className="fw-link" onClick={() => {
-                const d = document.getElementById('fw-math') as HTMLDetailsElement | null
-                if (!d) return
-                d.open = true
-                const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-                d.scrollIntoView?.({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
-              }}>Open the mathematics &rarr;</button>
-            </article>
-          </div>
+          <p className="kicker">The rest of the toolkit</p>
+          <h2 className="sec-title">Why does chance change the pricing problem?</h2>
+          <ToolkitChain onOpenTab={openTab} onOpenMath={openMath} />
         </div>
       </section>
     </div>

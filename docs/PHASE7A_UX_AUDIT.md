@@ -279,3 +279,9 @@ Run with 3–5 classmates who haven't seen the site, about 15 minutes each, thin
   - The summary separates "Chance decides" from "Not left to chance". An early version listed Honor of Kings' prize under "chance decides" with a strike-through; that was caught in the browser check and fixed.
   - Measured at 1280 × 800: the channel map now starts at ~580 px, on the first screen. Before, ~2 screens of figures came first.
   - All original text, the full table, the teaching-model label and the source note are unchanged (content-preservation test).
+- **Item 2 — Framework toolkit → 3-step chain** (approved 2026-11-08):
+  - The three parallel cards became one guided chain under the question "Why does chance change the pricing problem?": ① Who pays? → ② What do they compare? → ③ So, how do we value it? Each step has a question, one visual, a takeaway and the original paragraph in full.
+  - ① A price slider over 100 players: 56 at $0 (tagged **Real**, Newzoo) and 44 **illustrative** willingness-to-pay values (`src/lib/wtp.ts`). It shows Paying Rate = P(wtp ≥ p) and d(p) = D·(1 − W(p)) live. Hand-checked: 39 / 24 / 4 buyers at $0.99 / $4.99 / $19.99, never more than 44.
+  - ② A static annotated comparison: three known prices (compromise, anchor) vs. "? ? ?" (near-miss, sunk-cost escalation, pity-timer anchoring).
+  - ③ Two routes that jump back to the matching calculator tab, plus the Dr. Tim Smith quote and "Open the mathematics".
+  - Found and fixed in the browser check: two chart labels overlapped at desktop size, labels were ~7 px on a phone, the step tabs wrapped one word per line on a phone, and "$25+" was clipped. Headings and notes are now HTML, with short step labels and larger axis text on small screens. Overlaps were re-measured as zero at three prices and two widths.
