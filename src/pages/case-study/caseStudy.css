@@ -75,6 +75,10 @@
 .cs .cs-impl-col.mid { box-shadow:inset 0 3px 0 var(--slate); }
 .cs .cs-impl-col.outline { box-shadow:inset 0 3px 0 var(--silver); }
 .cs .cs-impl-k { font-family:var(--mono); font-size:10.5px !important; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); background:var(--bg); }
+/* "What chance decides": the row to read first. Heavier type and rules above and below, not colour alone. */
+.cs .cs-impl-row.cs-impl-key, .cs .cs-impl-key + .cs-impl-row { border-top:2px solid var(--text); }
+.cs .cs-impl-key > span[role="cell"] { font-weight:600; color:var(--text); }
+.cs .cs-impl-key .cs-impl-k { color:var(--text); font-weight:700; font-size:12px !important; }
 @media (max-width:760px){
   .cs .cs-impl-row { grid-template-columns:1fr; }
   .cs .cs-impl-row > span + span { border-left:none; border-top:1px dashed var(--border); }

@@ -114,6 +114,7 @@ export default function CaseStudy() {
           <header className="slide-head">
             <p className="kicker">03 &mdash; <b>What this means for pricing</b></p>
             <h2 className="sec-title">The item, not the game, sets the pricing tool</h2>
+            <p className="sec-lede cs-impl-guide">Read each row left to right. Start with what chance decides, then who chooses the prize and which pricing tool applies.</p>
           </header>
           <div className="cs-impl" role="table" aria-label="Pricing implications by item">
             <div className="cs-impl-row cs-impl-head" role="row">
@@ -121,7 +122,8 @@ export default function CaseStudy() {
               {IMPLICATIONS.map((c) => <span key={c.head} role="columnheader" className={`cs-impl-col ${c.tone}`}>{c.head}</span>)}
             </div>
             {IMPL_ROWS.map((label, r) => (
-              <div className="cs-impl-row" role="row" key={label}>
+              // The first row carries the main difference; it is emphasised by weight and rules, not colour alone.
+              <div className={`cs-impl-row${r === 0 ? ' cs-impl-key' : ''}`} role="row" key={label}>
                 <span role="rowheader" className="cs-impl-k">{label}</span>
                 {IMPLICATIONS.map((c) => <span key={c.head} role="cell">{c.rows[r]}</span>)}
               </div>
