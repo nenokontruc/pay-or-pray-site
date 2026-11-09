@@ -49,7 +49,7 @@ export function Timeline() {
         <button type="button" className="btn-ghost" onClick={() => go(i - 1, true)} disabled={i === 0}>&larr; Previous milestone</button>
         <button type="button" className="btn-ghost" onClick={() => go(i + 1, true)} disabled={i === HISTORY.length - 1}>Next milestone &rarr;</button>
       </div>
-      <p className="game-note">{HISTORY_SOURCES}</p>
+      <p className="game-note present-hide">{HISTORY_SOURCES}</p>
       <Disclosure label="All eight milestones (text version)">
         <ol className="ind-history">
           {HISTORY.map((h) => (

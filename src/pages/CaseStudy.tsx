@@ -6,6 +6,7 @@ import { PixelIcon } from '../components/PixelIcon'
 import { COMPARE, GAMES, WWM_GUARANTEE } from '../data/caseStudy'
 import { PityChart, WWM_BEFORE_GUARANTEE, WWM_EXPECTED_PULLS } from './case-study/PityChart'
 import { ChannelMap } from './case-study/ChannelMap'
+import { ScenarioStrip } from './case-study/ScenarioStrip'
 import { PurchasePath, STEPS } from './case-study/PurchasePath'
 import './case-study/caseStudy.css'
 
@@ -48,7 +49,7 @@ export default function CaseStudy() {
           <div>
             <p className="kicker">Case Study</p>
             <h1 className="page-title">Two Chinese games, two ways to sell chance</h1>
-            <p className="page-lede">Honor of Kings and Where Winds Meet both sell fixed-price skins <i>and</i> run lucky draws &mdash; like almost every top-grossing mobile game. So the useful question isn't which game is &ldquo;deterministic.&rdquo; It's how each one <b>designs the lucky draw</b> on top of its shop, and <b>where the randomness ends</b>.</p>
+            <p className="page-lede present-hide">Honor of Kings and Where Winds Meet both sell fixed-price skins <i>and</i> run lucky draws &mdash; like almost every top-grossing mobile game. So the useful question isn't which game is &ldquo;deterministic.&rdquo; It's how each one <b>designs the lucky draw</b> on top of its shop, and <b>where the randomness ends</b>.</p>
           </div>
           <div className="page-hero-art cs-hero-art" aria-hidden><PixelIcon name="cart" size={84} /><PixelIcon name="capsule" size={84} /></div>
         </div>
@@ -76,7 +77,7 @@ export default function CaseStudy() {
             <p className="sec-lede">Both draws are (near-)cosmetic and both guarantee a prize eventually. The differences are in how the odds move, what you win, and what you pay with.</p>
           </header>
           <PurchasePath step={step} setStep={setStep} />
-          <div className="callout"><b>The key difference:</b> in Honor of Kings, chance decides <i>how much</i> you pay, but you choose <i>what</i> you get &mdash; the lottery turns back into a known purchase at the end. In Where Winds Meet, chance decides both how much you pay and, until the guarantee, whether you get the item at all.</div>
+          <div className="callout normal-only"><b>The key difference:</b> in Honor of Kings, chance decides <i>how much</i> you pay, but you choose <i>what</i> you get &mdash; the lottery turns back into a known purchase at the end. In Where Winds Meet, chance decides both how much you pay and, until the guarantee, whether you get the item at all.</div>
           <Disclosure label="View the full comparison table">
             <div className="table-scroll">
               <table className="data-table compare-table">
@@ -89,10 +90,11 @@ export default function CaseStudy() {
 
           <h3 className="cs-h3">How the odds play out</h3>
           <PityChart />
-          <Takeaway>
+          {/* NORMAL: the full sentence. PRESENT: the same result as a labelled bar inside the chart card. */}
+          <div className="normal-only"><Takeaway>
             Teaching model, not an observed outcome: if 0.0415% applied to every pull and the guarantee always gave this outfit, about {(WWM_BEFORE_GUARANTEE * 100).toFixed(1)}% of players would win it within the first 149 pulls; the other {((1 - WWM_BEFORE_GUARANTEE) * 100).toFixed(1)}% would get it on the guaranteed 150th pull. By pull 150, 100% have it.
-          </Takeaway>
-          <Disclosure label="Teaching model: formula, assumptions and source check">
+          </Takeaway></div>
+          <Disclosure label="Teaching model: formula, assumptions and source check" className="present-keep">
             <p>These are <b>model-derived estimates</b>, not observed outcomes or numbers reported by the sources.</p>
             <p>With a fixed chance <i>p</i> = 0.0415% per pull, the chance of no win in the first <i>n</i> pulls is (1 &minus; <i>p</i>)<sup><i>n</i></sup>. So:</p>
             <ul className="cs-math">
@@ -114,14 +116,18 @@ export default function CaseStudy() {
           <header className="slide-head">
             <p className="kicker">03 &mdash; <b>What this means for pricing</b></p>
             <h2 className="sec-title">The item, not the game, sets the pricing tool</h2>
+            <p className="sec-lede cs-impl-guide normal-only">Read each row left to right. Start with what chance decides, then who chooses the prize and which pricing tool applies.</p>
           </header>
-          <div className="cs-impl" role="table" aria-label="Pricing implications by item">
+          {/* PRESENT shows the same comparison as three scenarios; NORMAL keeps the full table. */}
+          <ScenarioStrip />
+          <div className="cs-impl normal-only" role="table" aria-label="Pricing implications by item">
             <div className="cs-impl-row cs-impl-head" role="row">
               <span role="columnheader" />
               {IMPLICATIONS.map((c) => <span key={c.head} role="columnheader" className={`cs-impl-col ${c.tone}`}>{c.head}</span>)}
             </div>
             {IMPL_ROWS.map((label, r) => (
-              <div className="cs-impl-row" role="row" key={label}>
+              // The first row carries the main difference; it is emphasised by weight and rules, not colour alone.
+              <div className={`cs-impl-row${r === 0 ? ' cs-impl-key' : ''}`} role="row" key={label}>
                 <span role="rowheader" className="cs-impl-k">{label}</span>
                 {IMPLICATIONS.map((c) => <span key={c.head} role="cell">{c.rows[r]}</span>)}
               </div>
@@ -129,14 +135,15 @@ export default function CaseStudy() {
           </div>
           <Takeaway>That is why this project compares <b>what is being sold</b>, not whole games. The same storefront can need two different pricing tools.</Takeaway>
 
-          <div className="cs-evidence">
+          <div className="cs-evidence present-hide">
             <div className="cs-ev">
               <div className="cs-ev-num">36.7%</div>
               <div className="case-note">A guaranteed prize matters economically, not just for goodwill. It moves a draw toward the &ldquo;unique box&rdquo; design, where every purchase yields an item the player doesn&rsquo;t already own. In Chen et al.&rsquo;s model, unique boxes approach the full revenue-optimal ceiling as the catalog grows, while duplicate-allowing boxes capture only about 36.7% of it. <span className="cs-src">&mdash; Chen, Elmachtoub, Hamilton &amp; Lei, 2021</span></div>
             </div>
             <div className="cs-ev">
               <div className="cs-ev-num">~$320M <small>/ 21 months</small></div>
-              <div className="case-note">Staying cosmetic-only has a revenue cost: Wuthering Waves, which puts power-affecting characters in its gacha, earned roughly <b>$320M over 21 months</b> &mdash; nearly double Where Winds Meet's pace on a broadly comparable download base. <span className="cs-src">&mdash; Naavik, 2026</span></div>
+              {/* Corrected Nov 2026 (docs/CONTENT_CORRECTIONS.md): the cited source does not conclude that cosmetic-only costs revenue. */}
+              <div className="case-note">Does staying cosmetic-only cost revenue? Not clearly. Wuthering Waves, which puts power-affecting characters in its gacha, earned roughly <b>$320M over 21 months</b> (about $15M a month, on about 29M downloads), against about $8M a month (on about 20M downloads) for Where Winds Meet &mdash; both mobile only, excluding China Android. But the same analysis finds Where Winds Meet&rsquo;s long-term revenue efficiency on iOS China &ldquo;tracks closely&rdquo; with Wuthering Waves&rsquo;, and concludes that its cosmetic-only model has not radically undermined unit economics. <span className="cs-src">&mdash; Naavik, 2026</span></div>
             </div>
           </div>
 

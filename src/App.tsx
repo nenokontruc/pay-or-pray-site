@@ -30,7 +30,8 @@ function PageNav({ page }: { page: PageId }) {
 /** "How this simulation works" footer, verbatim from legacy/index.html:1065-1081. */
 function SimulationFooter() {
   return (
-    <footer>
+    // .sim-foot: the model assumptions stay visible in PRESENT mode.
+    <footer className="sim-foot">
       <div className="wrap-wide">
         <div className="foot-grid">
           <div>
@@ -90,7 +91,7 @@ function Footer({ page }: { page: PageId }) {
               ) : (
                 <>
                   <div>OPM 6600 — Pricing and Revenue Optimization</div>
-                  <div>Final project companion site · Trúc Trinh</div>
+                  <div>Final project companion site · Trúc Trịnh</div>
                 </>
               )}
             </div>

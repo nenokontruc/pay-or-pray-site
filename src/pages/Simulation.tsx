@@ -26,10 +26,13 @@ export default function Simulation() {
           <div>
             <p className="kicker">Simulation</p>
             <h1 className="page-title">You're the new monetization manager</h1>
+            {/* PRESENT only: the objective from the hidden intro ("Earn the most without wrecking trust"),
+                named after the HUD's own metrics (Total revenue, Goodwill). */}
+            <p className="sim-goal present-only"><b>Goal:</b> earn revenue while protecting player goodwill.</p>
           </div>
           <div className="mascot" aria-hidden><Seal size={88} /></div>
         </div>
-        <p className="page-lede">Pick a country, test your plan before launch, then run eight months of live operations &mdash; each month simulated day by day. Like a real game, your shop can sell several things at once &mdash; skins, a battle pass, power items, lucky draws &mdash; each with its own price ladder. But every player has one wallet, so your packages compete with each other. Earn the most without wrecking trust.</p>
+        <p className="page-lede present-hide">Pick a country, test your plan before launch, then run eight months of live operations &mdash; each month simulated day by day. Like a real game, your shop can sell several things at once &mdash; skins, a battle pass, power items, lucky draws &mdash; each with its own price ladder. But every player has one wallet, so your packages compete with each other. Earn the most without wrecking trust.</p>
         <ol className="flow-steps" aria-label="Progress">
           {STEPS.map(([b, t], i) => (
             <li key={b} className={i === current ? 'current' : i < current ? 'done' : ''} aria-current={i === current ? 'step' : undefined}>

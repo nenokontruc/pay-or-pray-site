@@ -111,8 +111,9 @@ export const JURISDICTIONS: Jurisdiction[] = [
     source: 'Project regulation table (status, 2026)', lon: 4, lat: 56,
     instrument: 'interpretation', instrumentBasis: 'A court ruling (Council of State, 9 March 2022) on how existing gambling law applies (CMS; SCL).' },
   { id: 'kr', name: 'South Korea', approach: 'Disclosure', stance: 'disc', year: '2024',
-    status: 'Statutory odds disclosure since 2024, with 3x damages for violations',
-    source: 'Project regulation table (status, 2026)', lon: 128, lat: 37,
+    // Corrected Nov 2026 (docs/CONTENT_CORRECTIONS.md): the 3x damages provision took effect on 1 Aug 2025, not 2024.
+    status: 'Statutory odds disclosure since March 2024; up to 3x damages for intentional violations since August 2025',
+    source: 'Game Industry Promotion Act amendments: disclosure in force 22 March 2024; damages provision in force 1 August 2025 (Ministry of Culture, Sports and Tourism, via The Fact, 2025; Law Times, 2025; Yoon & Yang via Legal 500)', lon: 128, lat: 37,
     instrument: 'enacted', instrumentBasis: 'The status describes statutory (legislated) odds disclosure.' },
   { id: 'us', name: 'United States', approach: 'No federal law', stance: 'none', year: 'No statute',
     status: 'No state or federal statute as of late 2026; active FTC and state-level litigation',

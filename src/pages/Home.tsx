@@ -6,11 +6,12 @@ import { GachaDemo } from './home/GachaDemo'
 import { Comparison } from './home/Comparison'
 import './home/home.css'
 
+// [term, one-line definition shown in PRESENT (shortened from the full text), full explanation shown in NORMAL]
 const STEPS = [
-  ['Freemium', <>&ldquo;Free + premium.&rdquo; The game is free to play; the company earns money by selling optional extras inside it. Most players never pay &mdash; a small share pays a lot.</>],
-  ['Gacha / loot box', <>A paid lucky draw inside a game. You spend money for a <i>chance</i> at a rare item. Named after Japanese capsule-toy machines.</>],
-  ['Pay-to-win', <>When money buys a real competitive advantage, not just a new look. Players who don't pay often feel this is unfair &mdash; and leave.</>],
-  ['Willingness to pay', <>The most a person would pay for something. It differs between people, and between countries &mdash; which is why one global price rarely works.</>],
+  ['Freemium', 'Free to play, with optional paid items.', <>&ldquo;Free + premium.&rdquo; The game is free to play; the company earns money by selling optional extras inside it. Most players never pay &mdash; a small share pays a lot.</>],
+  ['Gacha / loot box', 'Pay for a chance at a rare item.', <>A paid lucky draw inside a game. You spend money for a <i>chance</i> at a rare item. Named after Japanese capsule-toy machines.</>],
+  ['Pay-to-win', 'Money buys a competitive advantage, not just a new look.', <>When money buys a real competitive advantage, not just a new look. Players who don't pay often feel this is unfair &mdash; and leave.</>],
+  ['Willingness to pay', 'The most a player is prepared to pay.', <>The most a person would pay for something. It differs between people, and between countries &mdash; which is why one global price rarely works.</>],
 ] as const
 
 const CARDS = [
@@ -34,7 +35,7 @@ export default function Home({ rng = Math.random }: { rng?: () => number } = {})
         <div className="wrap-wide">
           <section className="hero">
             <h1>When does <em>freemium</em> make sense?</h1>
-            <p className="lede">
+            <p className="lede present-hide">
               Most of today's biggest mobile games are free to download &mdash; yet they earn billions. This project explains how, and asks one question: <b>when does &ldquo;free&rdquo; actually pay off?</b> The short answer depends on one thing most people never notice: whether players <b>know exactly what they're buying</b>, or are <b>paying for a chance</b> at it.
             </p>
 
@@ -59,7 +60,7 @@ export default function Home({ rng = Math.random }: { rng?: () => number } = {})
 
             <Comparison bought={shopStep === 'bought'} g={g} />
 
-            <div className="byline">OPM 6600 — Pricing &amp; Revenue Optimization · Final Project · Trúc Trinh</div>
+            <div className="byline">OPM 6600 — Pricing &amp; Revenue Optimization · Final Project · Trúc Trịnh</div>
           </section>
         </div>
 
@@ -73,22 +74,25 @@ export default function Home({ rng = Math.random }: { rng?: () => number } = {})
               <div className="mascot"><Seal size={112} /></div>
             </div>
             <ol className="steps">
-              {STEPS.map(([title, body], i) => (
+              {STEPS.map(([title, short, body], i) => (
                 <li className="step" key={title}>
                   <div className="n">{i + 1}</div>
                   <h4>{title}</h4>
-                  <p>{body}</p>
+                  <p className="present-only">{short}</p>
+                  <p className="present-hide">{body}</p>
                 </li>
               ))}
             </ol>
-            <div className="callout"><b>The argument in one sentence:</b> selling a known item and selling a lucky draw are two different pricing problems &mdash; they need different tools, carry different risks, and players in different countries react to them differently. The rest of the site shows the evidence.</div>
+            <div className="callout present-only">A known item and a lucky draw are different pricing problems: different tools, different risks, different reactions by country.</div>
+            <div className="callout normal-only"><b>The argument in one sentence:</b> selling a known item and selling a lucky draw are two different pricing problems &mdash; they need different tools, carry different risks, and players in different countries react to them differently. The rest of the site shows the evidence.</div>
           </section>
 
-          <section className="block" style={{ paddingTop: 0 }}>
+          {/* Roadmap: hidden in PRESENT only; the top navigation and the page pager carry the same links. */}
+          <section className="block present-hide" style={{ paddingTop: 0 }}>
             <div className="cards-head">
               <div>
                 <h2 className="sec-title">Read it in order, or jump to what you need</h2>
-                <p className="sec-lede">Six pages beyond this one. If you're short on time, start with the <a href="#case-study">Case Study</a>, then try the <a href="#simulation">Simulation</a> yourself.</p>
+                <p className="sec-lede present-hide">Six pages beyond this one. If you're short on time, start with the <a href="#case-study">Case Study</a>, then try the <a href="#simulation">Simulation</a> yourself.</p>
               </div>
               <div className="mascot mascot-sign">
                 <div className="sign">Start here</div>
@@ -101,7 +105,7 @@ export default function Home({ rng = Math.random }: { rng?: () => number } = {})
                 <a className="nav-card" href={`#${id}`} key={id}>
                   <div className="n">{String(i + 1).padStart(2, '0')}</div>
                   <h4>{title}</h4>
-                  <p>{text}</p>
+                  <p className="present-hide">{text}</p>
                 </a>
               ))}
             </div>
