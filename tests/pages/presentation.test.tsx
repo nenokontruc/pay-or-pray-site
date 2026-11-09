@@ -114,16 +114,23 @@ describe('PRESENT mode is more concise; NORMAL mode keeps everything', () => {
   })
 
   // Not a rigid word budget: caveats and chart labels stay. Text-heavy pages must lose at least 15%.
-  it.each(['home', 'industry', 'case-study', 'about'])('%s: PRESENT shows at least 15% fewer words than NORMAL', (page) => {
+  // About is no longer text-heavy in NORMAL (its duplicated responsibilities were removed), so it is
+  // held to a fixed ceiling below instead of a ratio.
+  it.each(['home', 'industry', 'case-study'])('%s: PRESENT shows at least 15% fewer words than NORMAL', (page) => {
     const { container } = open(page)
     const normal = visibleWords(container, 'normal'), present = visibleWords(container, 'present')
     expect(present / normal, `${page}: ${present} of ${normal} words`).toBeLessThanOrEqual(0.85)
     console.info(`${page}: NORMAL ${normal} → PRESENT ${present} words`)
   })
 
-  it.each(['framework', 'diagnostic', 'simulation'])('%s: PRESENT shows fewer or equal words, never more', (page) => {
+  it.each(['framework', 'diagnostic', 'simulation', 'about'])('%s: PRESENT shows fewer or equal words, never more', (page) => {
     const { container } = open(page)
     expect(visibleWords(container, 'present')).toBeLessThanOrEqual(visibleWords(container, 'normal'))
+  })
+
+  it('About: PRESENT stays under a fixed ceiling of 300 visible words', () => {
+    const { container } = open('about')
+    expect(visibleWords(container, 'present')).toBeLessThanOrEqual(300)
   })
 
   it('Home: the short argument line replaces the long one only in PRESENT; both distinctions kept', () => {
@@ -197,6 +204,26 @@ describe('PRESENT mode explains, not just shortens', () => {
     const key = container.querySelectorAll('.cs-impl-key')
     expect(key).toHaveLength(1)
     expect(key[0].querySelector('.cs-impl-k')!.textContent).toBe('What chance decides')
+  })
+
+  it('Case Study: "The key difference" labels the chips; the duplicate sentence box shows in NORMAL only', () => {
+    const { container } = open('case-study')
+    const title = container.querySelector('#cs-key-difference')!
+    expect(title.textContent).toBe('The key difference')
+    expect(container.querySelector('.cs-open')!.getAttribute('aria-labelledby')).toBe('cs-key-difference')
+    expect([hiddenInNormal(title), hiddenInPresent(title)]).toEqual([false, false])
+    const box = byText(container, '.callout', 'The key difference:')!
+    expect([hiddenInNormal(box), hiddenInPresent(box)]).toEqual([false, true])
+  })
+
+  it('About: PRESENT shows who, the experience and how it shaped the research — with no dangling reference', () => {
+    const { container } = open('about')
+    const shown = Array.from(container.querySelectorAll('.about-copy p')).filter((p) => !hiddenInPresent(p)).map((p) => p.textContent!)
+    expect(shown[0]).toMatch(/^I’m Trúc Trịnh, a graduate student/)
+    expect(shown[1]).toMatch(/^Before graduate school, I spent two years at VNG Corporation as a Game Operation Collaborator/)
+    expect(shown[2]).toMatch(/^My experience in game live operations and localization shaped the questions/)
+    expect(shown.join(' ')).not.toContain('that work')
+    container.querySelectorAll('.ab-cap').forEach((r) => expect(hiddenInPresent(r)).toBe(false))
   })
 
   it('Simulation: the goal line shows in PRESENT only, and the current step is marked', () => {

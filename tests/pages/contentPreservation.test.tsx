@@ -44,6 +44,20 @@ const CORRECTIONS: { page: string; original: string; replacement: string }[] = [
     replacement: 'Does staying cosmetic-only cost revenue? Not clearly.' },
   // Author-approved About revisions (Nov 2026): responsibilities listed separately, events made secondary,
   // and the course instructor named. Only these two original paragraphs are exempt.
+  // Author's display name with its accents (Nov 2026).
+  // (The Home byline is not in this inventory; tests/pages/home.test.tsx checks it.)
+  { page: 'home', original: 'Final project companion site · Trúc Trinh', replacement: 'Final project companion site · Trúc Trịnh' },
+  { page: 'about', original: 'Final project companion site · Trúc Trinh', replacement: 'Final project companion site · Trúc Trịnh' },
+  // About in the first person, with capability rows replacing the three link cards (Nov 2026, §5–6).
+  // The link cards' descriptions are kept word for word in the rows; only these headings and sentences changed.
+  { page: 'about', original: 'is a graduate student in Logistics',
+    replacement: 'I’m Trúc Trịnh, a graduate student in Logistics, Materials, and Supply Chain Management at Saint Louis University, where I completed this project' },
+  { page: 'about', original: 'This project grew out of that work.',
+    replacement: 'My experience in game live operations and localization shaped the questions behind this research' },
+  { page: 'about', original: 'From experience to analysis', replacement: 'What I did, and where it shows up in this research' },
+  { page: 'about', original: 'Localization across Southeast Asia', replacement: 'Chinese-to-Vietnamese and English localization, including English localization for Ghost Story.' },
+  { page: 'about', original: 'Live operations & events', replacement: 'Live Operations & Events' },
+  { page: 'about', original: 'Patch testing', replacement: 'Patch Testing & Patch-Note Delivery' },
   { page: 'about', original: 'including the Vietnam Gameverse 2023 launch and a one-year anniversary event',
     replacement: 'Additional event contributions included support for the Vietnam Gameverse 2023 launch and a one-year anniversary event.' },
   { page: 'about', original: 'and to the OPM 6600 instructor for guidance',

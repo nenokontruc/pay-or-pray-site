@@ -11,12 +11,21 @@
 .ab .about-meta div { padding:8px 0; border-top:1px solid var(--border); }
 .ab .am-k { display:block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); }
 .ab .about-h3 { font-family:var(--serif); font-weight:600; font-size:18px; margin:30px 0 12px; }
-.ab .link-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-@media (max-width:860px){ .ab .link-grid{ grid-template-columns:1fr; } }
-.ab .link-card { display:block; text-decoration:none; border:1px solid var(--border); background:var(--bg-raised); border-radius:5px; padding:14px; transition:border-color .15s; }
-.ab .link-card:hover { border-color:var(--navy); }
-.ab .link-card b { display:block; font-size:13.5px; color:var(--text); margin-bottom:4px; }
-.ab .link-card span { font-size:12.3px; color:var(--text-muted); line-height:1.45; }
+/* capability rows: name | what I did | where it appears in the research (stacked on narrow screens) */
+.ab .ab-caps { list-style:none; margin:0; padding:0; border-top:1px solid var(--border); }
+.ab .ab-cap { display:grid; grid-template-columns:minmax(150px,1fr) 1.6fr 1.4fr; gap:6px 18px; align-items:start; padding:14px 0; border-bottom:1px solid var(--border); }
+.ab .ab-cap-name { font-family:var(--serif); font-weight:600; font-size:16px; color:var(--text); }
+.ab .ab-cap-did { font-size:14.5px; line-height:1.45; }
+.ab .ab-cap-link { font-size:14px; line-height:1.45; color:var(--text); text-decoration:underline; text-decoration-color:var(--silver); text-underline-offset:3px; }
+.ab a.ab-cap-link:hover { text-decoration-color:var(--text); }
+.ab a.ab-cap-link:focus-visible { outline:2px solid var(--text); outline-offset:3px; }
+.ab .ab-cap-link.none { color:var(--text-muted); text-decoration:none; }
+.ab .ab-cap-k { display:block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); text-decoration:none; margin-bottom:2px; }
+@media (max-width:760px){ .ab .ab-cap { grid-template-columns:1fr; } }
+.present .ab .ab-cap-name { font-size:19px; }
+.present .ab .ab-cap-did, .present .ab .ab-cap-link { font-size:17px; }
+.present .ab .ab-cap-k { font-size:12px; }
+.ab .ab-secondary { margin-top:12px !important; }
 .ab .timeline { list-style:none; padding:0; margin:0; border-left:2px solid var(--border); }
 .ab .timeline li { position:relative; padding:0 0 14px 20px; font-size:14px; }
 .ab .timeline li::before { content:""; position:absolute; left:-6px; top:6px; width:10px; height:10px; border-radius:50%; background:var(--navy); }

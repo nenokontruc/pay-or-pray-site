@@ -1,6 +1,6 @@
-// About (legacy/index.html:1084-1145). Text is verbatim from the original page, except the VNG paragraph and
-// the acknowledgments, revised at the author's request (docs/CONTENT_CORRECTIONS.md).
-import { useState } from 'react'
+// About (legacy/index.html:1084-1145). Rewritten in the first person with capability rows at the author's request;
+// every original fact is kept (docs/CONTENT_CORRECTIONS.md §3–6).
+import { useState, type ReactNode } from 'react'
 import { Seal } from '../components/Art'
 import './about/about.css'
 
@@ -13,8 +13,39 @@ function Portrait() {
   return (
     <div className="photo-frame">
       <span className="mono">TT</span>
-      {ok && <img className="headshot" src={`${import.meta.env.BASE_URL}headshot.jpg`} alt="Portrait of Trúc Trinh" onError={() => setOk(false)} />}
+      {ok && <img className="headshot" src={`${import.meta.env.BASE_URL}headshot.jpg`} alt="Portrait of Trúc Trịnh" onError={() => setOk(false)} />}
     </div>
+  )
+}
+
+/**
+ * Professional experience → the part of this research it informed. Each responsibility appears once (here),
+ * not also in the biography. A link is given only where the research page models that experience;
+ * regional collaboration has none, and the test-lab link refers to testing, not to patch notes.
+ */
+const CAPABILITIES: { name: string; did: ReactNode; link?: { href: string; lead: string; text: string } }[] = [
+  { name: 'Live Operations & Events', did: 'Live operations and event coordination.',
+    link: { href: '#simulation', lead: 'In this research', text: 'the LiveOps dashboard and event mechanics in the Simulation' } },
+  { name: 'Localization', did: <>Chinese-to-Vietnamese and English localization, including English localization for <em>Ghost Story</em>.</>,
+    link: { href: '#industry', lead: 'In this research', text: 'the out-of-game economy and regional price ladders on the Industry page' } },
+  { name: 'Patch Testing & Patch-Note Delivery', did: 'Testing game updates and patches; preparing, coordinating and delivering patch notes.',
+    link: { href: '#simulation', lead: 'In this research · testing only', text: 'the pre-launch test lab: closed beta, survey, A/B test' } },
+  { name: 'Regional Collaboration', did: 'Communicating with regional teams across the Philippines, Indonesia, Singapore and Thailand so that updates shipped on schedule.' },
+]
+
+function CapabilityRows() {
+  return (
+    <ul className="ab-caps" aria-label="Professional capabilities and where they appear in this research">
+      {CAPABILITIES.map((c) => (
+        <li key={c.name} className="ab-cap">
+          <b className="ab-cap-name">{c.name}</b>
+          <span className="ab-cap-did">{c.did}</span>
+          {c.link
+            ? <a className="ab-cap-link" href={c.link.href}><span className="ab-cap-k">{c.link.lead}</span>&rarr; {c.link.text}</a>
+            : <span className="ab-cap-link none"><span className="ab-cap-k">In this research</span>No dedicated page</span>}
+        </li>
+      ))}
+    </ul>
   )
 }
 
@@ -37,18 +68,14 @@ export default function About() {
               </div>
             </div>
             <div className="about-copy">
-              <p><em>Trúc Trinh</em> (Truc Anh Nha Trinh) is a graduate student in Logistics, Materials, and Supply Chain Management at <em>Saint Louis University</em>, where this project was completed for <em>OPM 6600 &mdash; Pricing and Revenue Optimization</em>. She holds a Bachelor of Business Administration in Marketing from <em>Western Sydney University Vietnam</em>.</p>
-              {/* Revised Nov 2026 at the author's request (docs/CONTENT_CORRECTIONS.md §3–4). */}
-              <p className="present-hide">Before graduate school, she spent two years at <em>VNG Corporation</em> as a Game Operation Collaborator on <em>Revelation: New World</em> and <em>Dream &amp; Lethe Record</em>. Her work covered game live operations and event coordination; Chinese-to-Vietnamese and English localization; testing game updates and patches; preparing, coordinating and delivering patch notes; and communicating with regional teams across the Philippines, Indonesia, Singapore and Thailand so that updates shipped on schedule. She also contributed English localization for <em>Ghost Story</em>.</p>
-              <p className="game-note present-hide ab-secondary">Additional event contributions included support for the Vietnam Gameverse 2023 launch and a one-year anniversary event.</p>
-              <p>This project grew out of that work. Running events and adapting games for different countries raised the questions it tries to answer: why the same item needs a different price in each market, and why some ways of selling build trust while others burn it.</p>
+              {/* First person, revised Nov 2026 at the author's request (docs/CONTENT_CORRECTIONS.md §3–6). */}
+              <p>I&rsquo;m <em>Trúc Trịnh</em>, a graduate student in Logistics, Materials, and Supply Chain Management at <em>Saint Louis University</em>, where I completed this project for <em>OPM 6600 &mdash; Pricing and Revenue Optimization</em>. I hold a Bachelor of Business Administration in Marketing from <em>Western Sydney University Vietnam</em>.</p>
+              <p>Before graduate school, I spent two years at <em>VNG Corporation</em> as a Game Operation Collaborator on <em>Revelation: New World</em> and <em>Dream &amp; Lethe Record</em>.</p>
+              <p>My experience in game live operations and localization shaped the questions behind this research: why the same item needs a different price in each market, and why some ways of selling build trust while others burn it.</p>
 
-              <h3 className="about-h3">From experience to analysis</h3>
-              <div className="link-grid">
-                <a className="link-card" href="#industry"><b>Localization across Southeast Asia</b><span>&rarr; the out-of-game economy and regional price ladders on the Industry page</span></a>
-                <a className="link-card" href="#simulation"><b>Live operations &amp; events</b><span>&rarr; the LiveOps dashboard and event mechanics in the Simulation</span></a>
-                <a className="link-card" href="#simulation"><b>Patch testing</b><span>&rarr; the pre-launch test lab: closed beta, survey, A/B test</span></a>
-              </div>
+              <h3 className="about-h3">What I did, and where it shows up in this research</h3>
+              <CapabilityRows />
+              <p className="game-note present-hide ab-secondary">Additional event contributions included support for the Vietnam Gameverse 2023 launch and a one-year anniversary event.</p>
 
               <h3 className="about-h3 present-hide">Path</h3>
               <ol className="timeline present-hide">

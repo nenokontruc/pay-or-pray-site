@@ -60,7 +60,7 @@ export default function Home({ rng = Math.random }: { rng?: () => number } = {})
 
             <Comparison bought={shopStep === 'bought'} g={g} />
 
-            <div className="byline">OPM 6600 — Pricing &amp; Revenue Optimization · Final Project · Trúc Trinh</div>
+            <div className="byline">OPM 6600 — Pricing &amp; Revenue Optimization · Final Project · Trúc Trịnh</div>
           </section>
         </div>
 

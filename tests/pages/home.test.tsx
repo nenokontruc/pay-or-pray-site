@@ -183,7 +183,7 @@ describe('Slice 3 — comparison, accessibility, regression', () => {
     const { container } = render(<App />)
     expect(container.querySelectorAll('.step')).toHaveLength(4)
     expect(Array.from(container.querySelectorAll('.nav-card'), (a) => a.getAttribute('href'))).toEqual(['#industry', '#framework', '#case-study', '#diagnostic', '#simulation', '#about'])
-    expect(container.textContent).toContain('OPM 6600 — Pricing & Revenue Optimization · Final Project · Trúc Trinh')
+    expect(container.textContent).toContain('OPM 6600 — Pricing & Revenue Optimization · Final Project · Trúc Trịnh')
     act(() => { window.location.hash = '#industry'; window.dispatchEvent(new HashChangeEvent('hashchange')) })
     act(() => { window.location.hash = '#home'; window.dispatchEvent(new HashChangeEvent('hashchange')) })
     expect(screen.getByRole('button', { name: 'Open the display case' })).toBeTruthy()

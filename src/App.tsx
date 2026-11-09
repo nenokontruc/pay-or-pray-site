@@ -91,7 +91,7 @@ function Footer({ page }: { page: PageId }) {
               ) : (
                 <>
                   <div>OPM 6600 — Pricing and Revenue Optimization</div>
-                  <div>Final project companion site · Trúc Trinh</div>
+                  <div>Final project companion site · Trúc Trịnh</div>
                 </>
               )}
             </div>
