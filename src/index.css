@@ -172,6 +172,13 @@ body { top:0 !important; }
    Secondary text is hidden only where it is explicitly marked .present-hide (see docs/PRESENTATION_MODE.md). */
 .present footer:not(.sim-foot), .present .subnav, .present .lang-switch, .present #progress-bar, .present .viz-foot .src-extra { display:none; }
 .present .present-hide { display:none; }
+/* "Explore…" panels hold the full analysis: closed in NORMAL mode, out of the way in PRESENT mode.
+   A panel that carries a material caveat is marked .present-keep and stays. */
+.present details.disclosure:not(.present-keep) { display:none; }
+/* Same message, two lengths: the full original text in NORMAL mode, a short line in PRESENT mode. */
+.present-only { display:none; }
+.present .present-only { display:revert; }
+.present .normal-only { display:none; }
 .present body { font-size:19px; }
 .present .block { padding:56px 0; }
 .present .sec-title { font-size:clamp(28px,3.6vw,40px); }

@@ -58,7 +58,7 @@ export default function Industry() {
           <div>
             <p className="kicker">Industry</p>
             <h1 className="page-title">The market, its models, and where the rules are headed</h1>
-            <p className="page-lede">Four things worth knowing before the case study: how large this market is, how freemium got here, the full menu of ways a free game makes money, and the regulatory patchwork that happens to be the reason exact gacha odds are even public.</p>
+            <p className="page-lede present-hide">Four things worth knowing before the case study: how large this market is, how freemium got here, the full menu of ways a free game makes money, and the regulatory patchwork that happens to be the reason exact gacha odds are even public.</p>
           </div>
           <div className="page-hero-art"><Handheld /></div>
         </div>

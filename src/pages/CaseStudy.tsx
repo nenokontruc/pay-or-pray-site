@@ -48,7 +48,7 @@ export default function CaseStudy() {
           <div>
             <p className="kicker">Case Study</p>
             <h1 className="page-title">Two Chinese games, two ways to sell chance</h1>
-            <p className="page-lede">Honor of Kings and Where Winds Meet both sell fixed-price skins <i>and</i> run lucky draws &mdash; like almost every top-grossing mobile game. So the useful question isn't which game is &ldquo;deterministic.&rdquo; It's how each one <b>designs the lucky draw</b> on top of its shop, and <b>where the randomness ends</b>.</p>
+            <p className="page-lede present-hide">Honor of Kings and Where Winds Meet both sell fixed-price skins <i>and</i> run lucky draws &mdash; like almost every top-grossing mobile game. So the useful question isn't which game is &ldquo;deterministic.&rdquo; It's how each one <b>designs the lucky draw</b> on top of its shop, and <b>where the randomness ends</b>.</p>
           </div>
           <div className="page-hero-art cs-hero-art" aria-hidden><PixelIcon name="cart" size={84} /><PixelIcon name="capsule" size={84} /></div>
         </div>
@@ -92,7 +92,7 @@ export default function CaseStudy() {
           <Takeaway>
             Teaching model, not an observed outcome: if 0.0415% applied to every pull and the guarantee always gave this outfit, about {(WWM_BEFORE_GUARANTEE * 100).toFixed(1)}% of players would win it within the first 149 pulls; the other {((1 - WWM_BEFORE_GUARANTEE) * 100).toFixed(1)}% would get it on the guaranteed 150th pull. By pull 150, 100% have it.
           </Takeaway>
-          <Disclosure label="Teaching model: formula, assumptions and source check">
+          <Disclosure label="Teaching model: formula, assumptions and source check" className="present-keep">
             <p>These are <b>model-derived estimates</b>, not observed outcomes or numbers reported by the sources.</p>
             <p>With a fixed chance <i>p</i> = 0.0415% per pull, the chance of no win in the first <i>n</i> pulls is (1 &minus; <i>p</i>)<sup><i>n</i></sup>. So:</p>
             <ul className="cs-math">
@@ -129,7 +129,7 @@ export default function CaseStudy() {
           </div>
           <Takeaway>That is why this project compares <b>what is being sold</b>, not whole games. The same storefront can need two different pricing tools.</Takeaway>
 
-          <div className="cs-evidence">
+          <div className="cs-evidence present-hide">
             <div className="cs-ev">
               <div className="cs-ev-num">36.7%</div>
               <div className="case-note">A guaranteed prize matters economically, not just for goodwill. It moves a draw toward the &ldquo;unique box&rdquo; design, where every purchase yields an item the player doesn&rsquo;t already own. In Chen et al.&rsquo;s model, unique boxes approach the full revenue-optimal ceiling as the catalog grows, while duplicate-allowing boxes capture only about 36.7% of it. <span className="cs-src">&mdash; Chen, Elmachtoub, Hamilton &amp; Lei, 2021</span></div>

@@ -43,8 +43,8 @@ export function Models() {
           <dl>
             <dt>How it generates revenue</dt>
             <dd>{m.how}</dd>
-            <dt>Example &amp; evidence</dt>
-            <dd className="mono-note">{m.example}</dd>
+            <dt className="present-hide">Example &amp; evidence</dt>
+            <dd className="mono-note present-hide">{m.example}</dd>
           </dl>
         </div>
       </div>

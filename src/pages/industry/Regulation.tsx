@@ -57,7 +57,7 @@ export function Regulation() {
             <dt>Type of rule</dt><dd><span className={`ind-inst ${j.instrument}`}>{INSTRUMENTS[j.instrument].label}</span></dd>
             <dt>Relevant year</dt><dd>{j.year}</dd>
             <dt>Documented status</dt><dd>{j.status}</dd>
-            <dt>Supporting source</dt><dd className="mono-note">{j.source}</dd>
+            <dt className="present-hide">Supporting source</dt><dd className="mono-note present-hide">{j.source}</dd>
           </dl>
           <p className="game-note">Labels summarize; the status line carries the legal nuance.</p>
         </div>

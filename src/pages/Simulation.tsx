@@ -29,7 +29,7 @@ export default function Simulation() {
           </div>
           <div className="mascot" aria-hidden><Seal size={88} /></div>
         </div>
-        <p className="page-lede">Pick a country, test your plan before launch, then run eight months of live operations &mdash; each month simulated day by day. Like a real game, your shop can sell several things at once &mdash; skins, a battle pass, power items, lucky draws &mdash; each with its own price ladder. But every player has one wallet, so your packages compete with each other. Earn the most without wrecking trust.</p>
+        <p className="page-lede present-hide">Pick a country, test your plan before launch, then run eight months of live operations &mdash; each month simulated day by day. Like a real game, your shop can sell several things at once &mdash; skins, a battle pass, power items, lucky draws &mdash; each with its own price ladder. But every player has one wallet, so your packages compete with each other. Earn the most without wrecking trust.</p>
         <ol className="flow-steps" aria-label="Progress">
           {STEPS.map(([b, t], i) => (
             <li key={b} className={i === current ? 'current' : i < current ? 'done' : ''} aria-current={i === current ? 'step' : undefined}>

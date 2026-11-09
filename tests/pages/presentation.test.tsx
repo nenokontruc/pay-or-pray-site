@@ -97,3 +97,115 @@ describe('PRESENT mode keeps essential warnings, caveats and limitations visible
   })
 })
 
+
+/** Words a viewer can read in a mode: hidden elements and the bodies of closed panels removed. */
+function visibleWords(root: HTMLElement, mode: 'normal' | 'present'): number {
+  const clone = root.cloneNode(true) as HTMLElement
+  const hidden = (el: Element) => (mode === 'present' ? hiddenInPresent(el) : hiddenInNormal(el))
+  clone.querySelectorAll('*').forEach((el) => { if (clone.contains(el) && hidden(el)) el.remove() })
+  clone.querySelectorAll('[hidden]').forEach((el) => el.remove()) // inactive tab panels: hidden in both modes
+  clone.querySelectorAll('details:not([open])').forEach((d) => Array.from(d.children).forEach((c) => { if (c.tagName !== 'SUMMARY') c.remove() }))
+  return (clone.querySelector('#main')?.textContent ?? '').split(/\s+/).filter(Boolean).length
+}
+
+describe('PRESENT mode is more concise; NORMAL mode keeps everything', () => {
+  it('NORMAL mode hides nothing but the short PRESENT-only lines', () => {
+    expect(NORMAL_HIDES).toEqual(['.present-only'])
+  })
+
+  // Not a rigid word budget: caveats and chart labels stay. Text-heavy pages must lose at least 15%.
+  it.each(['home', 'industry', 'case-study', 'about'])('%s: PRESENT shows at least 15% fewer words than NORMAL', (page) => {
+    const { container } = open(page)
+    const normal = visibleWords(container, 'normal'), present = visibleWords(container, 'present')
+    expect(present / normal, `${page}: ${present} of ${normal} words`).toBeLessThanOrEqual(0.85)
+    console.info(`${page}: NORMAL ${normal} → PRESENT ${present} words`)
+  })
+
+  it.each(['framework', 'diagnostic', 'simulation'])('%s: PRESENT shows fewer or equal words, never more', (page) => {
+    const { container } = open(page)
+    expect(visibleWords(container, 'present')).toBeLessThanOrEqual(visibleWords(container, 'normal'))
+  })
+
+  it('Home: the short argument line replaces the long one only in PRESENT; both distinctions kept', () => {
+    const { container } = open('home')
+    const short = container.querySelector('.callout.present-only')!
+    const full = container.querySelector('.callout.normal-only')!
+    expect(short.textContent).toBe('A known item and a lucky draw are different pricing problems: different tools, different risks, different reactions by country.')
+    expect(full.textContent).toContain('The argument in one sentence:')
+    expect([hiddenInNormal(short), hiddenInPresent(short)]).toEqual([true, false])
+    expect([hiddenInNormal(full), hiddenInPresent(full)]).toEqual([false, true])
+    // the two demos (the primary visual) stay in PRESENT
+    container.querySelectorAll('.duality .card').forEach((c) => expect(hiddenInPresent(c)).toBe(false))
+  })
+
+  it('marked items are hidden in PRESENT and visible in NORMAL', () => {
+    const cases: [string, string][] = [
+      ['home', '.hero .lede'], ['industry', '.page-lede'], ['case-study', '.page-lede'], ['case-study', '.cs-evidence'],
+      ['simulation', '.page-lede'], ['about', '.timeline'],
+    ]
+    for (const [page, sel] of cases) {
+      const { container, unmount } = open(page)
+      const el = container.querySelector(sel)!
+      expect(el, `${page} ${sel}`).toBeTruthy()
+      expect([hiddenInNormal(el), hiddenInPresent(el)], `${page} ${sel}`).toEqual([false, true])
+      unmount(); window.location.hash = ''
+    }
+  })
+
+  it('analysis panels close up in PRESENT except the one with a material caveat', () => {
+    const { container } = open('case-study')
+    const panels = Array.from(container.querySelectorAll('details.disclosure'))
+    const kept = panels.filter((d) => !hiddenInPresent(d))
+    expect(kept.map((d) => d.querySelector('summary')!.textContent)).toEqual(['Teaching model: formula, assumptions and source check'])
+    panels.forEach((d) => expect(hiddenInNormal(d)).toBe(false))
+  })
+
+  it('Framework: formula, inputs, result and interpretation stay; derivations hide', () => {
+    const { container } = open('framework')
+    expect(hiddenInPresent(byText(container, '.formula, [class*=formula]', 'EVC = RefP + DiffV')!)).toBe(false)
+    expect(hiddenInPresent(container.querySelector('.fw-result')!)).toBe(false)
+    expect(hiddenInPresent(container.querySelector('input[type="range"]')!)).toBe(false)
+    expect(hiddenInPresent(container.querySelector('#fw-math')!)).toBe(true)
+  })
+})
+
+describe('switching modes keeps state', () => {
+  it('Framework calculator values and results survive PRESENT on/off', () => {
+    const { container } = open('framework')
+    const slider = container.querySelector<HTMLInputElement>('input[type="range"]')!
+    const max = Number(slider.max), min = Number(slider.min)
+    const next = String(Math.round((min + max) / 2))
+    fireEvent.change(slider, { target: { value: next } })
+    const result = container.querySelector('.fw-result')!.textContent
+    togglePresent()
+    expect(container.querySelector<HTMLInputElement>('input[type="range"]')!.value).toBe(slider.value)
+    expect(container.querySelector('.fw-result')!.textContent).toBe(result)
+    togglePresent()
+    expect(container.querySelector('.fw-result')!.textContent).toBe(result)
+  })
+
+  it('Simulation stage, plan and lab results survive PRESENT on/off', () => {
+    const { container } = open('simulation')
+    const ui = uiDriver(container)
+    ui.selectMarket('jp')
+    ui.runTest('cbt')
+    const before = { warning: ui.text('#plan-warning'), lab: container.querySelectorAll('.lab-card, .lab-result, [class*="lab-c"]').length, html: container.querySelector('#main')!.textContent }
+    togglePresent()
+    expect(document.documentElement.classList.contains('present')).toBe(true)
+    expect(ui.text('#plan-warning')).toBe(before.warning)
+    expect(container.querySelector('#main')!.textContent).toBe(before.html)
+    togglePresent()
+    expect(container.querySelector('#main')!.textContent).toBe(before.html)
+    expect(before.lab).toBeGreaterThan(0)
+  })
+
+  it('Industry selections survive PRESENT on/off', () => {
+    const { container } = open('industry')
+    fireEvent.click(container.querySelector('.model-btn[data-model="pass"], .model-btn:not(.on)')!)
+    const selected = container.querySelector('.ind-model-detail')!.getAttribute('data-selected')
+    fireEvent.click(container.querySelectorAll('.picto-toggles .chip')[1])
+    togglePresent()
+    expect(container.querySelector('.ind-model-detail')!.getAttribute('data-selected')).toBe(selected)
+    expect(container.querySelectorAll('.picto-toggles .chip')[1].getAttribute('aria-pressed')).toBe('true')
+  })
+})

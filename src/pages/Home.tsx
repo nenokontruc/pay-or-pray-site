@@ -34,7 +34,7 @@ export default function Home({ rng = Math.random }: { rng?: () => number } = {})
         <div className="wrap-wide">
           <section className="hero">
             <h1>When does <em>freemium</em> make sense?</h1>
-            <p className="lede">
+            <p className="lede present-hide">
               Most of today's biggest mobile games are free to download &mdash; yet they earn billions. This project explains how, and asks one question: <b>when does &ldquo;free&rdquo; actually pay off?</b> The short answer depends on one thing most people never notice: whether players <b>know exactly what they're buying</b>, or are <b>paying for a chance</b> at it.
             </p>
 
@@ -77,18 +77,19 @@ export default function Home({ rng = Math.random }: { rng?: () => number } = {})
                 <li className="step" key={title}>
                   <div className="n">{i + 1}</div>
                   <h4>{title}</h4>
-                  <p>{body}</p>
+                  <p className="present-hide">{body}</p>
                 </li>
               ))}
             </ol>
-            <div className="callout"><b>The argument in one sentence:</b> selling a known item and selling a lucky draw are two different pricing problems &mdash; they need different tools, carry different risks, and players in different countries react to them differently. The rest of the site shows the evidence.</div>
+            <div className="callout present-only">A known item and a lucky draw are different pricing problems: different tools, different risks, different reactions by country.</div>
+            <div className="callout normal-only"><b>The argument in one sentence:</b> selling a known item and selling a lucky draw are two different pricing problems &mdash; they need different tools, carry different risks, and players in different countries react to them differently. The rest of the site shows the evidence.</div>
           </section>
 
           <section className="block" style={{ paddingTop: 0 }}>
             <div className="cards-head">
               <div>
                 <h2 className="sec-title">Read it in order, or jump to what you need</h2>
-                <p className="sec-lede">Six pages beyond this one. If you're short on time, start with the <a href="#case-study">Case Study</a>, then try the <a href="#simulation">Simulation</a> yourself.</p>
+                <p className="sec-lede present-hide">Six pages beyond this one. If you're short on time, start with the <a href="#case-study">Case Study</a>, then try the <a href="#simulation">Simulation</a> yourself.</p>
               </div>
               <div className="mascot mascot-sign">
                 <div className="sign">Start here</div>
@@ -101,7 +102,7 @@ export default function Home({ rng = Math.random }: { rng?: () => number } = {})
                 <a className="nav-card" href={`#${id}`} key={id}>
                   <div className="n">{String(i + 1).padStart(2, '0')}</div>
                   <h4>{title}</h4>
-                  <p>{text}</p>
+                  <p className="present-hide">{text}</p>
                 </a>
               ))}
             </div>

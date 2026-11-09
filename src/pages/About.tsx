@@ -37,7 +37,7 @@ export default function About() {
             </div>
             <div className="about-copy">
               <p><em>Trúc Trinh</em> (Truc Anh Nha Trinh) is a graduate student in Logistics, Materials, and Supply Chain Management at <em>Saint Louis University</em>, where this project was completed for <em>OPM 6600 &mdash; Pricing and Revenue Optimization</em>. She holds a Bachelor of Business Administration in Marketing from <em>Western Sydney University Vietnam</em>.</p>
-              <p>Before graduate school, she spent two years at <em>VNG Corporation</em> as a Game Operation Collaborator, working on live operations and localization for <em>Revelation: New World</em> and <em>Dream &amp; Lethe Record</em>. She led Chinese-to-Vietnamese and English localization, tested patches, and coordinated with regional teams across the Philippines, Indonesia, Singapore and Thailand to ship updates on schedule &mdash; including the Vietnam Gameverse 2023 launch and a one-year anniversary event &mdash; and contributed English localization for <em>Ghost Story</em>.</p>
+              <p className="present-hide">Before graduate school, she spent two years at <em>VNG Corporation</em> as a Game Operation Collaborator, working on live operations and localization for <em>Revelation: New World</em> and <em>Dream &amp; Lethe Record</em>. She led Chinese-to-Vietnamese and English localization, tested patches, and coordinated with regional teams across the Philippines, Indonesia, Singapore and Thailand to ship updates on schedule &mdash; including the Vietnam Gameverse 2023 launch and a one-year anniversary event &mdash; and contributed English localization for <em>Ghost Story</em>.</p>
               <p>This project grew out of that work. Running events and adapting games for different countries raised the questions it tries to answer: why the same item needs a different price in each market, and why some ways of selling build trust while others burn it.</p>
 
               <h3 className="about-h3">From experience to analysis</h3>
@@ -47,8 +47,8 @@ export default function About() {
                 <a className="link-card" href="#simulation"><b>Patch testing</b><span>&rarr; the pre-launch test lab: closed beta, survey, A/B test</span></a>
               </div>
 
-              <h3 className="about-h3">Path</h3>
-              <ol className="timeline">
+              <h3 className="about-h3 present-hide">Path</h3>
+              <ol className="timeline present-hide">
                 <li><span className="tl-y">2019&ndash;2023</span><b>B.B.A., Marketing</b> &middot; Western Sydney University Vietnam</li>
                 <li><span className="tl-y">2023&ndash;2025</span><b>Game Operation Collaborator</b> &middot; VNG Corporation, Vietnam</li>
                 <li><span className="tl-y">2025&ndash;now</span><b>M.S., Supply Chain Management</b> &middot; Saint Louis University</li>
