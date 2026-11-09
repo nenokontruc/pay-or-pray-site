@@ -37,6 +37,27 @@ describe('About page', () => {
       '2019–2023', '2023–2025', '2025–now', 'Dr. Tim Smith of Wiglaf Pricing', 'anonymized']) expect(t, s).toContain(s)
   })
 
+  it('names the course instructor and keeps the guest speaker as a separate person and role', () => {
+    const { container } = open()
+    const thanks = container.querySelector('.ab-thanks')!.textContent!.replace(/\s+/g, ' ')
+    expect(thanks).toContain('Professor Xiao Zhang, instructor of OPM 6600 — Pricing and Revenue Optimization')
+    expect(thanks).toContain('guest speaker Dr. Tim Smith of Wiglaf Pricing')
+    expect(thanks).not.toMatch(/Tim Smith[^;]*instructor|Xiao Zhang[^;]*(guest speaker|Wiglaf)/)
+    expect(thanks).toContain('(anonymized) for the industry interview')
+    expect(thanks).not.toContain('the OPM 6600 instructor')
+  })
+
+  it('lists patch-note delivery among the VNG responsibilities and keeps the events secondary', () => {
+    const { container } = open()
+    const paras = Array.from(container.querySelectorAll('.about-copy p'), (p) => p.textContent!.replace(/\s+/g, ' '))
+    const main = paras.find((p) => p.startsWith('Before graduate school'))!
+    for (const s of ['game live operations and event coordination', 'Chinese-to-Vietnamese and English localization',
+      'testing game updates and patches', 'preparing, coordinating and delivering patch notes', 'communicating with regional teams']) expect(main, s).toContain(s)
+    expect(main).not.toContain('Gameverse')
+    const events = paras.filter((p) => p.includes('Vietnam Gameverse 2023'))
+    expect(events).toEqual(['Additional event contributions included support for the Vietnam Gameverse 2023 launch and a one-year anniversary event.'])
+  })
+
   it('shows the TT monogram when no headshot file exists (same fallback as the original)', () => {
     const { container } = open()
     const img = container.querySelector('.headshot')!

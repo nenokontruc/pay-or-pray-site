@@ -1,4 +1,5 @@
-// About (legacy/index.html:1084-1145). Text is verbatim from the original page.
+// About (legacy/index.html:1084-1145). Text is verbatim from the original page, except the VNG paragraph and
+// the acknowledgments, revised at the author's request (docs/CONTENT_CORRECTIONS.md).
 import { useState } from 'react'
 import { Seal } from '../components/Art'
 import './about/about.css'
@@ -37,7 +38,9 @@ export default function About() {
             </div>
             <div className="about-copy">
               <p><em>Trúc Trinh</em> (Truc Anh Nha Trinh) is a graduate student in Logistics, Materials, and Supply Chain Management at <em>Saint Louis University</em>, where this project was completed for <em>OPM 6600 &mdash; Pricing and Revenue Optimization</em>. She holds a Bachelor of Business Administration in Marketing from <em>Western Sydney University Vietnam</em>.</p>
-              <p className="present-hide">Before graduate school, she spent two years at <em>VNG Corporation</em> as a Game Operation Collaborator, working on live operations and localization for <em>Revelation: New World</em> and <em>Dream &amp; Lethe Record</em>. She led Chinese-to-Vietnamese and English localization, tested patches, and coordinated with regional teams across the Philippines, Indonesia, Singapore and Thailand to ship updates on schedule &mdash; including the Vietnam Gameverse 2023 launch and a one-year anniversary event &mdash; and contributed English localization for <em>Ghost Story</em>.</p>
+              {/* Revised Nov 2026 at the author's request (docs/CONTENT_CORRECTIONS.md §3–4). */}
+              <p className="present-hide">Before graduate school, she spent two years at <em>VNG Corporation</em> as a Game Operation Collaborator on <em>Revelation: New World</em> and <em>Dream &amp; Lethe Record</em>. Her work covered game live operations and event coordination; Chinese-to-Vietnamese and English localization; testing game updates and patches; preparing, coordinating and delivering patch notes; and communicating with regional teams across the Philippines, Indonesia, Singapore and Thailand so that updates shipped on schedule. She also contributed English localization for <em>Ghost Story</em>.</p>
+              <p className="game-note present-hide ab-secondary">Additional event contributions included support for the Vietnam Gameverse 2023 launch and a one-year anniversary event.</p>
               <p>This project grew out of that work. Running events and adapting games for different countries raised the questions it tries to answer: why the same item needs a different price in each market, and why some ways of selling build trust while others burn it.</p>
 
               <h3 className="about-h3">From experience to analysis</h3>
@@ -55,7 +58,7 @@ export default function About() {
               </ol>
 
               <div className="ab-thanks">
-                <p className="game-note"><b>Acknowledgments.</b> Thanks to a former manager and monetization specialist (anonymized) for the industry interview behind much of this analysis, to guest speaker Dr. Tim Smith of Wiglaf Pricing, and to the OPM 6600 instructor for guidance and access to the course&rsquo;s research database.</p>
+                <p className="game-note"><b>Acknowledgments.</b> Thanks to Professor Xiao Zhang, instructor of OPM 6600 &mdash; Pricing and Revenue Optimization, for guidance and access to the course&rsquo;s research database; to guest speaker Dr. Tim Smith of Wiglaf Pricing for sharing industry insights; and to a former manager and monetization specialist (anonymized) for the industry interview behind much of this analysis.</p>
                 <span className="ab-seal" aria-hidden><Seal size={56} /></span>
               </div>
               <a className="btn ab-btn" href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">Connect on LinkedIn &rarr;</a>

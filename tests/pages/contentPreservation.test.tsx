@@ -42,6 +42,12 @@ const CORRECTIONS: { page: string; original: string; replacement: string }[] = [
     replacement: 'Statutory odds disclosure since March 2024; up to 3x damages for intentional violations since August 2025' },
   { page: 'case-study', original: 'Staying cosmetic-only has a revenue cost',
     replacement: 'Does staying cosmetic-only cost revenue? Not clearly.' },
+  // Author-approved About revisions (Nov 2026): responsibilities listed separately, events made secondary,
+  // and the course instructor named. Only these two original paragraphs are exempt.
+  { page: 'about', original: 'including the Vietnam Gameverse 2023 launch and a one-year anniversary event',
+    replacement: 'Additional event contributions included support for the Vietnam Gameverse 2023 launch and a one-year anniversary event.' },
+  { page: 'about', original: 'and to the OPM 6600 instructor for guidance',
+    replacement: 'Thanks to Professor Xiao Zhang, instructor of OPM 6600 — Pricing and Revenue Optimization, for guidance and access to the course’s research database' },
 ]
 
 beforeAll(() => {
