@@ -136,7 +136,8 @@ export default function CaseStudy() {
             </div>
             <div className="cs-ev">
               <div className="cs-ev-num">~$320M <small>/ 21 months</small></div>
-              <div className="case-note">Staying cosmetic-only has a revenue cost: Wuthering Waves, which puts power-affecting characters in its gacha, earned roughly <b>$320M over 21 months</b> &mdash; nearly double Where Winds Meet's pace on a broadly comparable download base. <span className="cs-src">&mdash; Naavik, 2026</span></div>
+              {/* Corrected Nov 2026 (docs/CONTENT_CORRECTIONS.md): the cited source does not conclude that cosmetic-only costs revenue. */}
+              <div className="case-note">Does staying cosmetic-only cost revenue? Not clearly. Wuthering Waves, which puts power-affecting characters in its gacha, earned roughly <b>$320M over 21 months</b> (about $15M a month, on about 29M downloads), against about $8M a month (on about 20M downloads) for Where Winds Meet &mdash; both mobile only, excluding China Android. But the same analysis finds Where Winds Meet&rsquo;s long-term revenue efficiency on iOS China &ldquo;tracks closely&rdquo; with Wuthering Waves&rsquo;, and concludes that its cosmetic-only model has not radically undermined unit economics. <span className="cs-src">&mdash; Naavik, 2026</span></div>
             </div>
           </div>
 
