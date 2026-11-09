@@ -6,6 +6,7 @@ import { PixelIcon } from '../components/PixelIcon'
 import { COMPARE, GAMES, WWM_GUARANTEE } from '../data/caseStudy'
 import { PityChart, WWM_BEFORE_GUARANTEE, WWM_EXPECTED_PULLS } from './case-study/PityChart'
 import { ChannelMap } from './case-study/ChannelMap'
+import { ScenarioStrip } from './case-study/ScenarioStrip'
 import { PurchasePath, STEPS } from './case-study/PurchasePath'
 import './case-study/caseStudy.css'
 
@@ -89,9 +90,10 @@ export default function CaseStudy() {
 
           <h3 className="cs-h3">How the odds play out</h3>
           <PityChart />
-          <Takeaway>
+          {/* NORMAL: the full sentence. PRESENT: the same result as a labelled bar inside the chart card. */}
+          <div className="normal-only"><Takeaway>
             Teaching model, not an observed outcome: if 0.0415% applied to every pull and the guarantee always gave this outfit, about {(WWM_BEFORE_GUARANTEE * 100).toFixed(1)}% of players would win it within the first 149 pulls; the other {((1 - WWM_BEFORE_GUARANTEE) * 100).toFixed(1)}% would get it on the guaranteed 150th pull. By pull 150, 100% have it.
-          </Takeaway>
+          </Takeaway></div>
           <Disclosure label="Teaching model: formula, assumptions and source check" className="present-keep">
             <p>These are <b>model-derived estimates</b>, not observed outcomes or numbers reported by the sources.</p>
             <p>With a fixed chance <i>p</i> = 0.0415% per pull, the chance of no win in the first <i>n</i> pulls is (1 &minus; <i>p</i>)<sup><i>n</i></sup>. So:</p>
@@ -114,9 +116,11 @@ export default function CaseStudy() {
           <header className="slide-head">
             <p className="kicker">03 &mdash; <b>What this means for pricing</b></p>
             <h2 className="sec-title">The item, not the game, sets the pricing tool</h2>
-            <p className="sec-lede cs-impl-guide">Read each row left to right. Start with what chance decides, then who chooses the prize and which pricing tool applies.</p>
+            <p className="sec-lede cs-impl-guide normal-only">Read each row left to right. Start with what chance decides, then who chooses the prize and which pricing tool applies.</p>
           </header>
-          <div className="cs-impl" role="table" aria-label="Pricing implications by item">
+          {/* PRESENT shows the same comparison as three scenarios; NORMAL keeps the full table. */}
+          <ScenarioStrip />
+          <div className="cs-impl normal-only" role="table" aria-label="Pricing implications by item">
             <div className="cs-impl-row cs-impl-head" role="row">
               <span role="columnheader" />
               {IMPLICATIONS.map((c) => <span key={c.head} role="columnheader" className={`cs-impl-col ${c.tone}`}>{c.head}</span>)}

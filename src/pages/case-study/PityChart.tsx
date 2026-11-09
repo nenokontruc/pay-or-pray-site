@@ -12,6 +12,36 @@ const p1 = (v: number) => (v * 100).toFixed(1) + '%'
 export const WWM_BEFORE_GUARANTEE = winBeforeGuarantee(WWM_ODDS, WWM_GUARANTEE)
 export const WWM_EXPECTED_PULLS = expectedPullsWithPity(WWM_ODDS, WWM_GUARANTEE)
 
+/**
+ * PRESENT only: the takeaway's 6.0% / 94.0% split as a proportional bar, placed inside the chart card next
+ * to the readouts. Widths and labels come from WWM_BEFORE_GUARANTEE (src/lib/pityMath.ts), never typed in.
+ * The label and both assumptions come before the bar so it cannot be read without them.
+ */
+export function HypotheticalSplit() {
+  const before = WWM_BEFORE_GUARANTEE, atGuarantee = 1 - before
+  return (
+    <div className="present-only" data-testid="hypothetical-split">
+      <figure className="cs-split" aria-labelledby="cs-split-k">
+        <p className="cs-split-k" id="cs-split-k">Hypothetical teaching model &mdash; not observed game results</p>
+        <p className="cs-split-if">
+          If every pull had the same fixed {(WWM_ODDS * 100).toFixed(4)}% chance of this specific outfit, and the source-reported {WWM_GUARANTEE}-pull guarantee always delivered this outfit (not just any Legendary):
+        </p>
+        <div className="cs-split-bar" aria-hidden>
+          <span className="win" style={{ width: `${before * 100}%` }} />
+          <span className="rest" style={{ width: `${atGuarantee * 100}%` }} />
+        </div>
+        <div className="cs-split-legend">
+          <span className="win"><b data-testid="split-before">{p1(before)}</b> get the outfit within pulls 1&ndash;{WWM_GUARANTEE - 1}</span>
+          <span className="rest"><b data-testid="split-at">{p1(atGuarantee)}</b> reach pull {WWM_GUARANTEE} without an earlier win</span>
+        </div>
+        <figcaption className="cs-split-then">
+          In this model, 100% have the outfit by pull {WWM_GUARANTEE} &mdash; only if the guarantee works as assumed. Sources disagree on whether another Legendary resets the counter; see the source check below.
+        </figcaption>
+      </figure>
+    </div>
+  )
+}
+
 export function PityChart() {
   const [n, setN] = useState(100)
   const id = useId()
@@ -73,6 +103,7 @@ export function PityChart() {
           <span>{n >= HOK_GUARANTEE ? 'guaranteed by draw 361' : 'the true figure is higher: odds start at 0.8% and rise each draw by an amount the sources do not publish'}</span>
         </div>
       </div>
+      <HypotheticalSplit />
       <p className="viz-foot">
         <b>What this chart is.</b> The Where Winds Meet line is a <b>hypothetical teaching model</b>: it assumes the reported fixed odds (0.0415%) apply to every pull and that the 150-pull guarantee always delivers this outfit. Reseller guides disagree on how the guarantee resets, so the line is not an observed outcome (details below). Honor of Kings publishes its starting odds (0.8%) and guarantee (draw 361) but not how much the odds rise per draw, so no curve is drawn &mdash; only the range those two facts allow.
       </p>

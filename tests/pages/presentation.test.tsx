@@ -7,6 +7,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import App from '../../src/App'
 import { uiDriver } from '../simulation/uiDriver'
+import { WWM_BEFORE_GUARANTEE } from '../../src/pages/case-study/PityChart'
 
 const CSS = readFileSync(resolve(__dirname, '../../src/index.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
 /** Selectors of every `.present …{display:none}` rule, with the leading `.present ` removed. */
@@ -196,15 +197,54 @@ describe('PRESENT mode explains, not just shortens', () => {
     expect(hiddenInPresent(container.querySelector('nav a[href="#industry"]')!)).toBe(false)
   })
 
-  it('Case Study: the reading guide shows in both modes and the "What chance decides" row is the key row', () => {
+  it('Case Study §03: the table and reading guide in NORMAL; three comparable scenarios in PRESENT', () => {
     const { container } = open('case-study')
     const guide = container.querySelector('.cs-impl-guide')!
-    expect(guide.textContent).toMatch(/^Read each row left to right\. Start with what chance decides/)
-    expect([hiddenInNormal(guide), hiddenInPresent(guide)]).toEqual([false, false])
+    expect(guide.textContent).toMatch(/^Read each row left to right. Start with what chance decides/)
+    const table = container.querySelector('.cs-impl')!
+    for (const el of [guide, table]) expect([hiddenInNormal(el), hiddenInPresent(el)]).toEqual([false, true])
     const key = container.querySelectorAll('.cs-impl-key')
     expect(key).toHaveLength(1)
     expect(key[0].querySelector('.cs-impl-k')!.textContent).toBe('What chance decides')
+    const strip = container.querySelector('[data-testid="scenario-strip"]')!
+    expect([hiddenInNormal(strip), hiddenInPresent(strip)]).toEqual([true, false])
+    const cards = Array.from(strip.querySelectorAll('.cs-sc-card'))
+    expect(cards.map((c) => c.querySelector('.cs-sc-head')!.textContent)).toEqual(['Fixed-price skinsboth games', 'Honor of Kings draw积分夺宝', 'Where Winds Meet drawEcho gacha'])
+    // the same three questions for every scenario
+    cards.forEach((c) => expect(Array.from(c.querySelectorAll('dt'), (d) => d.textContent)).toEqual(['Chance decides', 'Who chooses the prize', 'Pricing tool']))
+    // known vs uncertain is marked by text and pattern, not colour: one known item, three uncertain ones
+    expect(strip.querySelectorAll('.cs-sc-chance.known')).toHaveLength(1)
+    expect(strip.querySelectorAll('.cs-sc-chance.uncertain')).toHaveLength(3)
+    // the Where Winds Meet guarantee is qualified as source-reported and disputed
+    expect(cards[2].textContent).toContain('until the 150-pull guarantee (source-reported, disputed)')
+    expect(cards[2].textContent).toContain('The studio (one specific outfit)')
   })
+
+  it('Case Study §02: PRESENT shows the 6.0% / 94.0% split as a labelled hypothetical bar; NORMAL keeps the sentence', () => {
+    const { container } = open('case-study')
+    const split = container.querySelector('[data-testid="hypothetical-split"]')!
+    expect([hiddenInNormal(split), hiddenInPresent(split)]).toEqual([true, false])
+    // label and both assumptions come BEFORE the bar
+    const order = ['.cs-split-k', '.cs-split-if', '.cs-split-bar', '.cs-split-legend', '.cs-split-then'].map((sel) => split.querySelector(sel)!)
+    for (let i = 1; i < order.length; i++) expect(order[i - 1].compareDocumentPosition(order[i]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(order[0].textContent).toBe('Hypothetical teaching model — not observed game results')
+    expect(order[1].textContent).toContain('same fixed 0.0415% chance of this specific outfit')
+    expect(order[1].textContent).toContain('source-reported 150-pull guarantee always delivered this outfit (not just any Legendary)')
+    expect(order[4].textContent).toContain('only if the guarantee works as assumed')
+    expect(order[4].textContent).toContain('Sources disagree on whether another Legendary resets the counter')
+    // values come from the model, not typed in
+    const before = WWM_BEFORE_GUARANTEE
+    expect(container.querySelector('[data-testid="split-before"]')!.textContent).toBe((before * 100).toFixed(1) + '%')
+    expect(container.querySelector('[data-testid="split-at"]')!.textContent).toBe(((1 - before) * 100).toFixed(1) + '%')
+    const [win, rest] = Array.from(split.querySelectorAll<HTMLElement>('.cs-split-bar span'))
+    expect(parseFloat(win.style.width)).toBeCloseTo(before * 100, 4)
+    expect(parseFloat(rest.style.width)).toBeCloseTo((1 - before) * 100, 4)
+    // NORMAL: the original sentence; PRESENT: the chart, its footnote and the source-check panel all stay
+    const sentence = byText(container, '.takeaway', 'Teaching model, not an observed outcome')!
+    expect([hiddenInNormal(sentence), hiddenInPresent(sentence)]).toEqual([false, true])
+    for (const el of [container.querySelector('.cs-chart')!, byText(container, '.viz-foot', 'What this chart is.')!, byText(container, 'details', 'Source check (November 2026)')!]) expect(hiddenInPresent(el)).toBe(false)
+  })
+
 
   it('Case Study: "The key difference" labels the chips; the duplicate sentence box shows in NORMAL only', () => {
     const { container } = open('case-study')
