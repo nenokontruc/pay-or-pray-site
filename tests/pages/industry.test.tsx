@@ -37,17 +37,18 @@ describe('Industry — narrative flow', () => {
     sections.forEach((s) => expect(s.querySelectorAll('h2')).toHaveLength(1))
   })
 
-  it('gives every section a key finding, a takeaway, an expandable explanation and a bridge', () => {
+  it('each section is question → visual → takeaway → explanation on demand → bridge, with no Key Finding strip', () => {
     const { container } = open()
+    expect(container.querySelectorAll('[aria-label="Key finding"], .ind-key')).toHaveLength(0)
+    expect(container.textContent).not.toContain('Key finding')
     for (const s of STORY) {
       const el = section(container, s.id)
-      expect(el.querySelectorAll('[role="note"][aria-label="Key finding"]'), s.id).toHaveLength(1)
-      expect(el.querySelector('.takeaway, [class*="takeaway"]'), s.id).toBeTruthy()
+      const q = el.querySelector('h2')!, take = el.querySelector('.takeaway, [class*="takeaway"]')!, bridge = el.querySelector('.ind-bridge')!
+      expect(take, s.id).toBeTruthy()
       expect(el.querySelector('details.disclosure'), s.id).toBeTruthy()
       expect(el.querySelectorAll('.ind-bridge'), s.id).toHaveLength(1)
-      // the key finding comes before the section's visual content
-      const key = el.querySelector('.ind-key')!, bridge = el.querySelector('.ind-bridge')!
-      expect(key.compareDocumentPosition(bridge) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+      expect(q.compareDocumentPosition(take) & Node.DOCUMENT_POSITION_FOLLOWING, s.id).toBeTruthy()
+      expect(take.compareDocumentPosition(bridge) & Node.DOCUMENT_POSITION_FOLLOWING, s.id).toBeTruthy()
     }
   })
 
@@ -76,34 +77,29 @@ describe('Industry — narrative flow', () => {
   })
 })
 
-describe('Industry — key findings use the data, unchanged', () => {
-  it('market: size, then the 56% who spend nothing, then slow growth', () => {
+describe('Industry — the figures stay in the charts and takeaways, unchanged', () => {
+  it('market: $188.8B, 56% and +1.3% remain in the three charts and the takeaway', () => {
     const { container } = open()
-    const key = norm(section(container, 'market').querySelector('.ind-key')!.textContent)
-    expect(key).toContain(`$${MARKET.total}B games market, ${MARKET.year}`)
-    expect(key).toContain(`${MARKET.spendNothingPct}% of players spend nothing in a year`)
-    expect(key).toContain(`+${IAP_GROWTH.mobileGamesPct}% mobile game IAP growth`)
-    expect(key.indexOf(`$${MARKET.total}B`)).toBeLessThan(key.indexOf(`${MARKET.spendNothingPct}%`))
+    const el = section(container, 'market')
+    expect(el.querySelector('svg.donut')!.textContent).toContain(`$${MARKET.total}B`)
+    expect(el.querySelector('.picto-stat .big-stat')!.textContent).toBe(`${MARKET.spendNothingPct}%`)
+    expect(el.querySelector('svg.bars')!.textContent).toContain(`+${IAP_GROWTH.mobileGamesPct}%`)
+    expect(norm(el.querySelector('[class*="takeaway"]')!.textContent)).toContain('Mobile is 55% of a $188.8B games market — yet 56% of players spend nothing, and mobile game in-app purchases grew just 1.3% in 2025.')
     expect([MARKET.total, MARKET.spendNothingPct, IAP_GROWTH.mobileGamesPct].map(String)).toEqual(['188.8', '56', '1.3'])
   })
 
-  it('models: counts are derived from the classifications (3 / 1 / 3)', () => {
+  it('models: the three groups still show 3 / 1 / 3 from the classifications', () => {
     const { container } = open()
-    const key = norm(section(container, 'models').querySelector('.ind-key')!.textContent)
-    expect(key).toContain('7 models')
-    expect(key).toContain('3 deterministic')
-    expect(key).toContain('1 probabilistic')
-    expect(key).toContain('3 can be built either way')
+    const groups = Array.from(section(container, 'models').querySelectorAll('.ind-model-group'))
+    expect(groups.map((g) => g.querySelectorAll('.model-btn').length)).toEqual(['Deterministic', 'Probabilistic', 'Either'].map((k) => MODELS.filter((m) => m.kind === k).length))
   })
 
-  it('economies: the benchmark is labelled as interview-derived, not an estimated optimum', () => {
+  it('economies: the chart still labels the benchmark as interview-derived, not an estimated optimum', () => {
     const { container } = open()
     const el = section(container, 'economies')
-    const key = norm(el.querySelector('.ind-key')!.textContent)
-    expect(key).toContain(`$${BENCHMARKS.us.lo}–${BENCHMARKS.us.hi} US-like`)
-    expect(key).toContain(`$${BENCHMARKS.vn.lo}–${BENCHMARKS.vn.hi} VN-like`)
-    expect(key).toContain('Practitioner benchmark from an industry interview — not a statistically estimated optimal price.')
+    expect(el.querySelector('.range-chart')!.getAttribute('aria-label')).toContain(`$${BENCHMARKS.us.lo} to $${BENCHMARKS.us.hi}`)
     expect(el.textContent).toContain('Interview-based benchmark')
+    expect(norm(el.querySelector('.viz-foot')!.textContent)).toContain('not statistically estimated optimal prices')
   })
 })
 

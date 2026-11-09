@@ -6,18 +6,6 @@
 .ind .ind-n { display:block; font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
 .ind .ind-q { max-width:24ch; }
 
-/* key finding strip */
-.ind .ind-key { display:flex; gap:14px; align-items:flex-start; margin:0 0 18px; padding:14px 18px; background:var(--bg-raised); border:1px solid var(--border); border-left:4px solid var(--navy); border-radius:0 8px 8px 0; }
-:root:not([data-theme="light"]) .ind .ind-key { border-left-color:var(--text-muted); }
-.ind .ind-key-k { flex:none; font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--text-muted); padding-top:8px; }
-.ind .ind-key-body { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px; }
-.ind .ind-fig { font-size:14.5px; color:var(--text-muted); }
-.ind .ind-fig b { font-family:var(--serif); font-weight:700; font-size:clamp(22px,2.6vw,30px); color:var(--text); margin-right:4px; }
-.ind .ind-fig.strong b { font-size:clamp(28px,3.4vw,40px); }
-.ind .ind-yet { font-family:var(--serif); font-style:italic; color:var(--text-muted); }
-.ind .ind-key-note { flex-basis:100%; font-size:14px; color:var(--text); max-width:80ch; }
-@media (max-width:560px){ .ind .ind-key { flex-direction:column; gap:4px; padding:12px 14px; } .ind .ind-key-k { padding-top:0; } }
-
 /* bridge to the next question */
 .ind .ind-bridge { display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; margin-top:22px; padding-top:14px; border-top:1px dashed var(--border); }
 .ind .ind-bridge span { font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); }

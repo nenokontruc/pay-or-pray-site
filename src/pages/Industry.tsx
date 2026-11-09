@@ -1,7 +1,6 @@
-// Industry — five connected questions. Each section: question → key finding → existing visual →
-// takeaway → full explanation on demand → bridge to the next question.
+// Industry — five connected questions. Each section: question → existing visual → takeaway →
+// full explanation on demand → bridge to the next question.
 // Figures and wording come from src/data/industry.tsx (verbatim from the original site).
-import type { ReactNode } from 'react'
 import { Handheld, Seal } from '../components/Art'
 import { PixelIcon } from '../components/PixelIcon'
 import { Disclosure, Takeaway } from '../components/Disclosure'
@@ -10,7 +9,7 @@ import { Timeline } from './industry/Timeline'
 import { Models } from './industry/Models'
 import { Economies } from './industry/Economies'
 import { Regulation } from './industry/Regulation'
-import { IAP_GROWTH, MARKET, MODELS, PUBLISHERS_TEXT, SLOWDOWN_TEXT, BENCHMARKS, HISTORY, type Kind } from '../data/industry'
+import { PUBLISHERS_TEXT, SLOWDOWN_TEXT } from '../data/industry'
 import './industry/industry.css'
 
 export const STORY = [
@@ -37,10 +36,6 @@ function StoryHead({ i, lede }: { i: number; lede: string }) {
   )
 }
 
-function KeyFinding({ children }: { children: ReactNode }) {
-  return <div className="ind-key" role="note" aria-label="Key finding"><span className="ind-key-k">Key finding</span><div className="ind-key-body">{children}</div></div>
-}
-
 /** A quiet link to the next question (a button: the site's router uses the URL hash for pages). */
 function Bridge({ i }: { i: number }) {
   const next = STORY[i + 1]
@@ -54,8 +49,6 @@ function Bridge({ i }: { i: number }) {
     </p>
   )
 }
-
-const count = (k: Kind) => MODELS.filter((m) => m.kind === k).length
 
 export default function Industry() {
   return (
@@ -79,13 +72,6 @@ export default function Industry() {
       <section className="block slide" id="market">
         <div className="wrap-wide">
           <StoryHead i={0} lede="Mobile gaming is huge, highly monetized, and still growing — slowly." />
-          <KeyFinding>
-            <span className="ind-fig"><b>${MARKET.total}B</b> games market, {MARKET.year} &middot; mobile {MARKET.mobileShareLabel}%</span>
-            <span className="ind-yet">yet</span>
-            <span className="ind-fig strong"><b>{MARKET.spendNothingPct}%</b> of players spend nothing in a year</span>
-            <span className="ind-yet">and</span>
-            <span className="ind-fig"><b>+{IAP_GROWTH.mobileGamesPct}%</b> mobile game IAP growth</span>
-          </KeyFinding>
           <MarketOverview />
           <Takeaway>Mobile is 55% of a $188.8B games market — yet 56% of players spend nothing, and mobile game in-app purchases grew just 1.3% in 2025.</Takeaway>
           <Disclosure label="Explore the analysis">
@@ -102,12 +88,6 @@ export default function Industry() {
       <section className="block slide" id="history">
         <div className="wrap-wide">
           <StoryHead i={1} lede="Eight milestones, three eras. Select one." />
-          <KeyFinding>
-            <span className="ind-fig strong"><b>{HISTORY.length}</b> milestones</span>
-            <span className="ind-yet">in</span>
-            <span className="ind-fig"><b>3</b> eras</span>
-            <span className="ind-key-note">From giving software away (1980s) to publishing the odds by law (2017–18): each era changed what a pricing manager decides.</span>
-          </KeyFinding>
           <Timeline />
           <Takeaway>Freemium moved through three eras, and each one changed what a pricing manager has to decide.</Takeaway>
           <Disclosure label="Explore the analysis">
@@ -120,13 +100,6 @@ export default function Industry() {
       <section className="block slide" id="models">
         <div className="wrap-wide">
           <StoryHead i={2} lede="Tap a model to see how it works." />
-          <KeyFinding>
-            <span className="ind-fig strong"><b>{MODELS.length}</b> models</span>
-            <span className="ind-yet">&rarr;</span>
-            <span className="ind-fig"><b>{count('Deterministic')}</b> deterministic</span>
-            <span className="ind-fig"><b>{count('Probabilistic')}</b> probabilistic</span>
-            <span className="ind-fig"><b>{count('Either')}</b> can be built either way</span>
-          </KeyFinding>
           <Models />
           <Takeaway>Freemium is an umbrella over genuinely different pricing mechanisms — and the deterministic / probabilistic line is the one this project’s argument runs along.</Takeaway>
           <Disclosure label="Explore the analysis">
@@ -139,12 +112,6 @@ export default function Industry() {
       <section className="block slide" id="economies">
         <div className="wrap-wide">
           <StoryHead i={3} lede="Two pricing problems a publisher solves at once — inside the game, and across countries." />
-          <KeyFinding>
-            <span className="ind-fig strong"><b>${BENCHMARKS.us.lo}–{BENCHMARKS.us.hi}</b> US-like</span>
-            <span className="ind-yet">vs</span>
-            <span className="ind-fig strong"><b>${BENCHMARKS.vn.lo}–{BENCHMARKS.vn.hi}</b> VN-like</span>
-            <span className="ind-key-note">Best-selling tier of one package line. <b>Practitioner benchmark from an industry interview</b> — not a statistically estimated optimal price.</span>
-          </KeyFinding>
           <Economies />
           <Takeaway>Porting a US price ladder unchanged isn’t neutral — it is mispriced for the other market’s willingness to pay.</Takeaway>
           <Disclosure label="Explore the analysis — the practitioner interview">
@@ -158,10 +125,6 @@ export default function Industry() {
       <section className="block slide" id="rules">
         <div className="wrap-wide">
           <StoryHead i={4} lede="Key regulations on gacha and loot boxes, by jurisdiction." />
-          <KeyFinding>
-            <span className="ind-fig strong"><b>2017</b> China&rsquo;s disclosure rule</span>
-            <span className="ind-key-note">It is why Honor of Kings&rsquo; and Where Winds Meet&rsquo;s exact odds are public &mdash; the data the case study depends on. Elsewhere, rules range from enacted laws to court rulings, proposals and litigation.</span>
-          </KeyFinding>
           <Regulation />
           <Takeaway>China’s 2017 disclosure law is the reason Honor of Kings’ and Where Winds Meet’s exact probabilities are public at all.</Takeaway>
           <Disclosure label="Explore the analysis">
