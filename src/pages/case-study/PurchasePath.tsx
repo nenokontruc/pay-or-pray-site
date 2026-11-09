@@ -74,7 +74,9 @@ export function PurchasePath({ step, setStep }: { step: number; setStep: (i: num
         <button type="button" className="btn-ghost" onClick={() => go(step + 1)} disabled={step === STEPS.length - 1}>Next step &rarr;</button>
       </div>
 
-      <div className="cs-open" aria-label="What chance still decides">
+      {/* The visual that states the key difference; the sentence version is the callout below (NORMAL only). */}
+      <h3 className="cs-open-title" id="cs-key-difference">The key difference</h3>
+      <div className="cs-open" role="group" aria-labelledby="cs-key-difference">
         {SUMMARY.map((g) => (
           <div key={g.game} className="cs-open-game">
             <span className="cs-open-k">{g.game}</span>

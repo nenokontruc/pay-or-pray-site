@@ -140,7 +140,8 @@
 .cs .cs-step-note { font-size:12.8px; color:var(--text-muted); margin-top:8px; }
 .cs .cs-step-nav { display:flex; justify-content:space-between; gap:8px; margin-top:14px; flex-wrap:wrap; }
 .cs .cs-step-nav .btn-ghost:disabled { opacity:.4; cursor:not-allowed; }
-.cs .cs-open { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+.cs .cs-open { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px; }
+.cs .cs-open-title { font-family:var(--serif); font-weight:600; font-size:20px; margin:24px 0 0; }
 @media (max-width:640px){ .cs .cs-open { grid-template-columns:1fr; } .cs .cs-node-label { font-size:11px; } .cs .cs-node-dot { width:30px; height:30px; } .cs .cs-rail-line { top:14px; } }
 .cs .cs-open-game { border:1px solid var(--border); border-radius:6px; padding:12px 14px; background:var(--bg-raised); display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
 .cs .cs-open-k { width:100%; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); }
