@@ -169,6 +169,45 @@ describe('PRESENT mode is more concise; NORMAL mode keeps everything', () => {
   })
 })
 
+describe('PRESENT mode explains, not just shortens', () => {
+  it('typography: projection sizes exist for PRESENT only (interpretation 17px, caveats 16px, footnotes 14px)', () => {
+    const rule = (size: string) => [...CSS.matchAll(/([^{}]+)\{\s*font-size:\s*([\d.]+px)[^}]*\}/g)].filter((m) => m[2] === size).map((m) => m[1]).join(',')
+    for (const sel of ['.callout', '.fw .fw-interp', '.cs .cs-impl-row > span[role="cell"]', '.dx .dx-fields dd', '.step p']) expect(rule('17px'), sel).toContain(`html.present ${sel}`)
+    for (const sel of ['.game-note', '.sim .game-note', '.dx .dx-screen', '.fw .fw-hint']) expect(rule('16px'), sel).toContain(`html.present ${sel}`)
+    expect(rule('14px')).toContain('html.present .viz-foot')
+  })
+
+  it('Home: each concept card keeps a one-line definition; the roadmap hides in PRESENT only', () => {
+    const { container } = open('home')
+    const defs = Array.from(container.querySelectorAll('.steps .step p.present-only'), (p) => p.textContent)
+    expect(defs).toEqual(['Free to play, with optional paid items.', 'Pay for a chance at a rare item.',
+      'Money buys a competitive advantage, not just a new look.', 'The most a player is prepared to pay.'])
+    container.querySelectorAll('.steps .step p.present-only').forEach((p) => expect([hiddenInNormal(p), hiddenInPresent(p)]).toEqual([true, false]))
+    const roadmap = container.querySelector('.nav-cards')!
+    expect([hiddenInNormal(roadmap), hiddenInPresent(roadmap)]).toEqual([false, true])
+    // the site navigation stays available in PRESENT
+    expect(hiddenInPresent(container.querySelector('nav a[href="#industry"]')!)).toBe(false)
+  })
+
+  it('Case Study: the reading guide shows in both modes and the "What chance decides" row is the key row', () => {
+    const { container } = open('case-study')
+    const guide = container.querySelector('.cs-impl-guide')!
+    expect(guide.textContent).toMatch(/^Read each row left to right\. Start with what chance decides/)
+    expect([hiddenInNormal(guide), hiddenInPresent(guide)]).toEqual([false, false])
+    const key = container.querySelectorAll('.cs-impl-key')
+    expect(key).toHaveLength(1)
+    expect(key[0].querySelector('.cs-impl-k')!.textContent).toBe('What chance decides')
+  })
+
+  it('Simulation: the goal line shows in PRESENT only, and the current step is marked', () => {
+    const { container } = open('simulation')
+    const goal = container.querySelector('.sim-goal')!
+    expect(goal.textContent).toBe('Goal: earn revenue while protecting player goodwill.')
+    expect([hiddenInNormal(goal), hiddenInPresent(goal)]).toEqual([true, false])
+    expect(container.querySelector('.flow-steps li[aria-current="step"]')).toBeTruthy()
+  })
+})
+
 describe('switching modes keeps state', () => {
   it('Framework calculator values and results survive PRESENT on/off', () => {
     const { container } = open('framework')

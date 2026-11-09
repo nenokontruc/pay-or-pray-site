@@ -26,6 +26,9 @@ export default function Simulation() {
           <div>
             <p className="kicker">Simulation</p>
             <h1 className="page-title">You're the new monetization manager</h1>
+            {/* PRESENT only: the objective from the hidden intro ("Earn the most without wrecking trust"),
+                named after the HUD's own metrics (Total revenue, Goodwill). */}
+            <p className="sim-goal present-only"><b>Goal:</b> earn revenue while protecting player goodwill.</p>
           </div>
           <div className="mascot" aria-hidden><Seal size={88} /></div>
         </div>

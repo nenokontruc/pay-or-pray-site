@@ -73,6 +73,9 @@
 /* Added: highlight the step the player is on (progress indicator). */
 .sim .flow-steps li.current { border-top-width:4px; }
 .sim .flow-steps li.done { opacity:.6; }
+/* PRESENT: the goal line, and the current step stands out (the others recede; aria-current is unchanged). */
+.sim .sim-goal { font-family:var(--serif); font-size:20px; margin:0; max-width:46ch; }
+.present .sim .flow-steps li:not(.current) { opacity:.7; }
 
 .sim .pkg-row { border:1px solid var(--border); border-radius:5px; margin-top:10px; background:var(--bg-raised); transition:border-color .15s, box-shadow .15s; }
 .sim .pkg-row.on { border-color:var(--navy); box-shadow:0 0 0 1px var(--navy); }
