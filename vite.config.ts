@@ -20,5 +20,8 @@ export default defineConfig(({ command }) => ({
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}', 'tests/**/*.test.{ts,tsx}'],
+    // Run test files one at a time. In parallel, CPU contention pushed jsdom-heavy tests (the legacy
+    // Simulation harness, Home, Framework) past the 5 s default on a busy machine; serial runs pass reliably.
+    fileParallelism: false,
   },
 }))
