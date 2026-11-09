@@ -167,8 +167,11 @@ body { top:0 !important; }
 .coming { padding-top:90px; padding-bottom:60px; }
 .coming .kicker { margin-top:18px; text-transform:capitalize; }
 
-/* presentation mode: fewer chrome elements, larger type */
-.present footer, .present .subnav, .present .lang-switch, .present #progress-bar, .present .game-note, .present .viz-foot .src-extra { display:none; }
+/* presentation mode: fewer chrome elements, larger type.
+   Never hide notes by their class alone: .game-note also carries warnings, caveats and test results.
+   Secondary text is hidden only where it is explicitly marked .present-hide (see docs/PRESENTATION_MODE.md). */
+.present footer:not(.sim-foot), .present .subnav, .present .lang-switch, .present #progress-bar, .present .viz-foot .src-extra { display:none; }
+.present .present-hide { display:none; }
 .present body { font-size:19px; }
 .present .block { padding:56px 0; }
 .present .sec-title { font-size:clamp(28px,3.6vw,40px); }

@@ -30,7 +30,8 @@ function PageNav({ page }: { page: PageId }) {
 /** "How this simulation works" footer, verbatim from legacy/index.html:1065-1081. */
 function SimulationFooter() {
   return (
-    <footer>
+    // .sim-foot: the model assumptions stay visible in PRESENT mode.
+    <footer className="sim-foot">
       <div className="wrap-wide">
         <div className="foot-grid">
           <div>
