@@ -55,10 +55,26 @@
 
 /* regulation: type of rule */
 .ind .ind-inst { display:inline-block; font-family:var(--mono); font-size:10.5px; padding:2px 8px; border-radius:20px; border:1px solid var(--border); color:var(--text-muted); white-space:nowrap; }
-.ind .ind-inst.enacted { border-color:var(--navy); color:var(--text); }
-:root:not([data-theme="light"]) .ind .ind-inst.enacted { border-color:var(--text); }
+.ind .ind-inst.enacted { border-color:var(--text); color:var(--text); }
 .ind .ind-inst.interpretation { border-style:dashed; border-color:var(--silver); }
 .ind .ind-inst.proposal { border-style:dotted; border-color:var(--silver); }
 .ind .ind-inst.litigation { background:var(--bg); }
 .ind .reg-chip .ind-inst { margin-left:auto; }
 .ind .ind-inst-legend { display:flex; flex-wrap:wrap; gap:6px 18px; list-style:none; margin:10px 0 0; padding:0; font-size:12.5px; color:var(--text-muted); }
+
+/* players-who-spend pictogram: filled = spends something, outlined = spends nothing.
+   --picto-fill is redefined for dark mode, where --slate is nearly invisible on the card (1.4:1). */
+.ind { --picto-fill:var(--slate); --picto-line:var(--text-muted); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ind { --picto-fill:var(--silver); } }
+:root[data-theme="dark"] .ind { --picto-fill:var(--silver); }
+.ind .pp-spend rect { fill:var(--picto-fill); }
+.ind .pp-none rect { fill:none; stroke:var(--picto-line); }
+.ind .pp { transition:opacity .2s; }
+.ind .pp-dim { opacity:.22; }
+@media (prefers-reduced-motion: reduce) { .ind .pp { transition:none; } }
+.ind .picto-toggles .chip .swatch.ind-sw-spend { background:var(--picto-fill); border-color:var(--picto-fill); }
+.ind .picto-toggles .chip .swatch.ind-sw-none { background:transparent; border:1.5px solid var(--picto-line); }
+.ind .picto-toggles .chip.on { background:var(--text); color:var(--bg); border-color:var(--text); font-weight:600; }
+.ind .picto-toggles .chip.on .swatch.ind-sw-spend { background:var(--bg); border-color:var(--bg); }
+.ind .picto-toggles .chip.on .swatch.ind-sw-none { border-color:var(--bg); }
+.ind .ind-check { font-weight:700; margin-right:-2px; }

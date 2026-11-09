@@ -55,21 +55,23 @@ function Donut() {
 }
 
 /* ---------- Pictogram ---------- */
+// Two cues, not colour alone: spenders are filled figures, non-spenders are outlined figures.
+// Selecting a group keeps it at full strength and fades the other (.pp-dim). Colours: industry.css.
+const PARTS: [number, number, number, number][] = [[2, 0, 3, 3], [1, 3.4, 5, 3.6], [1, 7, 2, 2.6], [4, 7, 2, 2.6]]
+const LINE = 0.7 // outline width; outlined parts are inset by half of it so both figures are the same size
 function Person({ x, y, on, dim }: { x: number; y: number; on: boolean; dim: boolean }) {
-  const c = on ? 'var(--slate)' : 'var(--lightgray)'
   return (
-    <g transform={`translate(${x} ${y})`} opacity={dim ? 0.25 : 1} fill={c}>
-      <rect x="2" y="0" width="3" height="3" />
-      <rect x="1" y="3.4" width="5" height="3.6" />
-      <rect x="1" y="7" width="2" height="2.6" />
-      <rect x="4" y="7" width="2" height="2.6" />
+    <g transform={`translate(${x} ${y})`} className={`pp ${on ? 'pp-spend' : 'pp-none'}${dim ? ' pp-dim' : ''}`}>
+      {PARTS.map(([px, py, w, h], k) => on
+        ? <rect key={k} x={px} y={py} width={w} height={h} />
+        : <rect key={k} x={px + LINE / 2} y={py + LINE / 2} width={w - LINE} height={h - LINE} strokeWidth={LINE} />)}
     </g>
   )
 }
 function Pictogram() {
   const { nothing, spend } = pictogramSplit(MARKET.spendNothingPct)
   const [focus, setFocus] = useState<'nothing' | 'spend' | null>(null)
-  // First `spend` icons are spenders (dark); the rest spend nothing (light).
+  // First `spend` icons are spenders (filled); the rest spend nothing (outlined).
   const icons = Array.from({ length: 100 }, (_, i) => i < spend)
   return (
     <div className="viz-card">
@@ -86,10 +88,10 @@ function Pictogram() {
           <p>of players spend nothing on games in a year</p>
           <div className="picto-toggles">
             <button type="button" className={`chip ${focus === 'nothing' ? 'on' : ''}`} aria-pressed={focus === 'nothing'} onClick={() => setFocus(focus === 'nothing' ? null : 'nothing')}>
-              <i className="swatch" style={{ background: 'var(--lightgray)' }} />Spend nothing · {nothing}
+              <i className="swatch ind-sw-none" aria-hidden />{focus === 'nothing' && <span className="ind-check" aria-hidden>✓</span>}Spend nothing · {nothing}
             </button>
             <button type="button" className={`chip ${focus === 'spend' ? 'on' : ''}`} aria-pressed={focus === 'spend'} onClick={() => setFocus(focus === 'spend' ? null : 'spend')}>
-              <i className="swatch" style={{ background: 'var(--slate)' }} />Spend something · {spend}
+              <i className="swatch ind-sw-spend" aria-hidden />{focus === 'spend' && <span className="ind-check" aria-hidden>✓</span>}Spend something · {spend}
             </button>
           </div>
         </div>

@@ -107,6 +107,49 @@ describe('Industry — key findings use the data, unchanged', () => {
   })
 })
 
+describe('Industry — players-who-spend pictogram', () => {
+  it('encodes the two groups by shape (filled vs outlined), not colour alone; values unchanged', () => {
+    const { container } = open()
+    const svg = container.querySelector('svg.picto')!
+    expect(svg.querySelectorAll('.pp')).toHaveLength(100)
+    expect(svg.querySelectorAll('.pp-spend')).toHaveLength(44)
+    expect(svg.querySelectorAll('.pp-none')).toHaveLength(56)
+    // outlined figures carry a stroke width; filled ones do not
+    svg.querySelectorAll('.pp-none rect').forEach((r) => expect(r.getAttribute('stroke-width')).toBe('0.7'))
+    svg.querySelectorAll('.pp-spend rect').forEach((r) => expect(r.getAttribute('stroke-width')).toBeNull())
+    expect(svg.getAttribute('aria-label')).toBe('100 player icons: 56 spend nothing on games in a year, 44 spend something')
+    expect(container.textContent).toContain('1 icon = 1 of every 100 players. The 44 is the remainder (100 − 56). Source:')
+  })
+
+  it('selecting a group keeps it at full strength and fades only the other group', () => {
+    const { container } = open()
+    const svg = container.querySelector('svg.picto')!
+    const [none, spend] = Array.from(container.querySelectorAll<HTMLButtonElement>('.picto-toggles .chip'))
+    expect(svg.querySelectorAll('.pp-dim')).toHaveLength(0)
+    fireEvent.click(none)
+    expect(none.getAttribute('aria-pressed')).toBe('true')
+    expect(none.classList.contains('on')).toBe(true)
+    expect(none.querySelector('.ind-check')).toBeTruthy()
+    expect(svg.querySelectorAll('.pp-none.pp-dim')).toHaveLength(0)
+    expect(svg.querySelectorAll('.pp-spend.pp-dim')).toHaveLength(44)
+    fireEvent.click(spend)
+    expect(none.getAttribute('aria-pressed')).toBe('false')
+    expect(spend.getAttribute('aria-pressed')).toBe('true')
+    expect(svg.querySelectorAll('.pp-spend.pp-dim')).toHaveLength(0)
+    expect(svg.querySelectorAll('.pp-none.pp-dim')).toHaveLength(56)
+    fireEvent.click(spend)
+    expect(svg.querySelectorAll('.pp-dim')).toHaveLength(0)
+  })
+
+  it('pictogram colours come from tokens, with a dark-mode fill that is not --slate', () => {
+    const css = readFileSync(resolve(__dirname, '../../src/pages/industry/industry.css'), 'utf8')
+    expect(css).toContain('.ind { --picto-fill:var(--slate); --picto-line:var(--text-muted); }')
+    expect(css).toContain('@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ind { --picto-fill:var(--silver); } }')
+    expect(css).toContain(':root[data-theme="dark"] .ind { --picto-fill:var(--silver); }')
+    expect(css).toContain('.ind .picto-toggles .chip.on { background:var(--text); color:var(--bg); border-color:var(--text);')
+  })
+})
+
 describe('Industry — timeline', () => {
   it('keeps all eight milestones interactive, with era context and pricing-manager guidance', () => {
     const { container } = open()
