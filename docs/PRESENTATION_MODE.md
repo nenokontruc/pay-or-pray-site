@@ -44,3 +44,11 @@ Everything below stays in NORMAL mode, word for word (enforced by tests/pages/co
     WWM_BEFORE_GUARANTEE. The chart is capped at 300px tall in PRESENT so the bar sits on the same screen.
   - Unchanged and still visible: the chart, its legend, the source-conflict footnote, and the
     "Teaching model: formula, assumptions and source check" panel. NORMAL keeps the table, guide and sentence.
+
+## Academic patch (November 2026, branch academic-patch)
+- **Framework, first section · When does freemium actually pay off?** (RQ1; moved from a draft Industry 06) is shown in both modes: three headline figures, the
+  payer-share bar and slider, the worked break-even formula, the infeasible $3 case and the "hypothetical" caveat.
+  PRESENT hides only the "Model, inputs and assumptions" panel and two duplicate labels (the "payer share" captions
+  under the figures and the numeric ranges in the legend, which the bar already marks).
+- **Framework "Show the mathematics"** is now `present-keep`: collapsed but present in PRESENT, so "Open the
+  mathematics" (toolkit step 3) opens it.

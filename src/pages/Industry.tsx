@@ -40,7 +40,7 @@ function StoryHead({ i, lede }: { i: number; lede: string }) {
 function Bridge({ i }: { i: number }) {
   const next = STORY[i + 1]
   if (!next) {
-    return <p className="ind-bridge"><span>Next page</span><a href="#framework">Framework: how do you price a known item, and a chance? &rarr;</a></p>
+    return <p className="ind-bridge"><span>Next page</span><a href="#framework">Framework: when does freemium pay off, and how do you price an item? &rarr;</a></p>
   }
   return (
     <p className="ind-bridge">
@@ -126,10 +126,11 @@ export default function Industry() {
         <div className="wrap-wide">
           <StoryHead i={4} lede="Key regulations on gacha and loot boxes, by jurisdiction." />
           <Regulation />
-          <Takeaway>China’s 2017 disclosure law is the reason Honor of Kings’ and Where Winds Meet’s exact probabilities are public at all.</Takeaway>
+          <Takeaway>China’s 2017 law requires published drop rates. This project’s odds for both case-study games come from secondary sources and were not matched to an official disclosure.</Takeaway>
           <Disclosure label="Explore the analysis">
-            <p>No two jurisdictions regulate gacha the same way — and that patchwork is precisely why this project can cite exact drop rates for Honor of Kings and Where Winds Meet in the first place.</p>
-            <div className="callout"><b>Why this matters for the case study:</b> China's 2017 disclosure law is not incidental to this project — it's the reason Honor of Kings' and Where Winds Meet's exact probabilities are public at all. A regulatory requirement built for consumer protection turned out to be the dataset this entire pricing analysis depends on.</div>
+            <p>No two jurisdictions regulate gacha the same way — and that patchwork shapes what a publisher must disclose about drop rates in each market.</p>
+            {/* Corrected Nov 2026 (docs/CONTENT_CORRECTIONS.md): the case-study odds were not verified against official disclosures. */}
+            <div className="callout"><b>Why this matters for the case study:</b> China's 2017 disclosure law requires published drop rates, but the odds this project uses for Honor of Kings and Where Winds Meet were taken from secondary sources. They were not matched to an official disclosure page, so the case study treats them as reported, not verified.</div>
           </Disclosure>
           <Bridge i={4} />
         </div>

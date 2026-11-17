@@ -100,12 +100,12 @@ export function PityChart() {
         <div className="cs-read hok">
           <span className="cs-read-k">Honor of Kings</span>
           <b data-testid="hok-readout">{n >= HOK_GUARANTEE ? '100%' : `at least ${p1(hokAt)}`}</b>
-          <span>{n >= HOK_GUARANTEE ? 'guaranteed by draw 361' : 'the true figure is higher: odds start at 0.8% and rise each draw by an amount the sources do not publish'}</span>
+          <span>{n >= HOK_GUARANTEE ? 'guaranteed by draw 361' : 'the true figure is higher: reported odds start at 0.8% and rise each draw by an amount the sources do not publish'}</span>
         </div>
       </div>
       <HypotheticalSplit />
       <p className="viz-foot">
-        <b>What this chart is.</b> The Where Winds Meet line is a <b>hypothetical teaching model</b>: it assumes the reported fixed odds (0.0415%) apply to every pull and that the 150-pull guarantee always delivers this outfit. Reseller guides disagree on how the guarantee resets, so the line is not an observed outcome (details below). Honor of Kings publishes its starting odds (0.8%) and guarantee (draw 361) but not how much the odds rise per draw, so no curve is drawn &mdash; only the range those two facts allow.
+        <b>What this chart is.</b> The Where Winds Meet line is a <b>hypothetical teaching model</b>: it assumes the reported fixed odds (0.0415%) apply to every pull and that the 150-pull guarantee always delivers this outfit. Reseller guides disagree on how the guarantee resets, so the line is not an observed outcome (details below). For Honor of Kings, the project&rsquo;s sources report starting odds of 0.8% and a guarantee at draw 361 (not verified against an official disclosure) but not how much the odds rise per draw, so no curve is drawn &mdash; only the range those two reported figures allow.
       </p>
     </div>
   )

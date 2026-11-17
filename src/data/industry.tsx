@@ -99,7 +99,7 @@ export type Instrument = 'enacted' | 'interpretation' | 'proposal' | 'litigation
 export type Jurisdiction = { id: string; name: string; approach: string; stance: Stance; year: string; status: string; source: string; lon: number; lat: number; instrument: Instrument; instrumentBasis: string }
 export const JURISDICTIONS: Jurisdiction[] = [
   { id: 'cn', name: 'China', approach: 'Disclosure', stance: 'disc', year: '2017',
-    status: 'Mandatory drop-rate disclosure since 2017 — the reason this project has exact odds data',
+    status: 'Mandatory drop-rate disclosure since 2017 (the case-study odds are source-reported, not matched to an official disclosure)',
     source: 'Project regulation table (status, 2026); 2017 milestone on the timeline', lon: 104, lat: 35,
     instrument: 'enacted', instrumentBasis: 'The status describes a mandatory disclosure requirement.' },
   { id: 'be', name: 'Belgium', approach: 'Ban', stance: 'ban', year: '2018',

@@ -2,12 +2,12 @@
 //
 // The 100-player population is ILLUSTRATIVE, built to show the course's price-response function
 //   d(p) = D · (1 − W(p)),   Paying Rate = P(wtp ≥ p)
-// Only one ingredient is a real figure: 56 of the 100 have willingness to pay $0, mirroring Newzoo's
-// estimate that 56% of players spend nothing on games in a year (as the original Framework text uses it).
-// The other 44 values are made up: evenly spaced quantiles of an exponential distribution, mean $8.
+// Every value is illustrative. 56 of the 100 sit below the lowest price shown (drawn at $0); the other 44 values are
+// evenly spaced quantiles of an exponential distribution, mean $8. Newzoo's ~56% non-payer share is a spending
+// outcome, not a willingness-to-pay estimate, and is not presented as one (corrected Nov 2026).
 
 export const D_PLAYERS = 100
-export const NON_PAYERS = 56 // Newzoo (2025): 56% spend nothing in a year
+export const NON_PAYERS = 56 // illustrative: players below the lowest price shown
 export const ILLUSTRATIVE_MEAN = 8
 
 /** Willingness to pay of the 44 illustrative spenders, ascending, rounded to cents. */

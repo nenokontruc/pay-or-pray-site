@@ -173,7 +173,9 @@ describe('PRESENT mode is more concise; NORMAL mode keeps everything', () => {
     expect(hiddenInPresent(byText(container, '.formula, [class*=formula]', 'EVC = RefP + DiffV')!)).toBe(false)
     expect(hiddenInPresent(container.querySelector('.fw-result')!)).toBe(false)
     expect(hiddenInPresent(container.querySelector('input[type="range"]')!)).toBe(false)
-    expect(hiddenInPresent(container.querySelector('#fw-math')!)).toBe(true)
+    // Kept (collapsed) in PRESENT so "Open the mathematics" has something to open (Nov 2026 academic patch).
+    expect(hiddenInPresent(container.querySelector('#fw-math')!)).toBe(false)
+    expect(container.querySelector<HTMLDetailsElement>('#fw-math')!.open).toBe(false)
   })
 })
 

@@ -138,13 +138,14 @@ export default function Diagnostic() {
             <p className="dx-screen"><b>A screening tool, not a score.</b> The framework compares designs by two questions; the risk labels are ordinal positions, not a statistically validated measurement.</p>
           </div>
 
-          <Takeaway>Freemium &ldquo;makes sense&rdquo; when a design deliberately stays in the top row &mdash; and, if it uses chance, prices it with the tools built for chance.</Takeaway>
+          <Takeaway>A screen for monetization risk, not a test of profitability: whether freemium pays off is set by the break-even conditions (top of the Framework page). Within freemium, the top row carries the least risk, and an item sold by chance needs the tools built for chance.</Takeaway>
 
           <Disclosure label="Reading the matrix">
             <div className="prose">
               <h2 className="sec-title">Reading the matrix</h2>
               <p>The diagonal from top-left to bottom-right is the one that matters most: it runs from the safest commercial position (known goods, no power) to the position regulators are actively targeting (chance-based goods that also confer competitive advantage). Both case-study games straddle the top row: their skin shops sit in the top-left cell (Honor of Kings right at its lower edge, given its small skin stat bonuses), and their lucky draws sit one cell over, in moderate risk — because removing power from a probabilistic mechanic reduces but does not eliminate its regulatory exposure. Honor of Kings' draw sits closer to the left edge of that cell than Where Winds Meet's, because players choose the final prize.</p>
-              <p>Freemium "makes sense," in the terms this project set out to answer, when a design deliberately stays in the top row — and when, if it does use a probabilistic mechanic, the Choice Architecture and EVC model applied to it are the ones built for chance, not the ones built for certainty.</p>
+              {/* Corrected Nov 2026 (docs/CONTENT_CORRECTIONS.md): the grid screens risk; it does not decide whether freemium is profitable. */}
+              <p>This grid answers the second of this project&rsquo;s two questions. Once a game is freemium, a design that stays in the top row carries the least monetization risk, and an item sold by chance should be priced with the tools built for chance, not the ones built for certainty. Whether freemium pays off at all is a separate, profitability question, answered by the break-even conditions at the top of the Framework page.</p>
               <p>How costly each cell is also depends on the market. Players in China have historically accepted paid power far more than Western players, so the same item can sit in a more dangerous position in the US than in China &mdash; a difference the <a href="#simulation">Simulation</a> lets you test.</p>
             </div>
           </Disclosure>

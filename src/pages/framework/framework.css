@@ -182,3 +182,49 @@
   .fw .fw-chain-short { display:inline; }
   .fw .fw-wtp-tick { font-size:22px; }   /* viewBox units: ≈12px on a phone */
 }
+
+/* RQ1 · when does freemium pay off? (framework/BreakEven.tsx). Zones differ by fill AND pattern, not colour alone. */
+.fw { --be-strong:var(--slate); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .fw { --be-strong:var(--text); } }
+:root[data-theme="dark"] .fw { --be-strong:var(--text); }
+.fw .be-figures { grid-template-columns:repeat(3, 1fr); }
+.fw .be-figures > :last-child { grid-column:auto; }
+@media (max-width:760px) { .fw .be-figures { grid-template-columns:1fr; } .fw .be-figures > :last-child { grid-column:auto; } }
+.fw .be-fig { gap:4px; }
+.fw .be-k { font-family:var(--mono); font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--text-muted); }
+.fw .be-num { font-family:var(--serif); font-size:34px; line-height:1.15; color:var(--text); }
+.fw .be-sub { font-size:13.5px; color:var(--text-muted); }
+.fw .be-card { margin-top:16px; }
+.fw .be-tag { font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text); border:1px solid var(--border); border-radius:20px; padding:3px 10px; }
+.fw .be-def { font-size:15px; margin:6px 0 4px; max-width:80ch; }
+.fw .be-bar-wrap { position:relative; margin:34px 0 4px; }
+.fw .be-bar { position:relative; height:30px; border:1px solid var(--border); border-radius:4px; overflow:hidden; background:var(--bg-raised); }
+.fw .be-zone { position:absolute; top:0; bottom:0; }
+.fw .be-zone.loss, .fw .be-sw.loss { background:repeating-linear-gradient(135deg, var(--lightgray) 0 6px, var(--bg-raised) 6px 10px); }
+.fw .be-zone.below-premium, .fw .be-sw.below-premium { background:var(--silver); }
+.fw .be-zone.beats-premium, .fw .be-sw.beats-premium { background:var(--be-strong); }
+.fw .be-line { position:absolute; top:-4px; bottom:-4px; width:2px; margin-left:-1px; background:var(--text); }
+.fw .be-pin { position:absolute; top:-6px; bottom:-6px; width:4px; margin-left:-2px; background:var(--text); border-radius:2px; box-shadow:0 0 0 2px var(--bg-raised); }
+.fw .be-marks { position:absolute; left:0; right:0; top:-24px; height:20px; }
+.fw .be-mark { position:absolute; bottom:0; font-family:var(--mono); font-size:11.5px; white-space:nowrap; color:var(--text); }
+.fw .be-mark-be { transform:translateX(calc(-100% - 6px)); }
+.fw .be-mark-p { transform:translateX(6px); }
+.fw .be-ticks { position:relative; height:18px; margin-top:4px; }
+.fw .be-ticks span { position:absolute; transform:translateX(-50%); font-family:var(--mono); font-size:11px; color:var(--text-muted); }
+.fw .be-ticks span:first-child { transform:none; }
+.fw .be-ticks span:last-child { transform:translateX(-100%); }
+.fw .be-field { display:flex; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap; }
+.fw .be-field input { flex:1 1 220px; accent-color:var(--text); min-height:32px; }
+.fw .be-out { font-family:var(--mono); font-weight:600; font-size:16px; min-width:64px; text-align:right; }
+.fw .be-read { font-size:16px; margin:8px 0 10px; }
+.fw .be-legend { list-style:none; margin:0; padding:0; display:grid; gap:6px; }
+.fw .be-legend li { display:grid; grid-template-columns:22px 1fr auto; align-items:center; gap:10px; font-size:14.5px; padding:4px 6px; border-radius:4px; }
+.fw .be-legend li.on { outline:2px solid var(--text); font-weight:600; }
+.fw .be-sw { display:block; width:22px; height:14px; border:1px solid var(--border); border-radius:2px; }
+.fw .be-range { font-family:var(--mono); font-size:12.5px; color:var(--text-muted); }
+.fw .be-eq { font-size:14.5px; margin:14px 0 6px; padding-top:10px; border-top:1px dashed var(--border); }
+.fw .be-low { font-size:14.5px; margin:6px 0 0; }
+.fw .be-formula { font-family:var(--mono); font-size:13px; overflow-x:auto; }
+@media (max-width:560px) { .fw .be-mark { font-size:10.5px; } .fw .be-long { display:none; } .fw .be-num { font-size:28px; } }
+.fw .fw-rq1-next { font-family:var(--serif); font-size:18px; margin:18px 0 0; max-width:60ch; }
+.fw .fw-rq1-next a { color:inherit; }

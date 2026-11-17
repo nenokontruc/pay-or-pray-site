@@ -19,7 +19,7 @@ const slider = (id: 'det' | 'prob', label: RegExp) => { showTab(id); return with
 describe('Framework — deterministic tab', () => {
   it('shows the course example: $10 + $5 = $15 and the ceiling interpretation', () => {
     open()
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Two ways to value an in-game item')
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('From business model to item pricing')
     expect(screen.getByTestId('det-evc').textContent).toBe('$15')
     expect(screen.getByTestId('det-interp').textContent).toContain('The modeled value-based price ceiling is $15.')
     expect(screen.getByTestId('det-interp').textContent).toContain('not necessarily the profit-maximizing price')
@@ -65,47 +65,55 @@ describe('Framework — deterministic tab', () => {
   })
 })
 
-describe('Framework — probabilistic tab', () => {
-  it('default 20%, $15, $3: failure 80%, +$3.00 − $2.40 = $0.60', () => {
+describe('Framework — probabilistic tab (expected net payoff = p × G − c)', () => {
+  it('default p 20%, G $18, c $3: ceiling $3.60, net payoff $0.60, labelled as not EVC', () => {
     open()
     fireEvent.click(screen.getByRole('tab', { name: /Probabilistic Goods/ }))
     expect(screen.getByTestId('p-failure').textContent).toBe('80%')
-    expect(screen.getByTestId('gain').textContent).toBe('+$3')
-    expect(screen.getByTestId('loss').textContent).toBe('−$2.40')
-    expect(screen.getByTestId('prob-evc').textContent).toBe('$0.60')
-    expect(screen.getByTestId('prob-interp').textContent).toContain('A simplified two-outcome expression')
+    expect(screen.getByTestId('ceiling').textContent).toBe('+$3.60')
+    expect(screen.getByTestId('price').textContent).toBe('−$3')
+    expect(screen.getByTestId('prob-enp').textContent).toBe('$0.60')
+    expect(screen.getByTestId('ceiling-read').textContent).toBe('$3.60')
+    const t = panel('prob').textContent!
+    expect(t).toContain('Expected net payoff = p × G − c')
+    expect(t).toContain('Not EVC: EVC (left tab) is a price ceiling.')
+    expect(t).not.toContain('EVC(gacha)')
   })
 
-  it('probability edges and very low probability', () => {
+  it('probability edges and very low probability (reported Where Winds Meet inputs: 0.0415%, $100, $2.6664 → −$2.62)', () => {
     open()
-    fireEvent.change(box('prob', /P\(success\)/), { target: { value: '0' } })
-    expect(screen.getByTestId('prob-evc').textContent).toBe('−$3')
-    fireEvent.change(box('prob', /P\(success\)/), { target: { value: '100' } })
-    expect(screen.getByTestId('prob-evc').textContent).toBe('$15')
+    fireEvent.change(box('prob', /^p/), { target: { value: '0' } })
+    expect(screen.getByTestId('prob-enp').textContent).toBe('−$3')
+    fireEvent.change(box('prob', /^p/), { target: { value: '100' } })
+    expect(screen.getByTestId('prob-enp').textContent).toBe('$15')
     expect(screen.getByTestId('p-failure').textContent).toBe('0%')
-    fireEvent.change(box('prob', /P\(success\)/), { target: { value: '0.0415' } })
+    fireEvent.change(box('prob', /^p/), { target: { value: '0.0415' } })
     expect(screen.getByTestId('p-success').textContent).toBe('0.0415%')
     expect(screen.getByTestId('p-failure').textContent).toBe('99.9585%')
-    fireEvent.change(box('prob', /P\(success\)/), { target: { value: '101' } })
+    fireEvent.change(box('prob', /^G/), { target: { value: '100' } })
+    expect(screen.getByTestId('ceiling-read').textContent).toBe('$0.04') // 0.000415 × 100 = $0.0415
+    fireEvent.change(box('prob', /^p/), { target: { value: '101' } })
     expect(within(panel('prob')).getByRole('alert').textContent).toBe('Enter a number from 0 to 100.')
   })
 
   it('positive, break-even and negative interpretations', () => {
     open()
-    fireEvent.change(box('prob', /P\(success\)/), { target: { value: '25' } })
-    fireEvent.change(box('prob', /Value/), { target: { value: '3' } })
-    fireEvent.change(box('prob', /Cost/), { target: { value: '1' } })
-    expect(screen.getByTestId('prob-interp').textContent).toContain('breaks even') // 0.75 − 0.75
-    fireEvent.change(box('prob', /Cost/), { target: { value: '5' } })
-    expect(screen.getByTestId('prob-interp').textContent).toContain('negative expected value') // 0.75 − 3.75
-    expect(screen.getByTestId('prob-evc').textContent).toBe('−$3')
+    fireEvent.change(box('prob', /^p/), { target: { value: '25' } })
+    fireEvent.change(box('prob', /^G/), { target: { value: '4' } })
+    fireEvent.change(box('prob', /^c/), { target: { value: '1' } })
+    expect(screen.getByTestId('prob-interp').textContent).toContain('breaks even') // 0.25 × 4 − 1 = 0
+    fireEvent.change(box('prob', /^c/), { target: { value: '4' } })
+    expect(screen.getByTestId('prob-interp').textContent).toContain('negative expected net payoff') // 1 − 4
+    expect(screen.getByTestId('prob-enp').textContent).toBe('−$3')
+    fireEvent.change(box('prob', /^c/), { target: { value: '0.5' } })
+    expect(screen.getByTestId('prob-interp').textContent).toContain('worth $0.50 more than its price')
   })
 
-  it('reset restores 20%, $15, $3', () => {
+  it('reset restores 20%, $18, $3', () => {
     open()
-    fireEvent.change(box('prob', /Value/), { target: { value: '90' } })
+    fireEvent.change(box('prob', /^G/), { target: { value: '90' } })
     fireEvent.click(screen.getByRole('button', { name: /Reset to 20%/ }))
-    expect(screen.getByTestId('prob-evc').textContent).toBe('$0.60')
+    expect(screen.getByTestId('prob-enp').textContent).toBe('$0.60')
   })
 })
 
@@ -140,11 +148,17 @@ describe('Framework — tabs, mathematics, accessibility, navigation', () => {
     expect(details.open).toBe(false)
     fireEvent.click(details.querySelector('summary')!)
     expect(details.open).toBe(true)
-    fireEvent.change(box('prob', /P\(success\)/), { target: { value: '50' } })
+    fireEvent.change(box('prob', /^p/), { target: { value: '50' } })
     const steps = screen.getByTestId('steps').textContent!
     expect(steps).toContain('EVC = $10 + ($5) = $15')
-    expect(steps).toContain('P(failure) = 1 − 0.5 = 0.5')
-    expect(steps).toContain('EVC(gacha) = $7.50 − $1.50 = $6')
+    expect(steps).toContain('Ceiling for one draw = p × G = 0.5 × $18 = $9')
+    expect(steps).toContain('Expected net payoff = p × G − c = $9 − $3 = $6')
+    // the original draft form agrees only with Value = G − c = $15: 0.5 × 15 − 0.5 × 3 = $6
+    expect(steps).toContain('0.5 × $15 − 0.5 × $3 = $6')
+    const math = details.textContent!
+    expect(math).toContain('EVC(gacha) = P(success) × Value − P(failure) × Cost') // kept, with its condition
+    expect(math).toContain('Original draft form — valid only if Value is the net gain')
+    expect(math).toContain('Expected net payoff = p × G − c')
   })
 
   it('general model worked example: duplicate adds zero (2.15 → 1.65)', () => {
@@ -154,7 +168,7 @@ describe('Framework — tabs, mathematics, accessibility, navigation', () => {
     expect(screen.getByTestId('general-total').textContent).toBe('2.15')
   })
 
-  it('"Open the mathematics" (toolkit step 3) stays on the Framework page (no hash navigation)', () => {
+  it('"Open the mathematics" (toolkit step 3) stays on the Framework page (no hash navigation), also in PRESENT', () => {
     const { container } = open()
     fireEvent.click(screen.getByRole('tab', { name: /So, how do we value it/ }))
     fireEvent.click(screen.getByRole('button', { name: /Open the mathematics/ }))
@@ -181,13 +195,15 @@ describe('Framework — toolkit chain (WTP → choice architecture → EVC)', ()
     expect(screen.getByTestId('wtp-price').textContent).toBe('$19.99')
   })
 
-  it('labels the population as illustrative and the 56% as real (Newzoo)', () => {
+  it('labels the whole population as illustrative and does not treat non-payers as zero willingness to pay', () => {
     const { container } = open()
     const panel = container.querySelector('#fw-chain-panel-who')!.textContent!
     expect(panel).toContain('Illustrative population')
-    expect(panel).toContain('Real 56% of players spend nothing on games in a year (Newzoo).')
-    expect(panel).toContain('Illustrative The 44 dots are made-up willingness-to-pay values')
+    expect(panel).toContain('Illustrative All 100 players are made up')
+    expect(panel).toContain('That is a spending outcome, not a measure of willingness to pay, so it is not used as one here.')
     expect(panel).toContain('d(p) = D·(1 − W(p))')
+    expect(panel).not.toContain('Real 56%')
+    expect(panel).not.toContain('willingness to pay for extras is zero')
   })
 
   it('next/previous, arrow keys and Home/End move between the three steps', () => {
@@ -223,7 +239,7 @@ describe('Framework — toolkit chain (WTP → choice architecture → EVC)', ()
   it('original WTP and Choice Architecture paragraphs remain available in full', () => {
     const { container } = open()
     const t = container.querySelector('.fw-chain')!.textContent!
-    expect(t).toContain('Paying Rate is low not because prices are high, but because most players’ willingness to pay for extras is zero')
+    expect(t).toContain('a spending outcome, not evidence that their willingness to pay is zero')
     expect(t).toContain('This is the mechanism this project\'s case study is built to isolate.')
   })
 
@@ -248,5 +264,60 @@ describe('Framework — toolkit chain (WTP → choice architecture → EVC)', ()
     expect(screen.getByRole('heading', { level: 1 }).textContent).toBe("You're the new monetization manager")
     act(() => { window.location.hash = '#framework'; window.dispatchEvent(new HashChangeEvent('hashchange')) })
     expect(screen.getByTestId('det-evc').textContent).toBe('$15')
+  })
+})
+
+const norm = (s: string | null) => (s ?? '').replace(/\s+/g, ' ').trim()
+
+describe('Framework, first section — RQ1: when does freemium pay off? (FINAL REVIEW COPY, Section 3; hand-checked numbers)', () => {
+  const payoff = () => document.getElementById('payoff')!
+
+  it('shows the three headline results and labels the example as hypothetical', () => {
+    open()
+    expect(screen.getByTestId('be-premium').textContent).toBe('$130,000')
+    expect(screen.getByTestId('be-rbe').textContent).toBe('12.98%')
+    expect(screen.getByTestId('be-rp').textContent).toBe('13.75%')
+    const t = norm(payoff().textContent)
+    expect(t).toContain('A hypothetical 24-month pricing example — not observed game data.')
+    expect(t).toContain('These are not the conversion rates of Honor of Kings, Where Winds Meet or any real game.')
+    expect(t).toContain('Each paying player spends $40 over that time (assumed).')
+  })
+
+  it('the worked formula and the infeasible $3 case are on screen, never clipped to 100%', () => {
+    open()
+    expect(norm(screen.getByTestId('be-eq').textContent)).toContain('($2.93 + $0.70) ÷ $28.00 = 12.98%')
+    expect(norm(screen.getByTestId('be-eq').textContent)).toContain('premium’s profit per installer ($0.22): 13.75%')
+    const low = norm(screen.getByTestId('be-low').textContent)
+    expect(low).toContain('173.0%')
+    expect(low).toContain('183.3%')
+    expect(low).toContain('no conversion rate could make that design profitable')
+  })
+
+  it('the payer-share slider moves through the three outcomes (−$1,340,000 → $0-ish → +$340,000)', () => {
+    open()
+    const s = within(payoff()).getByRole('slider', { name: 'Payer share' })
+    expect(screen.getByTestId('be-share').textContent).toBe('5.00%')
+    expect(screen.getByTestId('be-profit').textContent).toBe('−$1,340,000')
+    expect(screen.getByTestId('be-zone').textContent).toBe('Freemium loses money')
+    fireEvent.change(s, { target: { value: '13.5' } }) // between 12.98% and 13.75%
+    expect(screen.getByTestId('be-profit').textContent).toBe('$88,000') // 600,000 × (28 × 0.135 − 0.70) − 1,760,000 = 600,000 × 3.08 − 1,760,000
+    expect(screen.getByTestId('be-zone').textContent).toBe('Profitable, but worse than premium')
+    fireEvent.change(s, { target: { value: '13.75' } }) // exactly the matching share
+    expect(screen.getByTestId('be-profit').textContent).toBe('$130,000')
+    expect(screen.getByTestId('be-zone').textContent).toBe('Matches or beats premium')
+    fireEvent.change(s, { target: { value: '15' } })
+    expect(screen.getByTestId('be-profit').textContent).toBe('$340,000')
+    expect(screen.getByTestId('be-zone').textContent).toBe('Matches or beats premium')
+  })
+
+  it('ends with the required takeaway, and the model panel lists every input', () => {
+    open()
+    expect(norm(payoff().querySelector('.takeaway')!.textContent)).toContain('A profitable freemium game is not necessarily more profitable than a premium game.')
+    expect(norm(payoff().querySelector('.fw-rq1-next')!.textContent)).toBe('Once a publisher chooses freemium, the next question is how individual items should be priced.')
+    // RQ1 comes first on the page, before the item-pricing workbench (RQ2)
+    expect(payoff().compareDocumentPosition(document.getElementById('fw-workbench')!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    const panel = norm(payoff().querySelector('details.disclosure')!.textContent)
+    for (const s of ['1,000,000 players; 24 months', '30% of gross revenue', '$1,040,000', '$1,760,000', '$10 per paying month × 4 paying months', 'Payer share is cumulative over 24 months'])
+      expect(panel, s).toContain(s)
   })
 })
