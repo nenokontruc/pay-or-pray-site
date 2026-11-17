@@ -9,6 +9,7 @@ import { ToolkitChain } from './framework/ToolkitChain'
 import { DeterministicTab, type DetState } from './framework/DeterministicTab'
 import { ProbabilisticTab, type ProbState } from './framework/ProbabilisticTab'
 import { MathPanel } from './framework/MathPanel'
+import { BreakEven } from './framework/BreakEven'
 import './framework/framework.css'
 
 type TabId = 'det' | 'prob'
@@ -49,12 +50,24 @@ export default function Framework() {
         <div className="page-hero-grid">
           <div>
             <p className="kicker">Framework</p>
-            <h1 className="page-title">Two ways to value an in-game item</h1>
-            <p className="page-lede">The same economic question, two different pricing mechanisms.</p>
+            <h1 className="page-title">From business model to item pricing</h1>
+            <p className="page-lede">First, when freemium is economically viable. Then, how to price a known item versus a chance-based reward.</p>
           </div>
           <div className="page-hero-art fw-hero-art" aria-hidden><Seal size={110} /></div>
         </div>
       </div>
+
+      {/* RQ1 — moved here from Industry 06 (Nov 2026, docs/CONTENT_CORRECTIONS.md). Numbers: src/lib/breakEven.ts. */}
+      <section className="block slide" id="payoff">
+        <div className="wrap-wide">
+          <p className="kicker">Freemium versus premium</p>
+          <h2 className="sec-title">When does freemium actually pay off?</h2>
+          <p className="sec-lede">A hypothetical 24-month pricing example — not observed game data.</p>
+          <BreakEven />
+          <Takeaway>A profitable freemium game is not necessarily more profitable than a premium game.</Takeaway>
+          <p className="fw-rq1-next">Once a publisher chooses freemium, the next question is how individual items should be priced.</p>
+        </div>
+      </section>
 
       <section className="block slide" id="fw-workbench">
         <div className="wrap-wide">

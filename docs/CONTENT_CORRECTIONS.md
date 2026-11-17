@@ -107,6 +107,27 @@ capability rows: what I did, and the research page that models it.
 
 Unchanged: the secondary events note, the "Path" timeline, the sidebar facts and the acknowledgments (section 4).
 
+## 7. Final academic patch against the project report (author-requested, Nov 2026)
+
+Reference: the project report, FINAL REVIEW COPY (13 Nov 2026). Branch `academic-patch`, cut from production `main` (90b9592).
+
+| Where | Was | Now | Why |
+|---|---|---|---|
+| Framework, new first section (moved from a draft Industry 06 at the author's request) | — | "When does freemium actually pay off?": premium expected profit $130,000; freemium break-even payer share 12.98%; matches premium at 13.75%; $3-per-payer case 173.0% (infeasible); payer-share slider with three outcomes. All numbers from `src/lib/breakEven.ts` (report equations 3.1–3.4, Table 1). | RQ1 was missing from the site. Labelled hypothetical; not the conversion rate of any real game. |
+| Framework, deterministic result | "Expected value to customer (EVC)" | "Economic value to the customer (EVC)" | The course defines EVC as Economic Value to the Customer. |
+| Framework, probabilistic tab | `EVC(gacha) = P(success) × Value − P(failure) × Cost`; defaults 20%, $15, $3 | `Expected net payoff = p × G − c`, with ceiling p × G; defaults 20%, G = $18, c = $3 (same $0.60) | The draft expression is not EVC. It equals p·G − c only when Value is the net gain G − c (report Section 2.4); with Value read as the item's full value it overstates the payoff by p·c. The label and the calculation now agree. |
+| Framework, "Show the mathematics" | Badge "Consistent with published OR literature"; note "A reframing of the same course formula…" | Badge "Original draft form — valid only if Value is the net gain"; note "This expression is not EVC itself…"; new block "Used on this page: Expected net payoff"; live steps compute p·G − c and check the draft form with Value = G − c | The original formula stays on the page, with the condition under which it is valid. |
+| Framework, WTP step | "56 players · willingness to pay $0"; "Real 56% of players spend nothing on games in a year (Newzoo)"; takeaway "…because most players' willingness to pay for extras is zero"; full explanation said the same | Whole population labelled illustrative; Newzoo's non-payer share described as a spending outcome, not a measure of willingness to pay; new takeaway: the distribution has to be estimated | The report does not treat non-payers as having zero willingness to pay. The illustrative numbers (24 / 39 / 4 buyers) are unchanged. |
+| Framework, toolkit step 3 | "P(success) × Value − P(failure) × Cost" | "ceiling p × G · net payoff p × G − c" | Same correction as the tab. |
+| Diagnostic, takeaway and "Reading the matrix" | Freemium "makes sense" when a design stays in the top row | A screen for monetization risk, not a test of profitability; profitability is decided by the break-even conditions (top of the Framework page) | The grid answers RQ2, not RQ1. |
+| Industry 05 takeaway, explanation, callout; China status line | China's law is "the reason" both games' exact probabilities are public; "the reason this project has exact odds data" | The law requires published rates, but this project's odds come from secondary sources and were not matched to an official disclosure | Neither game's odds were verified against an official disclosure (report, Unresolved Evidence items 1–4). |
+| Case Study chart footnote and readout | "Honor of Kings publishes its starting odds (0.8%) and guarantee (draw 361)"; "odds start at 0.8%" | "the project's sources report … (not verified against an official disclosure)"; "reported odds start at 0.8%" | Same reason. |
+| Framework heading and lede | "Two ways to value an in-game item" / "The same economic question, two different pricing mechanisms." | "From business model to item pricing" / "First, when freemium is economically viable. Then, how to price a known item versus a chance-based reward." | The page now opens with RQ1, then RQ2 (author's wording). |
+| Industry, last bridge | "Framework: how do you price a known item, and a chance?" | "Framework: when does freemium pay off, and how do you price an item?" | Names what the next page now starts with. |
+| Framework "Show the mathematics" in PRESENT | Hidden in PRESENT, so "Open the mathematics" did nothing | Kept (collapsed) in PRESENT | Broken interaction during presentation. |
+
+Not changed (deliberately): the Industry market figure "56% … spend nothing on games in a year" (the report reads the Newzoo figure only through secondary coverage and could not confirm the time window either way); the "Han, Ryan & Tong, 2026" citation year (the report flags it for the author to confirm); Choice Architecture wording in the Diagnostic cells and toolkit step 2; the Simulation.
+
 ## Checked, no change
 - Case Study "36.7%": Chen, Elmachtoub, Hamilton & Lei (2021), Management Science — the traditional
   box "only garners 36.7% of the optimal revenue" as the number of items grows

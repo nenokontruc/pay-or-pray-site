@@ -1,7 +1,7 @@
 // "The rest of the toolkit" as one guided chain:
 //   ① Who pays? (WTP, price response) → ② What do they compare? (choice architecture) → ③ How do we value it? (EVC)
 // Original paragraphs stay verbatim in each step's "Full explanation". Step ① uses an ILLUSTRATIVE population
-// (src/lib/wtp.ts), labelled as such; only the 56% non-payer share is a real figure (Newzoo).
+// (src/lib/wtp.ts), labelled as such. Newzoo's non-payer share is a spending outcome and is NOT used as a WTP estimate.
 import { useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { Disclosure, Takeaway } from '../../components/Disclosure'
 import { Gashapon, DisplayCase } from '../../components/Art'
@@ -36,8 +36,8 @@ function WhoPays() {
     <div className="fw-chain-work">
       <div className="fw-chain-viz">
         {/* Headings and notes are HTML (they wrap and stay readable on phones); the chart holds only marks and the axis. */}
-        <div className="fw-wtp-heads"><span><b>56 players</b> · willingness to pay $0</span><span><b>The other 44</b> · willingness to pay, illustrative</span></div>
-        <svg viewBox="0 0 640 196" className="fw-wtp" role="img" aria-label={`100 illustrative players. 56 would pay nothing. At ${'$'}${price.toFixed(2)}, ${r.buyers} of 100 buy.`}>
+        <div className="fw-wtp-heads"><span><b>56 players</b> · would not buy at any price shown (illustrative)</span><span><b>The other 44</b> · willingness to pay, illustrative</span></div>
+        <svg viewBox="0 0 640 196" className="fw-wtp" role="img" aria-label={`100 illustrative players. 56 would not buy at any price shown. At ${'$'}${price.toFixed(2)}, ${r.buyers} of 100 buy.`}>
           {Array.from({ length: NON_PAYERS }, (_, i) => (
             <rect key={i} x={14 + (i % 8) * 24} y={44 + Math.floor(i / 8) * 17} width="16" height="11" rx="2" className="fw-wtp-zero" />
           ))}
@@ -47,7 +47,7 @@ function WhoPays() {
           <line x1={px(price)} x2={px(price)} y1="30" y2={BASE + 4} className="fw-wtp-price" />
           <text x={labelX} y="22" textAnchor="middle" className="fw-wtp-tick strong">price ${price.toFixed(2)}</text>
         </svg>
-        <p className="fw-wtp-notes"><span className="fw-tag real">Real</span> 56% of players spend nothing on games in a year (Newzoo). <span className="fw-tag">Illustrative</span> The 44 dots are made-up willingness-to-pay values; filled = buys at this price.</p>
+        <p className="fw-wtp-notes"><span className="fw-tag">Illustrative</span> All 100 players are made up: 56 sit below the lowest price shown, and the 44 dots are made-up willingness-to-pay values; filled = buys at this price. <span className="fw-tag real">Note</span> Newzoo reports that about 56% of players do not pay for games. That is a spending outcome, not a measure of willingness to pay, so it is not used as one here.</p>
         <div className="fw-field-row">
           <label htmlFor={`${id}-p`} className="fw-mini-k" style={{ margin: 0 }}>Skin price</label>
           <input id={`${id}-p`} type="range" min={0.99} max={24.99} step={1} value={price} onChange={(e) => setPrice(Number(e.target.value))} />
@@ -101,7 +101,7 @@ function Value({ onOpenTab, onOpenMath }: { onOpenTab: (t: 'det' | 'prob') => vo
       <button type="button" className="fw-route uncertain" onClick={() => onOpenTab('prob')}>
         <span className="fw-card-k">Left to chance</span>
         <b>EVC re-derived in expectation</b>
-        <span className="fw-route-f notranslate" translate="no">P(success) × Value − P(failure) × Cost</span>
+        <span className="fw-route-f notranslate" translate="no">ceiling p × G · net payoff p × G − c</span>
         <span className="fw-route-go">Open the Probabilistic calculator &uarr;</span>
       </button>
       <figure className="fw-chain-quote">
@@ -114,7 +114,7 @@ function Value({ onOpenTab, onOpenMath }: { onOpenTab: (t: 'det' | 'prob') => vo
 }
 
 const TAKEAWAYS: Record<StepId, ReactNode> = {
-  who: <>Paying Rate is low not because prices are high, but because most players&rsquo; willingness to pay for extras is zero.</>,
+  who: <>d(p) turns a willingness-to-pay distribution into expected buyers. That distribution has to be estimated &mdash; it cannot be read from the share of players who do not pay.</>,
   compare: <>Anchors and compromise effects need known options to compare. A lucky draw has none &mdash; so different psychology takes over.</>,
   value: <>Certain value: EVC applies directly. Chance: re-derive it in expectation.</>,
 }

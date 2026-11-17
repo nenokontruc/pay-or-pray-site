@@ -5,11 +5,13 @@
 export const REFP_RANGE = { min: 0, max: 100, step: 0.5 } as const
 export const DIFFV_RANGE = { min: -50, max: 50, step: 0.5 } as const
 export const P_RANGE_PCT = { min: 0, max: 100, step: 0.1 } as const
-export const VALUE_RANGE = { min: 0, max: 200, step: 1 } as const
-export const COST_RANGE = { min: 0, max: 100, step: 0.5 } as const
+export const VALUE_RANGE = { min: 0, max: 200, step: 1 } as const // G, the item's value to the player
+export const COST_RANGE = { min: 0, max: 100, step: 0.5 } as const // c, the price of one draw
 
 export const DETERMINISTIC_DEFAULTS = { refP: 10, diffV: 5 } as const
-export const PROBABILISTIC_DEFAULTS = { pSuccessPct: 20, value: 15, cost: 3 } as const
+/** One draw: p = 20%, item worth G = $18 to the player, draw price c = $3 → expected net payoff $0.60
+ *  (FINAL REVIEW COPY, Section 5.2 check: the draft form gives the same $0.60 only with Value = G − c = $15). */
+export const PROBABILISTIC_DEFAULTS = { pSuccessPct: 20, value: 18, cost: 3 } as const
 
 function finite(name: string, x: number) {
   if (typeof x !== 'number' || !Number.isFinite(x)) throw new RangeError(`${name} must be a finite number`)
@@ -28,6 +30,35 @@ export function deterministicEVC(refP: number, diffV: number): number {
   return refP + diffV
 }
 
+export interface NetPayoff {
+  pSuccess: number
+  pFailure: number
+  /** p × G — the expected value of one draw: the highest price a risk-neutral player would pay for it. */
+  ceiling: number
+  /** c — the price of the draw. */
+  price: number
+  /** p × G − c */
+  netPayoff: number
+}
+
+/**
+ * Probabilistic goods: expected net payoff of one draw (FINAL REVIEW COPY, equation 2.3):
+ *   ENP = p × G − c
+ * p — chance the draw delivers the wanted item; G — that item's (gross) value to the player; c — price of one draw.
+ * The ceiling p × G is the price-ceiling logic of EVC applied in expectation (course tulip example: 10% × $80 = $8).
+ * ENP is not EVC: EVC is a price ceiling; ENP is what remains after the price is paid.
+ */
+export function expectedNetPayoff(pSuccess: number, itemValue: number, price: number): NetPayoff {
+  finite('p', pSuccess)
+  finite('G', itemValue)
+  finite('c', price)
+  if (pSuccess < 0 || pSuccess > 1) throw new RangeError('p must be between 0 and 1')
+  if (itemValue < 0) throw new RangeError('G cannot be negative')
+  if (price < 0) throw new RangeError('c cannot be negative')
+  const ceiling = pSuccess * itemValue
+  return { pSuccess, pFailure: 1 - pSuccess, ceiling, price, netPayoff: ceiling - price }
+}
+
 export interface GachaEVC {
   pSuccess: number
   pFailure: number
@@ -40,10 +71,10 @@ export interface GachaEVC {
 }
 
 /**
- * Probabilistic goods (original simplified two-outcome form):
- *   EVC(gacha) = P(success) × Value − P(failure) × Cost,  with P(failure) = 1 − P(success).
- * Value — what the player gains if the draw succeeds. Cost — what is lost (sunk) if it fails.
- * Neither is the price per draw nor the expected cost of acquiring an item; see the page text.
+ * The original draft's two-outcome form, kept for comparison on the page ("Show the mathematics"):
+ *   P(success) × Value − P(failure) × Cost,  with P(failure) = 1 − P(success).
+ * It is NOT EVC. It equals the expected net payoff p × G − c only when Value is the NET gain G − c and Cost = c;
+ * with Value read as the item's full value it overstates the payoff by p × c (FINAL REVIEW COPY, Section 2.4).
  */
 export function gachaEVC(pSuccess: number, value: number, cost: number): GachaEVC {
   finite('P(success)', pSuccess)

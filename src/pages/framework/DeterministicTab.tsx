@@ -24,7 +24,7 @@ export function DeterministicTab({ s, set, reset }: { s: DetState; set: (s: DetS
       <div className="fw-result" aria-live="polite">
         <div className="fw-result-head">
           <div>
-            <span className="fw-result-k">Expected value to customer (EVC)</span>
+            <span className="fw-result-k">Economic value to the customer (EVC)</span>
             <div className="fw-big" data-testid="det-evc">{money(evc)}</div>
           </div>
           <div className="fw-art" aria-hidden><DisplayCase /></div>
