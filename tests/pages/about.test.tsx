@@ -63,7 +63,7 @@ describe('About page', () => {
     const { container } = open()
     const t = container.textContent!.replace(/\s+/g, ' ')
     for (const s of ['OPM 6600', 'Saint Louis University', 'Western Sydney University Vietnam', 'VNG Corporation', 'Game Operation Collaborator',
-      '2019–2023', '2023–2025', '2025–now', 'Dr. Tim Smith of Wiglaf Pricing', 'anonymized']) expect(t, s).toContain(s)
+      '2019–2023', '2023–2025', '2025–now', 'Dr. Tim Smith of Wiglaf Pricing', 'Kỳ Phương Lữ']) expect(t, s).toContain(s)
   })
 
   it('names the course instructor and keeps the guest speaker as a separate person and role', () => {
@@ -72,7 +72,7 @@ describe('About page', () => {
     expect(thanks).toContain('Professor Xiao Zhang, instructor of OPM 6600 — Pricing and Revenue Optimization')
     expect(thanks).toContain('guest speaker Dr. Tim Smith of Wiglaf Pricing')
     expect(thanks).not.toMatch(/Tim Smith[^;]*instructor|Xiao Zhang[^;]*(guest speaker|Wiglaf)/)
-    expect(thanks).toContain('(anonymized) for the industry interview')
+    expect(thanks).toContain('Kỳ Phương Lữ, a former manager and monetization specialist for the industry interview')
     expect(thanks).not.toContain('the OPM 6600 instructor')
   })
 

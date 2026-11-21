@@ -76,6 +76,9 @@ const CORRECTIONS: { page: string; original: string; replacement: string }[] = [
     replacement: 'This grid answers the second of this project’s two questions.' },
   { page: 'about', original: 'and to the OPM 6600 instructor for guidance',
     replacement: 'Thanks to Professor Xiao Zhang, instructor of OPM 6600 — Pricing and Revenue Optimization, for guidance and access to the course’s research database' },
+  // Interviewee named at the author's request (Nov 2026).
+  { page: 'industry', original: 'Industry interview with an anonymized monetization specialist (former manager, name withheld)',
+    replacement: 'Industry interview with Kỳ Phương Lữ, a former manager and monetization specialist.' },
 ]
 
 beforeAll(() => {
