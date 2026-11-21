@@ -85,7 +85,7 @@ export default function About() {
               </ol>
 
               <div className="ab-thanks">
-                <p className="game-note"><b>Acknowledgments.</b> Thanks to Professor Xiao Zhang, instructor of OPM 6600 &mdash; Pricing and Revenue Optimization, for guidance and access to the course&rsquo;s research database; to guest speaker Dr. Tim Smith of Wiglaf Pricing for sharing industry insights; and to a former manager and monetization specialist (anonymized) for the industry interview behind much of this analysis.</p>
+                <p className="game-note"><b>Acknowledgments.</b> Thanks to Professor Xiao Zhang, instructor of OPM 6600 &mdash; Pricing and Revenue Optimization, for guidance and access to the course&rsquo;s research database; to guest speaker Dr. Tim Smith of Wiglaf Pricing for sharing industry insights; and to Kỳ Phương Lữ, a former manager and monetization specialist for the industry interview behind much of this analysis.</p>
                 <span className="ab-seal" aria-hidden><Seal size={56} /></span>
               </div>
               <a className="btn ab-btn" href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">Connect on LinkedIn &rarr;</a>

@@ -86,7 +86,7 @@ function Footer({ page }: { page: PageId }) {
                   <div>Newzoo (2025). Global Games Market Report 2025. Sensor Tower (2026). State of Mobile 2026.</div>
                   <div>Chen, N., Elmachtoub, A., Hamilton, M., &amp; Lei, X. (2021). Loot Box Pricing and Design. <i>Management Science.</i></div>
                   <div>Harutyunyan, M., &amp; Koca, E. (2025). Pricing and Design of Pay-to-Win Add-Ons. <i>Management Science.</i></div>
-                  <div>Industry interview with an anonymized monetization specialist (former manager, name withheld). Personal communication, September 2026.</div>
+                  <div>Industry interview with Kỳ Phương Lữ, a former manager and monetization specialist. Personal communication, September 2026.</div>
                 </>
               ) : (
                 <>
